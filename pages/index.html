@@ -8,9 +8,30 @@
   </head>
 
   <body>
-    <header>
+    <svg width="0" height="0" style="position: absolute">
+      <filter id="glass-filter">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.85"
+          numOctaves="3"
+          seed="2"
+          result="noise"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="35"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+      </filter>
+    </svg>
+    <!-- NAVBAR -->
+    <header class="nav-container">
       <nav class="navbar">
-        <div class="nav-right">
+        <div class="nav-logo">Raul V. Rodriguez</div>
+
+        <div class="nav-links">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
           <a href="research.html">Research</a>
@@ -21,18 +42,40 @@
       </nav>
     </header>
 
-    <div>
-      <h1 style="text-align: left; padding-left: 80px; padding-top: 200px">
-        <strong>Dr. Raul V. Rodriguez</strong>
-      </h1>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Dr. Raul V. Rodriguez</h1>
 
-      <h5 style="text-align: center; padding-right: 190px; padding-top: 10px">
-        Vice President, Woxsen University<br />
-        Stevan Pinker Professor of Cognitive Psychology<br />
-        Board Member | Cognitive Technologist | Behavioral Engineer<br />
-      </h5>
-    </div>
+        <p>
+          Vice President, Woxsen University<br />
+          Stevan Pinker Professor of Cognitive Psychology<br />
+          Board Member | Cognitive Technologist | Behavioral Engineer
+        </p>
+      </div>
+    </section>
 
-    <div></div>
+    <!-- BOOKS SECTION -->
+    <section class="books">
+      <h2>Books</h2>
+
+      <div class="book-grid">
+        <div class="book-card">
+          <img src="assets/images/book1.png" alt="Book 1" />
+          <h4>Book Title 1</h4>
+        </div>
+
+        <div class="book-card">
+          <img src="assets/images/book2.jpg" alt="Book 2" />
+          <h4>Book Title 2</h4>
+        </div>
+
+        <div class="book-card">
+          <img src="assets/images/book3.jpg" alt="Book 3" />
+          <h4>Book Title 3</h4>
+        </div>
+      </div>
+    </section>
+    <script src="main.js"></script>
   </body>
 </html>
