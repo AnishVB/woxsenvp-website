@@ -10,84 +10,8 @@ body {
 }
 
 /* ============================================
-   ReactBits Liquid Glass Core Styles
+   NAVBAR STYLING 
 ============================================ */
-
-.glass-surface {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: opacity 0.26s ease-out;
-}
-
-.glass-surface__filter {
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  opacity: 1;
-  z-index: -1;
-}
-
-.glass-surface__content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: inherit;
-  position: relative;
-  z-index: 2;
-}
-
-/* Main Liquid Glass effect using SVG turbulence */
-.glass-surface--svg {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: url(#glass-filter) saturate(var(--glass-saturation, 1.2));
-  -webkit-backdrop-filter: blur(18px) saturate(var(--glass-saturation, 1.2));
-
-  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.25) inset,
-    0 0 10px 4px rgba(255, 255, 255, 0.15) inset,
-    0px 4px 16px rgba(17, 17, 26, 0.05), 0px 8px 24px rgba(17, 17, 26, 0.05),
-    0px 16px 56px rgba(17, 17, 26, 0.05),
-    inset 0 4px 16px rgba(17, 17, 26, 0.05),
-    inset 0 8px 24px rgba(17, 17, 26, 0.05),
-    inset 0 16px 56px rgba(17, 17, 26, 0.05);
-}
-
-/* Fallback when backdrop-filter is not supported */
-.glass-surface--fallback {
-  background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
-
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2),
-    0 2px 16px rgba(31, 38, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
-}
-
-@supports not (backdrop-filter: blur(10px)) {
-  .glass-surface--fallback {
-    background: rgba(255, 255, 255, 0.4);
-  }
-}
-
-/* ============================================
-   NAVBAR (Liquid Glass applied)
-============================================ */
-
-header.glass-surface {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  height: 80px;
-}
-
 .navbar {
   width: 100%;
   max-width: 1200px;
