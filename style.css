@@ -1,6 +1,4 @@
-/* ============================================
-   Base Page Styling
-============================================ */
+/* Base Styles */
 body {
   background-color: #030761;
   color: #ffffff;
@@ -9,19 +7,22 @@ body {
   font-family: sans-serif;
 }
 
-/* ============================================
-   NAVBAR STYLING 
-============================================ */
+/* Navbar */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 1200px;
+  z-index: 1000;
+  background-color: rgba(3, 7, 97, 0.5);
+  backdrop-filter: blur(5px);
   padding: 18px 40px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* Logo */
 .nav-logo {
   font-size: 22px;
   font-weight: 700;
@@ -29,7 +30,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Nav links */
 .nav-links a {
   margin-left: 30px;
   text-decoration: none;
@@ -45,32 +45,17 @@ body {
   transform: translateY(-1px);
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-  }
-  .nav-links a {
-    margin: 10px 0;
-  }
-}
-
-/* ============================================
-   HERO SECTION
-============================================ */
+/* Hero Section */
 .hero {
   height: 100vh;
   background-image: url("assets/images/profhpbg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 0 20px;
-
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 60px;
   position: relative;
 }
 
@@ -79,32 +64,33 @@ body {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
 }
 
 .hero-content {
-  padding: 20px;
   position: relative;
   z-index: 1;
+  padding: 20px;
   color: white;
+  max-width: 600px;
+  text-align: left;
+  margin-top: 35vh; /* Adjusts vertical position */
+  margin-left: 40px;
 }
 
 .hero-content h1 {
-  font-size: 3.5rem;
-  text-align: left;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
   margin-bottom: 15px;
 }
 
 .hero-content p {
-  text-align: left;
   font-size: 1.2rem;
   line-height: 1.6;
   font-weight: 400;
 }
 
-/* ============================================
-   BOOKS SECTION
-============================================ */
+/* Books Section */
 .books {
   padding: 40px;
   text-align: center;
@@ -115,9 +101,37 @@ body {
   justify-content: center;
   gap: 30px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .book-card img {
   width: 180px;
   height: auto;
+  border-radius: 5px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+    display: block;
+    text-align: center;
+  }
+
+  .hero {
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .hero-content {
+    margin: 0;
+    text-align: center;
+    max-width: 90%;
+  }
 }
