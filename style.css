@@ -14,7 +14,7 @@ body {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background-color: rgba(3, 7, 97, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
   padding: 18px 40px;
   box-sizing: border-box;
@@ -90,48 +90,195 @@ body {
   font-weight: 400;
 }
 
-/* Books Section */
+/* BOOKS CAROUSEL SECTION */
 .books {
-  padding: 40px;
+  padding: 60px 0;
   text-align: center;
+  overflow: hidden;
 }
 
-.book-grid {
+.books h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.books-carousel {
+  width: 100%;
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 20px;
-  flex-wrap: wrap;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.books-track {
+  display: flex;
+  gap: 40px;
+  width: max-content;
+
+  animation: scroll-left 40s linear infinite;
+}
+
+.books-track:hover {
+  animation-play-state: paused;
 }
 
 .book-card img {
   width: 180px;
   height: auto;
   border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+/*  Pop Animation */
+.book-card img:hover {
+  transform: scale(1.1) translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Book Button */
+
+.book-button {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+  .book-card img {
+    width: 140px;
+  }
+
+  .books-track {
+    animation-duration: 30s;
+  }
+}
+
+/* RECENT VIDEO SECTION */
+
+.recent-video {
+  padding: 60px 40px; /* Top/Bottom padding, Left/Right padding */
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.05); /* Subtle highlight */
+}
+
+.recent-video h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.video-container {
+  max-width: 950px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 35%; /* 16:9 Aspect Ratio = 56.25%*/
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* FOOTER SECTION */
+.footer {
+  background-color: #020442;
+  padding: 60px 40px 20px 40px;
+  margin-top: 60px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between; /* Pushes the two columns apart */
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Optional: Right align the second column (Connect) for better balance */
+.footer-col:last-child {
+  text-align: right;
+}
+
+.footer-col h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #fff;
+  margin-top: 0;
+}
+
+.footer-col h4 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #ddd;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0;
+}
+
+.footer-col p {
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.footer-col a {
+  display: block;
+  color: #ccc;
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+
+.footer-col a:hover {
+  color: #ffffff;
+  transform: translateX(5px); /* subtle slide effect */
+}
+
+/* Footer Bottom (Copyright area) */
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9rem;
+  color: #888;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .navbar {
+  .footer-container {
     flex-direction: column;
-    padding: 15px;
-  }
-
-  .nav-links a {
-    margin: 10px 0;
-    display: block;
     text-align: center;
   }
 
-  .hero {
-    justify-content: center;
-    align-items: center;
-    padding: 0 20px;
+  /* Reset right alignment on mobile */
+  .footer-col:last-child {
+    text-align: center;
   }
 
-  .hero-content {
-    margin: 0;
-    text-align: center;
-    max-width: 90%;
+  .footer-col a:hover {
+    transform: none; /* Disable slide on mobile */
   }
 }
