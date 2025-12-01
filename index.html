@@ -8,24 +8,6 @@
   </head>
 
   <body>
-    <svg width="0" height="0" style="position: absolute">
-      <filter id="glass-filter">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.85"
-          numOctaves="3"
-          seed="2"
-          result="noise"
-        />
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="noise"
-          scale="35"
-          xChannelSelector="R"
-          yChannelSelector="G"
-        />
-      </filter>
-    </svg>
     <!-- NAVBAR -->
     <header class="nav-container">
       <nav class="navbar">
@@ -55,13 +37,24 @@
       </div>
     </section>
 
-    <!--Recent Video Section-->
+    <!-- FLOATING TRUST CARD -->
+    <div class="trust-floating-card">
+      <div class="trust-logos">
+        <img src="assets/logos/blogo1.png" alt="blogo1" />
+        <img src="assets/logos/blogo2.png" alt="blogo2" />
+        <img src="assets/logos/blogo3.png" alt="blogo3" />
+        <img src="assets/logos/blogo4.png" alt="blogo4" />
+        <img src="assets/logos/blogo5.png" alt="blogo5" />
+        <img src="assets/logos/blogo6.png" alt="blogo6" />
+        <img src="assets/logos/blogo7.png" alt="blogo7" />
+      </div>
+    </div>
+
+    <!-- RECENT VIDEO SECTION -->
     <section class="recent-video">
       <h2>Recent Video</h2>
       <div class="video-container">
         <iframe
-          width="560"
-          height="315"
           src="https://www.youtube.com/embed/WScWvw6MRl8"
           title="Video player"
           frameborder="0"
@@ -77,6 +70,7 @@
 
       <div class="books-carousel">
         <div class="books-track">
+          <!-- BOOK CARDS (SET 1) -->
           <div class="book-card">
             <img src="assets/images/book1.png" alt="Book 1" />
           </div>
@@ -114,6 +108,7 @@
             <img src="assets/images/book12.png" alt="Book 12" />
           </div>
 
+          <!-- BOOK CARDS (SET 2 FOR LOOPING) -->
           <div class="book-card">
             <img src="assets/images/book1.png" alt="Book 1" />
           </div>
@@ -152,31 +147,44 @@
           </div>
         </div>
       </div>
+
       <div class="book-button">
         <a href="books.html" class="btn">View All Books</a>
       </div>
     </section>
 
     <!-- FOOTER -->
-
-    <footer class="footer">
+    <footer class="footer fade-section">
       <div class="footer-container">
+        <!-- LEFT COLUMN -->
         <div class="footer-col">
+          <h3>Woxsen University</h3>
+          <p>Kamkole, Sadasivpet, Hyderabad, Telangana 502345</p>
+
+          <a href="https://www.woxsen.edu.in" target="_blank"
+            >www.woxsen.edu.in</a
+          >
+          <a href="tel:04044448888">040 4444 8888</a>
+        </div>
+
+        <!-- CENTER COLUMN -->
+        <div class="footer-col footer-center">
           <h3>Dr. Raul V. Rodriguez</h3>
           <p>Cognitive Technologist | Behavioral Engineer</p>
         </div>
 
-        <div class="footer-col">
+        <!-- RIGHT COLUMN -->
+        <div class="footer-col footer-right">
           <h4>Connect</h4>
           <a href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
             >LinkedIn</a
           >
-          <a href="">Twitter / X</a>
+          <a href="#">Twitter / X</a>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>Dr. Raul V. Rodriguez</p>
+        <p>© Dr. Raul V. Rodriguez</p>
       </div>
     </footer>
 
