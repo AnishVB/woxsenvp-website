@@ -1,19 +1,15 @@
-// Apply reveal animation to all sections automatically
-const revealElements = document.querySelectorAll(
-  "section, .about-section, .footer, .navbar, .video-container, .books, .section-inner"
-);
+document.addEventListener("DOMContentLoaded", () => {
+  const reveals = document.querySelectorAll(".reveal");
 
-revealElements.forEach((el) => el.classList.add("reveal"));
-
-const globalObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
+  function revealOnScroll() {
+    reveals.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        el.classList.add("visible");
       }
     });
-  },
-  { threshold: 0.2 }
-);
+  }
 
-revealElements.forEach((el) => globalObserver.observe(el));
+  revealOnScroll();
+  window.addEventListener("scroll", revealOnScroll);
+});
