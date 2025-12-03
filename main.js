@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function revealOnScroll() {
     reveals.forEach((el) => {
       const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
+      if (rect.top < window.innerHeight - 150) {
         el.classList.add("visible");
       }
     });

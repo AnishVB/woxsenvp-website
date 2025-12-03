@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
     <link rel="stylesheet" href="style.css" />
+    <script defer src="main.js"></script>
   </head>
 
   <body>
@@ -31,14 +32,20 @@
       <div class="hero-content reveal">
         <h1>Dr. Raul V. Rodriguez</h1>
 
-        <!-- Animated Subheading -->
-        <p class="hero-rotating">
-          <span id="rotate-text"></span>
-        </p>
+        <!-- NEW STACKED ROTATING SUBTITLE -->
+        <div class="hero-rotating-stack">
+          <div class="stack-line">Vice President, Woxsen University</div>
+          <div class="stack-line">
+            Steven Pinker Professor of Cognitive Psychology
+          </div>
+          <div class="stack-line">
+            Board Member | Cognitive Technologist | Behavioural Engineer
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- FLOATING TRUST CARD -->
+    <!-- TRUST FLOATING CARD -->
     <div class="trust-floating-card reveal">
       <div class="trust-logos">
         <img src="assets/logos/blogo1.png" />
@@ -51,7 +58,7 @@
       </div>
     </div>
 
-    <!-- RECENT VIDEO SECTION -->
+    <!-- RECENT VIDEO -->
     <section class="recent-video reveal">
       <h2>Recent Video</h2>
       <div class="video-container">
@@ -70,7 +77,6 @@
 
       <div class="books-carousel">
         <div class="books-track">
-          <!-- 12 books duplicated for loop -->
           <div class="book-card"><img src="assets/images/book1.png" /></div>
           <div class="book-card"><img src="assets/images/book2.png" /></div>
           <div class="book-card"><img src="assets/images/book3.png" /></div>
@@ -84,7 +90,7 @@
           <div class="book-card"><img src="assets/images/book11.png" /></div>
           <div class="book-card"><img src="assets/images/book12.png" /></div>
 
-          <!-- duplicate -->
+          <!-- duplicate for infinite loop -->
           <div class="book-card"><img src="assets/images/book1.png" /></div>
           <div class="book-card"><img src="assets/images/book2.png" /></div>
           <div class="book-card"><img src="assets/images/book3.png" /></div>
@@ -111,7 +117,9 @@
         <div class="footer-col">
           <h3>Woxsen University</h3>
           <p>Kamkole, Sadasivpet, Hyderabad, Telangana 502345</p>
-          <a href="https://www.woxsen.edu.in">www.woxsen.edu.in</a>
+          <a href="https://www.woxsen.edu.in" target="_blank"
+            >www.woxsen.edu.in</a
+          >
           <a href="tel:04044448888">040 4444 8888</a>
         </div>
 
@@ -134,29 +142,35 @@
       </div>
     </footer>
 
-    <!-- JS FOR ROTATING SUBTITLE -->
+    <!-- STACKED ROTATING SUBTITLE SCRIPT -->
     <script>
-      const rotatingTexts = [
-        "Vice President, Woxsen University",
-        "Steven Pinker Professor of Cognitive Psychology",
-        "Board Member",
-        "Cognitive Technologist",
-        "Behavioral Engineer",
-      ];
+      const stack = document.querySelector(".hero-rotating-stack");
+      const lines = Array.from(document.querySelectorAll(".stack-line"));
+      let index = 0;
 
-      let idx = 0;
-      const rotateEl = document.getElementById("rotate-text");
+      function rotateStack() {
+        // Remove old active
+        lines.forEach((line) => line.classList.remove("active"));
 
-      function rotate() {
-        rotateEl.classList.remove("fade-in");
-        void rotateEl.offsetWidth;
-        rotateEl.classList.add("fade-in");
-        rotateEl.textContent = rotatingTexts[idx];
-        idx = (idx + 1) % rotatingTexts.length;
+        // Active middle line
+        let activeIndex = (index + 1) % lines.length;
+        lines[activeIndex].classList.add("active");
+
+        // shift animation
+        stack.classList.add("shift");
+
+        // reorder lines
+        setTimeout(() => {
+          stack.appendChild(lines[index]);
+          lines.push(lines.shift());
+          stack.classList.remove("shift");
+        }, 800);
+
+        index = (index + 1) % lines.length;
       }
 
-      rotate();
-      setInterval(rotate, 3000);
+      rotateStack();
+      setInterval(rotateStack, 2500);
     </script>
     <script src="main.js"></script>
   </body>

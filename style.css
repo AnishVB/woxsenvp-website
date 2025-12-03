@@ -5,6 +5,7 @@
 html {
   background: #02053f;
   overscroll-behavior: none;
+  scroll-behavior: smooth;
 }
 
 :root {
@@ -214,28 +215,48 @@ p {
   font-size: 3rem;
 }
 
-/* Rotating text */
+/* stacked rotating subtitle */
 
-.hero-rotating {
+.hero-rotating-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* left aligned like screenshot */
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.stack-line {
   font-size: 1.4rem;
-  font-weight: 400;
-  color: #e5e9ff;
-  min-height: 35px;
+  font-weight: 600;
+  opacity: 0.25;
+  color: #dcdfff;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(6px);
 }
 
-.fade-in {
-  animation: fadeIn 0.8s ease;
+/* Active one pops out */
+.stack-line.active {
+  opacity: 1;
+  color: #ffffff;
+  transform: translateY(0);
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* shift lines upward */
+.hero-rotating-stack.shift .stack-line {
+  transform: translateY(-40px); /* exactly one line height */
+  opacity: 0.25;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+}
+
+.trust-floating-card,
+.recent-video,
+.books {
+  position: relative;
+  z-index: 2;
 }
 
 /* =========================================================
@@ -375,10 +396,6 @@ p {
       ABOUT PAGE — EDITORIAL LAYOUT
    ========================================================= */
 
-html {
-  scroll-behavior: smooth; /* smooth jump to sections */
-}
-
 .about-page {
   padding-top: 120px; /* space under navbar */
   padding-bottom: 80px;
@@ -456,7 +473,8 @@ html {
 
 .about-hero-photo img {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px; /* slightly bigger portrait */
+  height: auto;
   border-radius: 22px;
   box-shadow: var(--shadow-strong);
 }
@@ -473,10 +491,15 @@ html {
 }
 
 .about-image-full img {
-  width: 100%;
+  width: 90%; /* smaller than full page */
+  max-width: 900px; /* cap size */
+  margin: 0 auto;
+  display: block;
+  height: auto;
   border-radius: 22px;
+
+  object-fit: contain; /* stops cropping */
   box-shadow: var(--shadow-strong);
-  object-fit: cover;
 }
 
 .about-text-narrow {
