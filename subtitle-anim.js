@@ -1,18 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const lines = document.querySelectorAll(".stack-line");
+  const lines = document.querySelectorAll(".overlay-line");
   let current = 0;
 
-  function updateLines() {
-    lines.forEach((line, i) => {
-      line.classList.remove("active");
-      if (i === current) {
-        line.classList.add("active");
-      }
+  function cycle() {
+    lines.forEach((l, i) => {
+      l.classList.toggle("active", i === current);
     });
 
     current = (current + 1) % lines.length;
   }
 
-  updateLines();
-  setInterval(updateLines, 2500);
+  cycle();
+  setInterval(cycle, 2500);
 });

@@ -33,13 +33,13 @@
         <h1>Dr. Raul V. Rodriguez</h1>
 
         <!-- NEW STACKED ROTATING SUBTITLE -->
-        <div class="hero-rotating-stack">
-          <div class="stack-line">Vice President, Woxsen University</div>
-          <div class="stack-line">
-            Steven Pinker Professor of Cognitive Psychology
-          </div>
-          <div class="stack-line">
-            Board Member | Cognitive Technologist | Behavioural Engineer
+        <div class="hero-subtitle-wrapper">
+          <div class="hero-subtitle-list" id="subtitle-list">
+            <div>Vice President, Woxsen University</div>
+            <div>Steven Pinker Professor of Cognitive Psychology</div>
+            <div>
+              Board Member | Cognitive Technologist | Behavioural Engineer
+            </div>
           </div>
         </div>
       </div>
@@ -144,34 +144,25 @@
 
     <!-- STACKED ROTATING SUBTITLE SCRIPT -->
     <script>
-      const stack = document.querySelector(".hero-rotating-stack");
-      const lines = Array.from(document.querySelectorAll(".stack-line"));
-      let index = 0;
+      const subtitleList = document.getElementById("subtitle-list");
+      const lines = subtitleList.querySelectorAll("div");
+      let current = 0;
 
-      function rotateStack() {
-        // Remove old active
-        lines.forEach((line) => line.classList.remove("active"));
+      function rotate() {
+        lines.forEach((l, i) => l.classList.remove("active"));
+        lines[current].classList.add("active");
 
-        // Active middle line
-        let activeIndex = (index + 1) % lines.length;
-        lines[activeIndex].classList.add("active");
+        // Move the whole list upward like a queue / carousel
+        subtitleList.style.transform = `translateY(-${current * 36}px)`;
 
-        // shift animation
-        stack.classList.add("shift");
-
-        // reorder lines
-        setTimeout(() => {
-          stack.appendChild(lines[index]);
-          lines.push(lines.shift());
-          stack.classList.remove("shift");
-        }, 800);
-
-        index = (index + 1) % lines.length;
+        current = (current + 1) % lines.length;
       }
 
-      rotateStack();
-      setInterval(rotateStack, 2500);
+      rotate(); // show first
+      setInterval(rotate, 2500); // rotate every 2.5 seconds
     </script>
+
     <script src="main.js"></script>
+    <script src="subtitle-anim.js"></script>
   </body>
 </html>
