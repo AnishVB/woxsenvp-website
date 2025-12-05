@@ -8,6 +8,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Load local site font */
+@font-face {
+  font-family: "Zalando Sans";
+  src: url("assets/fonts/ZalandoSansSemiExpanded-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-bg-top: #040a7e;
   --color-bg-mid: #02085f;
@@ -18,8 +28,8 @@ html {
   --color-text: #f1f1f1;
   --color-accent: #4c87ff;
 
-  --font-heading: "Inter", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-heading: "Zalando Sans", "Inter", sans-serif;
+  --font-body: "Zalando Sans", "Inter", sans-serif;
 
   --h1-size: clamp(2.5rem, 5vw, 3.5rem);
   --h2-size: clamp(2rem, 3.5vw, 2.5rem);
@@ -122,7 +132,6 @@ p {
   }
 }
 
-/* Button Style Fix */
 .btn-primary {
   display: inline-block;
   background: linear-gradient(135deg, #4c87ff, #2353ff);
@@ -171,7 +180,7 @@ p {
 .nav-links a {
   margin-left: 36px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
   color: white;
   transition: 0.25s ease;
@@ -396,17 +405,19 @@ p {
   position: relative;
   max-width: 1100px;
   margin: 0 auto 20px;
-  padding: 12px 20px 8px;
+  padding: 14px 22px;
 
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(3, 6, 60, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(3, 6, 60, 0.45);
   backdrop-filter: blur(10px);
-  border-radius: 0 0 16px 16px;
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
 }
 
 .about-subnav a {
@@ -440,7 +451,7 @@ p {
   width: 100%;
 }
 
-/* HERO / BIO SECTION */
+/* HERO - BIO SECTION */
 
 .about-hero-section {
   padding: 60px 10vw 40px;
@@ -535,7 +546,7 @@ p {
 
   .about-subnav {
     margin: 0 16px 16px;
-    border-radius: 12px;
+    border-radius: 14px;
   }
 
   .about-hero-photo img {
