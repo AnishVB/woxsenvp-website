@@ -239,18 +239,16 @@ p {
 .hero-carousel-inner div {
   font-size: 1.45rem;
   margin-bottom: 10px;
-  white-space: nowrap;         
+  white-space: nowrap;
   color: #d7dcff;
   opacity: 0.25;
   transition: opacity 0.4s ease, color 0.4s ease;
-  max-width: 200%;          
+  max-width: 200%;
 }
 
 .hero-carousel-inner div.active {
   color: #ffffff;
   opacity: 1;
-}
-
 }
 
 /* =========================================================
