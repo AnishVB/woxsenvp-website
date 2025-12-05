@@ -183,7 +183,7 @@ p {
 }
 
 /* =========================================================
-      HERO SECTION (LEFT ALIGNED)
+      HERO SECTION 
    ========================================================= */
 
 .hero {
@@ -194,10 +194,10 @@ p {
   position: relative;
 
   display: flex;
-  justify-content: flex-start; /* LEFT SIDE */
+  justify-content: flex-start;
   align-items: center;
-  padding-left: 60px; /* space from left */
-  text-align: left; /* LEFT ALIGN TEXT */
+  padding-left: 60px;
+  text-align: left;
 }
 
 .hero::before {
@@ -207,7 +207,7 @@ p {
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 600px; /* keeps text nicely boxed */
+  max-width: 800px;
 }
 
 .hero-title {
@@ -215,13 +215,11 @@ p {
   margin-bottom: 12px;
 }
 
-/* ================================
-   HERO CAROUSEL – FINAL FIXED VERSION
-   ================================ */
+/*HERO CAROUSEL- subtitle*/
 
 .hero-carousel {
   height: 2.8rem; /* show one line only */
-  overflow: hidden; /* hide vertical only, no scrollbars */
+  overflow: hidden;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -676,6 +674,89 @@ p {
   margin-top: 10px;
   font-size: 1rem;
   color: var(--color-light);
+}
+
+/* =========================================================
+      ENGAGEMENTS PAGE
+   ========================================================= */
+.engagements-page {
+  padding-top: 120px;
+  min-height: 80vh; /* Ensures content pushes the footer down */
+}
+
+.engagements-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.engagements-section h1 {
+  text-align: center;
+  margin-bottom: 50px;
+  color: var(--color-white);
+}
+
+.engagements-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.engagements-upcoming {
+  padding: 30px;
+  border-radius: var(--radius-large);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.engagements-upcoming h2 {
+  color: var(--color-accent);
+  margin-top: 0;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+/* LinkedIn Link/Header Styling */
+.linkedin-link {
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.engagements-linkedin h2 {
+  color: var(--color-white);
+  margin-top: 0;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.view-profile-text {
+  font-size: 1rem;
+  color: var(--color-accent); /* Matches your accent color */
+  margin-left: 10px;
+  font-weight: 400;
+}
+
+#linkedin-embed-container {
+  /* Styles for the container where the post will go */
+  border-radius: 12px;
+  box-shadow: var(--shadow-strong);
+  overflow: hidden; /* To handle the iframe borders nicely */
+}
+
+.placeholder-text {
+  font-style: italic;
+  color: #ccc;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive adjustment: stack columns on mobile */
+@media (max-width: 900px) {
+  .engagements-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 }
 
 /* =========================================================

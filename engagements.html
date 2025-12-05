@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Engagements</title>
     <link rel="stylesheet" href="style.css" />
+
+    <script defer src="main.js"></script>
+
+    <script
+      src="https://platform.linkedin.com/in.js"
+      type="text/javascript"
+    ></script>
   </head>
 
   <body>
@@ -25,14 +32,44 @@
       </nav>
     </header>
 
-    <p style="text-align: center; padding-top: 350px; font-size: 32px">
-      <b> Upcoming Engagements</b>
-    </p>
+    <main class="engagements-page">
+      <section class="engagements-section reveal">
+        <h1>Upcoming Engagements & Insights</h1>
 
-    <!-- FOOTER -->
+        <div class="engagements-layout">
+          <div class="engagements-upcoming">
+            <h2>Upcoming Engagements</h2>
+            <p>
+              No public speaking engagements are currently scheduled. Please
+              check back soon for updates!
+            </p>
+          </div>
+
+          <div class="engagements-linkedin">
+            <a
+              href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
+              target="_blank"
+              class="linkedin-link"
+            >
+              <h2>
+                Dr. Rodriguez on LinkedIn
+                <span class="view-profile-text">(View Profile)</span>
+              </h2>
+            </a>
+
+            <div id="linkedin-embed-container">
+              <script
+                type="in/PostWatch"
+                data-id="7400120019331915777"
+              ></script>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
     <footer class="footer fade-section">
       <div class="footer-container">
-        <!-- LEFT COLUMN -->
         <div class="footer-col">
           <h3>Woxsen University</h3>
           <p>Kamkole, Sadasivpet, Hyderabad, Telangana 502345</p>
@@ -43,13 +80,11 @@
           <a href="tel:04044448888">040 4444 8888</a>
         </div>
 
-        <!-- CENTER COLUMN -->
         <div class="footer-col footer-center">
           <h3>Dr. Raul V. Rodriguez</h3>
           <p>Cognitive Technologist | Behavioral Engineer</p>
         </div>
 
-        <!-- RIGHT COLUMN -->
         <div class="footer-col footer-right">
           <h4>Connect</h4>
           <a href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
