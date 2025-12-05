@@ -18,6 +18,15 @@ html {
   font-display: swap;
 }
 
+/* Yrsa italic for paragraph text (local) */
+@font-face {
+  font-family: "Yrsa";
+  src: url("assets/fonts/Yrsa-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --color-bg-top: #040a7e;
   --color-bg-mid: #02085f;
@@ -97,6 +106,17 @@ h3 {
 p {
   font-size: var(--body-size);
   margin-bottom: 14px;
+  color: var(--color-text);
+  font-family: "Yrsa", var(--font-body);
+  font-style: italic;
+}
+
+/* Apply Yrsa italic to content lists inside main (preserves nav/footer styles) */
+main ul,
+main ol {
+  font-family: "Yrsa", var(--font-body);
+  font-style: italic;
+  font-size: var(--body-size);
   color: var(--color-text);
 }
 
