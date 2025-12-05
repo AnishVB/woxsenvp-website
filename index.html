@@ -30,10 +30,10 @@
     <!-- HERO SECTION -->
     <section class="hero">
       <div class="hero-content reveal">
-        <h1 class="hero-title">Dr. Raul V. Rodriguez</h1>
+        <h1>Dr. Raul V. Rodriguez</h1>
 
-        <div class="hero-subtitle-wrapper">
-          <div class="hero-subtitle-list" id="subtitle-list">
+        <div class="hero-carousel">
+          <div class="hero-carousel-inner" id="subtitle-carousel">
             <div>Vice President, Woxsen University</div>
             <div>Steven Pinker Professor of Cognitive Psychology</div>
             <div>
@@ -143,40 +143,23 @@
 
     <!-- STACKED ROTATING SUBTITLE SCRIPT -->
     <script>
-      const list = document.getElementById("subtitle-list");
-      const duration = 600; // match CSS transition 0.6s
+      const carousel = document.getElementById("subtitle-carousel");
+      const items = carousel.children;
+      let index = 0;
 
-      function rotateQueue() {
-        const items = list.querySelectorAll("div");
+      function rotateCarousel() {
+        [...items].forEach((el) => el.classList.remove("active"));
+        items[index].classList.add("active");
 
-        // Remove all active
-        items.forEach((i) => i.classList.remove("active"));
+        carousel.style.transform = `translateY(-${index * 2.8}rem)`;
 
-        // First item becomes active
-        items[0].classList.add("active");
-
-        // Slide up to reveal next
-        list.style.transform = "translateY(-3.5rem)";
-
-        // After animation finishes, reorder DOM
-        setTimeout(() => {
-          list.appendChild(items[0]); // move first → bottom
-          list.style.transition = "none"; // remove animation
-          list.style.transform = "translateY(0)";
-
-          // Force reflow
-          void list.offsetWidth;
-
-          // Re-enable animation
-          list.style.transition = "transform 0.6s ease";
-        }, duration);
+        index = (index + 1) % items.length;
       }
 
-      rotateQueue();
-      setInterval(rotateQueue, 2500);
+      rotateCarousel();
+      setInterval(rotateCarousel, 2500);
     </script>
 
     <script src="main.js"></script>
-    <script src="subtitle-anim.js"></script>
   </body>
 </html>
