@@ -197,8 +197,19 @@ main ol {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  line-height: 1;
+  line-height: 1.1;
   height: 1.2em; /* keeps container height stable for the slide */
+}
+
+/* Ensure the logo link never shows an underline and inherits color */
+.nav-logo,
+.nav-logo a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-logo a:hover {
+  text-decoration: none;
 }
 
 .nav-logo .logo-text,
@@ -210,7 +221,7 @@ main ol {
 .nav-logo .logo-text--clone {
   position: absolute;
   left: 0;
-  top: 100%; /* start just below the visible area */
+  top: 100%;
 }
 
 .nav-logo:hover .logo-text {
