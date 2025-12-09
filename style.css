@@ -111,7 +111,6 @@ p {
   font-style: italic;
 }
 
-/* Apply Yrsa italic to content lists inside main (preserves nav/footer styles) */
 main ul,
 main ol {
   font-family: "Yrsa", var(--font-body);
