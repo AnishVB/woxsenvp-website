@@ -215,7 +215,19 @@ main ol {
 .nav-logo .logo-text,
 .nav-logo .logo-text--clone {
   display: block;
-  transition: transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  word-spacing: 0.2em;
+}
+
+.nav-logo .letter {
+  display: inline-block;
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1)
+    var(--delay, 0ms);
+}
+
+/* Add spacing for word separation */
+.nav-logo .letter:nth-child(5),
+.nav-logo .letter:nth-child(8) {
+  margin-right: 0.15em;
 }
 
 .nav-logo .logo-text--clone {
@@ -224,12 +236,116 @@ main ol {
   top: 100%;
 }
 
-.nav-logo:hover .logo-text {
+.nav-logo:hover .logo-text .letter {
   transform: translateY(-100%);
 }
 
-.nav-logo:hover .logo-text--clone {
-  transform: translateY(-100%); /* moves clone up into view */
+.nav-logo .logo-text .letter:nth-child(1) {
+  --delay: 0ms;
+}
+.nav-logo .logo-text .letter:nth-child(2) {
+  --delay: 30ms;
+}
+.nav-logo .logo-text .letter:nth-child(3) {
+  --delay: 60ms;
+}
+.nav-logo .logo-text .letter:nth-child(4) {
+  --delay: 90ms;
+}
+.nav-logo .logo-text .letter:nth-child(5) {
+  --delay: 120ms;
+}
+.nav-logo .logo-text .letter:nth-child(6) {
+  --delay: 150ms;
+}
+.nav-logo .logo-text .letter:nth-child(7) {
+  --delay: 180ms;
+}
+.nav-logo .logo-text .letter:nth-child(8) {
+  --delay: 210ms;
+}
+.nav-logo .logo-text .letter:nth-child(9) {
+  --delay: 240ms;
+}
+.nav-logo .logo-text .letter:nth-child(10) {
+  --delay: 270ms;
+}
+.nav-logo .logo-text .letter:nth-child(11) {
+  --delay: 300ms;
+}
+.nav-logo .logo-text .letter:nth-child(12) {
+  --delay: 330ms;
+}
+.nav-logo .logo-text .letter:nth-child(13) {
+  --delay: 360ms;
+}
+.nav-logo .logo-text .letter:nth-child(14) {
+  --delay: 390ms;
+}
+.nav-logo .logo-text .letter:nth-child(15) {
+  --delay: 420ms;
+}
+.nav-logo .logo-text .letter:nth-child(16) {
+  --delay: 450ms;
+}
+.nav-logo .logo-text .letter:nth-child(17) {
+  --delay: 480ms;
+}
+
+.nav-logo:hover .logo-text--clone .letter {
+  transform: translateY(-100%);
+}
+
+.nav-logo .logo-text--clone .letter:nth-child(1) {
+  --delay: 0ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(2) {
+  --delay: 30ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(3) {
+  --delay: 60ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(4) {
+  --delay: 90ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(5) {
+  --delay: 120ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(6) {
+  --delay: 150ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(7) {
+  --delay: 180ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(8) {
+  --delay: 210ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(9) {
+  --delay: 240ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(10) {
+  --delay: 270ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(11) {
+  --delay: 300ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(12) {
+  --delay: 330ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(13) {
+  --delay: 360ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(14) {
+  --delay: 390ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(15) {
+  --delay: 420ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(16) {
+  --delay: 450ms;
+}
+.nav-logo .logo-text--clone .letter:nth-child(17) {
+  --delay: 480ms;
 }
 
 .nav-links a {
@@ -733,6 +849,10 @@ main ol {
   gap: 20px;
 }
 
+.two-col > div {
+  flex: 1;
+}
+
 .form-group {
   margin-bottom: 25px;
 }
@@ -746,6 +866,7 @@ main ol {
   background: rgba(255, 255, 255, 0.06);
   color: white;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
 .send-btn {
@@ -947,6 +1068,8 @@ main ol {
   color: #ccc;
   text-decoration: none;
   transition: 0.3s;
+  display: block;
+  margin-bottom: 8px;
 }
 
 .footer-right a:hover {
