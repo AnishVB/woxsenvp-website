@@ -1050,12 +1050,14 @@ main ol {
   max-width: 1200px;
   margin: auto;
   display: flex;
-  gap: 60px;
+  gap: 40px;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .footer-col {
   flex: 1;
+  text-align: center;
 }
 
 .footer-col h3 {
