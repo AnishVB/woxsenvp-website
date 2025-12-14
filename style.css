@@ -8,7 +8,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Load local site font */
+/* Load site font */
 @font-face {
   font-family: "Zalando Sans";
   src: url("assets/fonts/ZalandoSansSemiExpanded-VariableFont_wght.ttf")
@@ -18,7 +18,7 @@ html {
   font-display: swap;
 }
 
-/* Yrsa italic for paragraph text (local) */
+/* Yrsa italic for paragraph text  */
 @font-face {
   font-family: "Yrsa";
   src: url("assets/fonts/Yrsa-Italic-VariableFont_wght.ttf") format("truetype");
@@ -198,7 +198,7 @@ main ol {
   display: inline-block;
   overflow: hidden;
   line-height: 1.1;
-  height: 1.2em; /* keeps container height stable for the slide */
+  height: 1.2em;
 }
 
 /* Ensure the logo link never shows an underline and inherits color */
@@ -1091,4 +1091,27 @@ main ol {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: #ccc;
   font-size: 0.9rem;
+}
+
+/* Scroll bar customization */
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #0b0000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #040a7e;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #01043d;
 }
