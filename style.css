@@ -1,6 +1,6 @@
 /* =========================================================
-      GLOBAL THEME 
-   ========================================================= */
+    GLOBAL THEME 
+  ========================================================= */
 
 html {
   background: #02053f;
@@ -8,7 +8,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Load site font */
 @font-face {
   font-family: "Zalando Sans";
   src: url("assets/fonts/ZalandoSansSemiExpanded-VariableFont_wght.ttf")
@@ -18,7 +17,6 @@ html {
   font-display: swap;
 }
 
-/* Yrsa italic for paragraph text  */
 @font-face {
   font-family: "Yrsa";
   src: url("assets/fonts/Yrsa-Italic-VariableFont_wght.ttf") format("truetype");
@@ -57,8 +55,8 @@ html {
 }
 
 /* =========================================================
-      PAGE BACKGROUND
-   ========================================================= */
+    PAGE BACKGROUND
+  ========================================================= */
 
 body {
   margin: 0;
@@ -78,8 +76,8 @@ body {
 }
 
 /* =========================================================
-      TYPOGRAPHY
-   ========================================================= */
+    TYPOGRAPHY
+  ========================================================= */
 
 h1,
 h2,
@@ -120,8 +118,8 @@ main ol {
 }
 
 /* =========================================================
-      GLOBAL SCROLL ANIMATION
-   ========================================================= */
+    GLOBAL SCROLL ANIMATION
+  ========================================================= */
 
 /* Reveal Animation */
 .reveal {
@@ -135,7 +133,6 @@ main ol {
   transform: translateY(0);
 }
 
-/* Subheading Fade Animation */
 .fade-in {
   animation: fadePulse 1s ease forwards;
 }
@@ -169,8 +166,8 @@ main ol {
 }
 
 /* =========================================================
-      NAVBAR
-   ========================================================= */
+    NAVBAR
+  ========================================================= */
 
 .nav-container {
   width: 100%;
@@ -201,7 +198,6 @@ main ol {
   height: 1.2em;
 }
 
-/* Ensure the logo link never shows an underline and inherits color */
 .nav-logo,
 .nav-logo a {
   text-decoration: none;
@@ -363,8 +359,8 @@ main ol {
 }
 
 /* =========================================================
-      HAMBURGER MENU
-   ========================================================= */
+    HAMBURGER MENU
+  ========================================================= */
 
 .hamburger {
   display: none;
@@ -452,8 +448,8 @@ main ol {
 }
 
 /* =========================================================
-      HERO SECTION 
-   ========================================================= */
+    HERO SECTION 
+  ========================================================= */
 
 .hero {
   height: 100vh;
@@ -484,10 +480,8 @@ main ol {
   margin-bottom: 12px;
 }
 
-/*HERO CAROUSEL- subtitle*/
-
 .hero-carousel {
-  height: 2.8rem; /* show one line only */
+  height: 2.8rem;
   overflow: hidden;
   display: flex;
   justify-content: flex-start;
@@ -519,8 +513,8 @@ main ol {
 }
 
 /* =========================================================
-      TRUST FLOATING CARD
-   ========================================================= */
+    TRUST FLOATING CARD
+  ========================================================= */
 
 .trust-floating-card {
   width: 90%;
@@ -558,8 +552,8 @@ main ol {
 }
 
 /* =========================================================
-      RECENT VIDEO
-   ========================================================= */
+    RECENT VIDEO
+  ========================================================= */
 
 .recent-video {
   padding: 80px 40px 40px;
@@ -586,8 +580,8 @@ main ol {
 }
 
 /* =========================================================
-      BOOKS CAROUSEL
-   ========================================================= */
+    BOOKS CAROUSEL
+  ========================================================= */
 
 .books {
   padding: var(--space-section) 0;
@@ -631,8 +625,6 @@ main ol {
   }
 }
 
-/* View All Books button */
-
 .btn-primary {
   display: inline-block;
   padding: 14px 34px;
@@ -652,8 +644,8 @@ main ol {
 }
 
 /* =========================================================
-      ABOUT PAGE — EDITORIAL LAYOUT
-   ========================================================= */
+    ABOUT PAGE — EDITORIAL LAYOUT
+  ========================================================= */
 
 .about-page {
   padding-top: 120px; /* space under navbar */
@@ -752,14 +744,14 @@ main ol {
 }
 
 .about-image-full img {
-  width: 90%; /* smaller than full page */
-  max-width: 900px; /* cap size */
+  width: 90%;
+  max-width: 900px;
   margin: 0 auto;
   display: block;
   height: auto;
   border-radius: 22px;
 
-  object-fit: contain; /* stops cropping */
+  object-fit: contain;
   box-shadow: var(--shadow-strong);
 }
 
@@ -816,8 +808,8 @@ main ol {
 }
 
 /* =========================================================
-      CONTACT PAGE
-   ========================================================= */
+    CONTACT PAGE
+  ========================================================= */
 
 .contact-page {
   padding-top: 120px;
@@ -885,8 +877,8 @@ main ol {
 }
 
 /* =========================================================
-      BOOKS PAGE (GRID)
-   ========================================================= */
+    BOOKS PAGE (GRID)
+  ========================================================= */
 
 .allbooks-page {
   padding: 120px 40px 80px;
@@ -953,11 +945,11 @@ main ol {
 }
 
 /* =========================================================
-      ENGAGEMENTS PAGE
-   ========================================================= */
+    ENGAGEMENTS PAGE
+  ========================================================= */
 .engagements-page {
   padding-top: 120px;
-  min-height: 80vh; /* Ensures content pushes the footer down */
+  min-height: 80vh;
 }
 
 .engagements-section {
@@ -992,7 +984,6 @@ main ol {
   font-size: 1.8rem;
 }
 
-/* LinkedIn Link/Header Styling */
 .linkedin-link {
   text-decoration: none;
   display: inline-block;
@@ -1014,10 +1005,9 @@ main ol {
 }
 
 #linkedin-embed-container {
-  /* Styles for the container where the post will go */
   border-radius: 12px;
   box-shadow: var(--shadow-strong);
-  overflow: hidden; /* To handle the iframe borders nicely */
+  overflow: hidden;
 }
 
 .placeholder-text {
@@ -1036,8 +1026,8 @@ main ol {
 }
 
 /* =========================================================
-      FOOTER
-   ========================================================= */
+    FOOTER
+  ========================================================= */
 
 .footer {
   background: rgba(0, 0, 20, 0.7);
@@ -1092,8 +1082,6 @@ main ol {
   color: #ccc;
   font-size: 0.9rem;
 }
-
-/* Scroll bar customization */
 
 /* width */
 ::-webkit-scrollbar {
