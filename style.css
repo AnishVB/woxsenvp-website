@@ -1105,7 +1105,7 @@ main ol {
 }
 
 /* =========================================================
-      PAGE TRANSITION loader - BLINDS ANIMATION
+      Page Transition loader
    ========================================================= */
 .loader-overlay {
   position: fixed;
@@ -1121,13 +1121,13 @@ main ol {
   opacity: 1;
 }
 
-/* Class to trigger the blinds coming in from left */
+/* blinds coming in from left */
 .loader-visible {
   animation: blindsIn 0.6s ease-in-out forwards;
   pointer-events: auto;
 }
 
-/* Class to trigger the blinds going back/closing */
+/* blinds going back */
 .loader-hidden {
   animation: blindsOut 0.6s ease-in-out forwards;
   pointer-events: none;
