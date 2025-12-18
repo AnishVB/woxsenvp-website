@@ -51,16 +51,23 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", revealOnScroll);
 });
 
-// Page Transition Loader
+/* =========================================================
+      Page Transition Loader Logic
+   ========================================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
   const loader = document.querySelector(".loader-overlay");
 
+  // On page load: Push the loader OUT past the camera
   if (loader) {
-    loader.classList.add("loader-hidden");
+    // A tiny delay ensures the browser starts the animation from the correct scale
+    setTimeout(() => {
+      loader.classList.add("loader-hidden");
+      loader.classList.remove("loader-visible");
+    }, 50);
   }
 
   const links = document.querySelectorAll("a");
-
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
       const targetUrl = link.getAttribute("href");
@@ -71,14 +78,16 @@ document.addEventListener("DOMContentLoaded", () => {
         !targetUrl.startsWith("http") &&
         !link.getAttribute("target")
       ) {
-        e.preventDefault(); // Stop immediate navigation
+        e.preventDefault();
+
+        // On Click: Push the loader IN from outside to cover the screen
         loader.classList.remove("loader-hidden");
         loader.classList.add("loader-visible");
 
-        // Wait for animation (500ms) then change page
+        // Wait for the "Push In" to land before changing the URL
         setTimeout(() => {
           window.location.href = targetUrl;
-        }, 500);
+        }, 600);
       }
     });
   });

@@ -1083,6 +1083,10 @@ main ol {
   font-size: 0.9rem;
 }
 
+/* =========================================================
+    CUSTOM SCROLLBAR
+  ========================================================= */
+
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
@@ -1105,48 +1109,76 @@ main ol {
 }
 
 /* =========================================================
-      Page Transition loader
+      Page Transition Loader 
    ========================================================= */
 .loader-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  z-index: 9999;
+  height: 100vh;
+  /* Background Gradient */
+  background: linear-gradient(135deg, #0b0000 0%, #01043d 50%, #040a7e 100%);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
-  transform: scaleX(1);
-  transform-origin: left center;
+
+  /* Initial State */
+  transform: scale(1);
   opacity: 1;
+  visibility: visible;
+  will-change: transform, opacity;
 }
 
-/* blinds coming in from left */
+.loader-overlay::after {
+  content: "R";
+  font-family: "Arial Black", sans-serif;
+  font-weight: 900;
+  font-size: clamp(150px, 40vw, 250px);
+
+  background: linear-gradient(315deg, #0b0000 0%, #01043d 50%, #040a7e 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  display: block;
+  /* Optional: subtle shadow to help the "R" stand out from the background */
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+}
+
+/* ARRIVING: Zooms OUT past the camera */
+.loader-hidden {
+  animation: pushOutPastCamera 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* LEAVING: Zooms IN from outside to cover the screen */
 .loader-visible {
-  animation: blindsIn 0.6s ease-in-out forwards;
+  animation: pushInFromOutside 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   pointer-events: auto;
 }
 
-/* blinds going back */
-.loader-hidden {
-  animation: blindsOut 0.6s ease-in-out forwards;
-  pointer-events: none;
-}
-
-@keyframes blindsIn {
+@keyframes pushOutPastCamera {
   0% {
-    transform: scaleX(0);
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
   }
   100% {
-    transform: scaleX(1);
+    transform: scale(5);
+    opacity: 0;
+    visibility: hidden;
   }
 }
 
-@keyframes blindsOut {
+@keyframes pushInFromOutside {
   0% {
-    transform: scaleX(1);
+    transform: scale(5);
+    opacity: 0;
   }
   100% {
-    transform: scaleX(0);
+    transform: scale(1);
+    opacity: 1;
   }
 }
