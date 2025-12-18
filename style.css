@@ -1103,3 +1103,30 @@ main ol {
 ::-webkit-scrollbar-thumb:hover {
   background: #01043d;
 }
+
+/* =========================================================
+      PAGE TRANSITION OVERLAY
+   ========================================================= */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #02053f; /* Matches your theme color */
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s;
+  pointer-events: none; /* Allows clicking through once hidden */
+}
+
+/* Class to trigger the fade out */
+.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Class to trigger the fade in (when leaving) */
+.loader-visible {
+  opacity: 1;
+  visibility: visible;
+}

@@ -50,3 +50,36 @@ document.addEventListener("DOMContentLoaded", () => {
   revealOnScroll();
   window.addEventListener("scroll", revealOnScroll);
 });
+
+// Page Transition Loader
+document.addEventListener("DOMContentLoaded", () => {
+  const loader = document.querySelector(".loader-overlay");
+
+  if (loader) {
+    loader.classList.add("loader-hidden");
+  }
+
+  const links = document.querySelectorAll("a");
+
+  links.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const targetUrl = link.getAttribute("href");
+
+      if (
+        targetUrl &&
+        !targetUrl.startsWith("#") &&
+        !targetUrl.startsWith("http") &&
+        !link.getAttribute("target")
+      ) {
+        e.preventDefault(); // Stop immediate navigation
+        loader.classList.remove("loader-hidden");
+        loader.classList.add("loader-visible");
+
+        // Wait for animation (500ms) then change page
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 500);
+      }
+    });
+  });
+});
