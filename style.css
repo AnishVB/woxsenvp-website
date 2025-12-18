@@ -808,6 +808,26 @@ main ol {
 }
 
 /* =========================================================
+    Engagements PAGE
+  ========================================================= */
+
+/* Center the post and ensure it never exceeds its container */
+#linkedin-embed-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  width: 100%;
+}
+
+/* Ensure the iframe scales down on small screens */
+#linkedin-embed-container iframe {
+  max-width: 504px; /* Keeps it from getting too big on desktop */
+  width: 100%; /* Allows it to shrink on mobile */
+  border: 1px solid #040000;
+  border-radius: 8px;
+}
+
+/* =========================================================
     CONTACT PAGE
   ========================================================= */
 
