@@ -10,19 +10,22 @@ html {
 
 @font-face {
   font-family: "Zalando Sans";
-  src: url("assets/fonts/ZalandoSansSemiExpanded-VariableFont_wght.ttf")
+  src: url("./assets/fonts/ZalandoSansSemiExpanded-VariableFont_wght.ttf")
     format("truetype");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+  font-variation-settings: "wght" 400;
 }
 
 @font-face {
   font-family: "Yrsa";
-  src: url("assets/fonts/Yrsa-Italic-VariableFont_wght.ttf") format("truetype");
+  src: url("./assets/fonts/Yrsa-Italic-VariableFont_wght.ttf")
+    format("truetype");
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
+  font-variation-settings: "wght" 400;
 }
 
 :root {
@@ -35,8 +38,10 @@ html {
   --color-text: #f1f1f1;
   --color-accent: #4c87ff;
 
-  --font-heading: "Zalando Sans", "Inter", sans-serif;
-  --font-body: "Zalando Sans", "Inter", sans-serif;
+  --font-heading: "Zalando Sans", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Zalando Sans", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
 
   --h1-size: clamp(2.5rem, 5vw, 3.5rem);
   --h2-size: clamp(2rem, 3.5vw, 2.5rem);
@@ -107,6 +112,8 @@ p {
   color: var(--color-text);
   font-family: "Yrsa", var(--font-body);
   font-style: italic;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 main ul,
@@ -115,6 +122,12 @@ main ol {
   font-style: italic;
   font-size: var(--body-size);
   color: var(--color-text);
+}
+
+/* Global image responsive settings */
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* =========================================================
@@ -371,6 +384,8 @@ main ol {
   cursor: pointer;
   padding: 0;
   margin: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hamburger span {
@@ -390,6 +405,11 @@ main ol {
 
   .navbar {
     flex-wrap: wrap;
+    padding: 15px 20px;
+  }
+
+  .nav-logo {
+    font-size: 20px;
   }
 
   .nav-links {
@@ -433,6 +453,58 @@ main ol {
 
   .hamburger.active span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* Hero section adjustments */
+  .hero {
+    padding-left: 20px;
+    padding-right: 20px;
+    min-height: 100vh;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-carousel {
+    height: 2rem;
+  }
+
+  .hero-carousel-inner div {
+    font-size: 1.1rem;
+  }
+
+  /* Trust card adjustments */
+  .trust-floating-card {
+    width: 95%;
+    margin: -40px auto 40px;
+    padding: 20px 25px;
+  }
+
+  .trust-logos {
+    gap: 25px;
+  }
+
+  .trust-logos img {
+    height: 35px;
+  }
+
+  /* Recent video adjustments */
+  .recent-video {
+    padding: 50px 20px 20px;
+  }
+
+  .video-container {
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+
+  /* Books carousel adjustments */
+  .books {
+    padding: 50px 0;
+  }
+
+  .book-card img {
+    width: 140px;
   }
 }
 
@@ -799,11 +871,46 @@ main ol {
   .about-subnav {
     margin: 0 16px 16px;
     border-radius: 14px;
+    gap: 12px;
+    padding: 12px 18px;
+  }
+
+  .about-subnav a {
+    font-size: 0.85rem;
   }
 
   .about-hero-photo img {
     max-width: 100%;
     margin: 0 auto;
+  }
+
+  .about-text-narrow p,
+  .about-text-narrow ul li {
+    text-align: left;
+  }
+
+  .about-hero-text p {
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-page {
+    padding-top: 100px;
+  }
+
+  .about-subnav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .about-subnav a {
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  .about-image-full img {
+    width: 95%;
   }
 }
 
@@ -822,7 +929,7 @@ main ol {
 /* Ensure the iframe scales down on small screens */
 #linkedin-embed-container iframe {
   max-width: 504px; /* Keeps it from getting too big on desktop */
-  width: 100%; /* Allows it to shrink on mobile */
+  width: 100%;
   border: 1px solid #040000;
   border-radius: 8px;
 }
@@ -896,6 +1003,31 @@ main ol {
   transform: translateY(-3px);
 }
 
+/* Contact page responsive */
+@media (max-width: 900px) {
+  .contact-row {
+    flex-direction: column;
+    gap: 40px;
+    padding: 30px 20px;
+  }
+
+  .two-col {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-page {
+    padding-top: 100px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
 /* =========================================================
     BOOKS PAGE (GRID)
   ========================================================= */
@@ -962,6 +1094,38 @@ main ol {
   margin-top: 10px;
   font-size: 1rem;
   color: var(--color-light);
+}
+
+/* Books page responsive */
+@media (max-width: 900px) {
+  .books-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px 20px;
+  }
+
+  .featured-wrapper {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .allbooks-page {
+    padding: 100px 20px 60px;
+  }
+
+  .books-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 15px;
+  }
+
+  .book-item img {
+    width: 140px;
+  }
+
+  .featured-img {
+    width: 200px;
+  }
 }
 
 /* =========================================================
@@ -1043,6 +1207,26 @@ main ol {
     grid-template-columns: 1fr;
     gap: 40px;
   }
+
+  .engagements-section {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .engagements-page {
+    padding-top: 100px;
+  }
+
+  .engagements-upcoming,
+  .engagements-linkedin {
+    padding: 20px;
+  }
+
+  .engagements-upcoming h2,
+  .engagements-linkedin h2 {
+    font-size: 1.5rem;
+  }
 }
 
 /* =========================================================
@@ -1101,6 +1285,169 @@ main ol {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: #ccc;
   font-size: 0.9rem;
+}
+
+/* Footer responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 20px 20px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .footer-col {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+    TABLET BREAKPOINT (901px - 1200px)
+  ========================================================= */
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .navbar {
+    padding: 20px 30px;
+  }
+
+  .hero {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .trust-floating-card {
+    padding: 25px 35px;
+  }
+
+  .recent-video {
+    padding: 60px 30px 30px;
+  }
+
+  .about-hero-section,
+  .about-section {
+    padding: 50px 6vw;
+  }
+
+  .contact-row {
+    padding: 30px;
+  }
+}
+
+/* =========================================================
+    SMALL MOBILE BREAKPOINT (max-width: 480px)
+  ========================================================= */
+
+@media (max-width: 480px) {
+  :root {
+    --h1-size: 2rem;
+    --h2-size: 1.6rem;
+    --h3-size: 1.3rem;
+    --body-size: 1rem;
+  }
+
+  .navbar {
+    padding: 12px 15px;
+  }
+
+  .nav-logo {
+    font-size: 18px;
+  }
+
+  .hero {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .trust-floating-card {
+    padding: 15px 20px;
+  }
+
+  .trust-logos {
+    gap: 20px;
+  }
+
+  .trust-logos img {
+    height: 30px;
+  }
+
+  .books-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .book-item img {
+    width: 160px;
+  }
+
+  .btn-primary {
+    padding: 12px 28px;
+    font-size: 1rem;
+  }
+
+  .footer {
+    padding: 30px 15px 15px;
+  }
+}
+
+/* =========================================================
+    LANDSCAPE MOBILE (max-height: 500px and orientation)
+  ========================================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  .nav-logo {
+    font-size: 18px;
+  }
+}
+
+/* =========================================================
+    RESPONSIVE UTILITIES
+  ========================================================= */
+
+/* Prevent horizontal scrolling on all devices */
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Ensure all containers respect viewport width */
+* {
+  box-sizing: border-box;
+}
+
+/* Better text rendering on all devices */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Improve tap targets for touch devices */
+@media (pointer: coarse) {
+  a,
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 /* =========================================================
