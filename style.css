@@ -198,6 +198,7 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
@@ -416,6 +417,7 @@ img {
     padding: 15px 20px;
     align-items: center;
     gap: 12px;
+    justify-content: space-between;
   }
 
   .nav-logo {
@@ -424,6 +426,11 @@ img {
     line-height: 1.1;
     display: flex;
     align-items: center;
+    flex: 1 1 auto;
+  }
+
+  .hamburger {
+    margin-left: auto;
   }
 
   .nav-links {
@@ -481,7 +488,7 @@ img {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-position: center top;
+    background-position: right center;
   }
 
   .hero-content {
@@ -496,8 +503,13 @@ img {
   }
 
   .hero-title {
-    font-size: 2.1rem;
+    font-size: 1.75rem;
     margin-bottom: 10px;
+  }
+
+  .hero-subtitle,
+  .hero-carousel-inner div {
+    font-size: 0.95rem;
   }
 
   .hero-carousel {
@@ -506,7 +518,7 @@ img {
   }
 
   .hero-carousel-inner div {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     white-space: normal;
     word-wrap: break-word;
   }
@@ -564,7 +576,7 @@ img {
   height: 100vh;
   background-image: url("assets/images/profhpbg1.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: right center;
   position: relative;
 
   display: flex;
