@@ -208,10 +208,11 @@ img {
   font-weight: 700;
   color: white;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   overflow: hidden;
-  line-height: 1.1;
-  height: 1.2em;
+  line-height: 1;
+  height: 1.7em;
 }
 
 .nav-logo,
@@ -246,10 +247,6 @@ img {
   position: absolute;
   left: 0;
   top: 100%;
-}
-
-.nav-logo:hover .logo-text .letter {
-  transform: translateY(-100%);
 }
 
 .nav-logo .logo-text .letter:nth-child(1) {
@@ -302,10 +299,6 @@ img {
 }
 .nav-logo .logo-text .letter:nth-child(17) {
   --delay: 480ms;
-}
-
-.nav-logo:hover .logo-text--clone .letter {
-  transform: translateY(-100%);
 }
 
 .nav-logo .logo-text--clone .letter:nth-child(1) {
@@ -694,11 +687,7 @@ img {
   display: flex;
   gap: 40px;
   width: max-content;
-  animation: scroll-left 40s linear infinite;
-}
-
-.books-track:hover {
-  animation-play-state: paused;
+  will-change: transform;
 }
 
 .book-card img {
