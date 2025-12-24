@@ -200,6 +200,7 @@ img {
   align-items: center;
   gap: 18px;
   min-height: 68px;
+  line-height: 1.1;
 
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
@@ -216,6 +217,7 @@ img {
   overflow: hidden;
   line-height: 1;
   height: 1.7em;
+  padding: 0;
 }
 
 .nav-logo,
@@ -411,6 +413,7 @@ img {
   .hamburger {
     display: flex;
     align-self: center;
+    padding: 4px 0;
   }
 
   .navbar {
@@ -428,7 +431,7 @@ img {
     display: flex;
     align-items: center;
     flex: 1 1 auto;
-    padding: 4px 0;
+    padding: 2px 0;
   }
 
   .hamburger {
@@ -484,13 +487,13 @@ img {
 
   /* Hero section adjustments */
   .hero {
-    padding: 120px 20px 90px;
+    padding: 140px 20px 110px;
     min-height: 100vh;
     height: auto;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-position: 75% center;
+    background-position: 88% center;
   }
 
   .hero-content {
@@ -505,14 +508,14 @@ img {
   }
 
   .hero-title {
-    font-size: 1.6rem;
-    margin-bottom: 8px;
+    font-size: 1.45rem;
+    margin-bottom: 6px;
   }
 
   .hero-subtitle,
   .hero-carousel-inner div {
-    font-size: 0.9rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    line-height: 1.32;
   }
 
   .hero-carousel {
@@ -548,6 +551,7 @@ img {
 
   .video-container {
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    min-height: 220px;
   }
 
   /* Books carousel adjustments */
@@ -579,7 +583,7 @@ img {
   height: 100vh;
   background-image: url("assets/images/profhpbg1.jpg");
   background-size: cover;
-  background-position: 80% center;
+  background-position: 92% center;
   position: relative;
 
   display: flex;
@@ -896,7 +900,8 @@ img {
   max-width: 950px;
   margin: 0 auto;
   position: relative;
-  padding-bottom: 35%;
+  padding-bottom: 56.25%;
+  min-height: 220px;
   height: 0;
 
   overflow: hidden;
