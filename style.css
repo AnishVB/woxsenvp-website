@@ -372,6 +372,11 @@ img {
   transform: translateY(-2px);
 }
 
+.nav-links a.active {
+  color: white;
+  text-shadow: 0 0 12px white, 0 0 24px #4c87ff;
+}
+
 /* =========================================================
     HAMBURGER MENU
   ========================================================= */

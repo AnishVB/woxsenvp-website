@@ -60,6 +60,22 @@ function setupHamburger() {
   });
 }
 
+function highlightActiveNavLink() {
+  const navLinks = document.querySelectorAll(".nav-links a");
+  if (!navLinks.length) return;
+
+  const current = window.location.pathname.split("/").pop() || "index.html";
+
+  navLinks.forEach((link) => {
+    const target = (link.getAttribute("href") || "").split("#")[0];
+    if (target === current) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+}
+
 function setupLoaderTransitions() {
   const loader = document.querySelector(".loader-overlay");
   if (!loader) return;
@@ -193,6 +209,7 @@ async function initGsapAnimations() {
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
+  highlightActiveNavLink();
   initGsapAnimations().catch((error) =>
     console.warn("GSAP failed to initialize", error)
   );
