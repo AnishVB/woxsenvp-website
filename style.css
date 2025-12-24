@@ -198,7 +198,8 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
+  min-height: 68px;
 
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
@@ -427,6 +428,7 @@ img {
     display: flex;
     align-items: center;
     flex: 1 1 auto;
+    padding: 4px 0;
   }
 
   .hamburger {
@@ -488,7 +490,7 @@ img {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-position: right center;
+    background-position: 75% center;
   }
 
   .hero-content {
@@ -503,13 +505,14 @@ img {
   }
 
   .hero-title {
-    font-size: 1.75rem;
-    margin-bottom: 10px;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
   }
 
   .hero-subtitle,
   .hero-carousel-inner div {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 
   .hero-carousel {
@@ -576,7 +579,7 @@ img {
   height: 100vh;
   background-image: url("assets/images/profhpbg1.jpg");
   background-size: cover;
-  background-position: right center;
+  background-position: 80% center;
   position: relative;
 
   display: flex;
@@ -597,8 +600,8 @@ img {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-top: 230px;
-  padding-bottom: 150px;
+  padding-top: 280px;
+  padding-bottom: 180px;
   position: relative;
 }
 
@@ -738,7 +741,7 @@ img {
 
 @media (max-width: 900px) {
   .hero.hero-executive {
-    padding: 190px 24px 110px;
+    padding: 220px 24px 130px;
     background-position: center;
     justify-content: center;
   }
@@ -775,7 +778,7 @@ img {
 
 @media (max-width: 600px) {
   .hero.hero-executive {
-    padding: 150px 18px 80px;
+    padding: 180px 18px 90px;
   }
 
   .hero.hero-executive h1 {
