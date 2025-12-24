@@ -92,44 +92,6 @@ function setupLoaderTransitions() {
   });
 }
 
-function setupSubtitleCarousel() {
-  const carousel = document.getElementById("subtitle-carousel");
-  if (!carousel) return;
-
-  const items = Array.from(carousel.children);
-  if (!items.length) return;
-
-  const itemHeight = items[0].offsetHeight || 0;
-  const setActive = (activeIndex) =>
-    items.forEach((item, idx) =>
-      item.classList.toggle("active", idx === activeIndex)
-    );
-
-  setActive(0);
-
-  if (!window.gsap) {
-    let index = 0;
-    setInterval(() => {
-      index = (index + 1) % items.length;
-      carousel.style.transform = `translateY(-${index * itemHeight}px)`;
-      setActive(index);
-    }, 2200);
-    return;
-  }
-
-  const tl = gsap.timeline({ repeat: -1 });
-
-  items.forEach((_, idx) => {
-    tl.to(carousel, {
-      y: -idx * itemHeight,
-      duration: 0.6,
-      ease: "power2.out",
-      onStart: () => setActive(idx),
-    });
-    tl.to({}, { duration: 1.8 });
-  });
-}
-
 function animateNavbarAndHero() {
   if (!window.gsap) return;
 
@@ -141,25 +103,13 @@ function animateNavbarAndHero() {
   });
 
   const heroTimeline = gsap.timeline();
-  heroTimeline
-    .from(".hero h1", {
-      opacity: 0,
-      y: 30,
-      duration: 0.9,
-      ease: "power3.out",
-      delay: 0.15,
-    })
-    .from(
-      "#subtitle-carousel div",
-      {
-        opacity: 0,
-        y: 20,
-        stagger: 0.12,
-        duration: 0.7,
-        ease: "power3.out",
-      },
-      "<0.25"
-    );
+  heroTimeline.from(".hero h1", {
+    opacity: 0,
+    y: 30,
+    duration: 0.9,
+    ease: "power3.out",
+    delay: 0.15,
+  });
 
   const logo = document.querySelector(".nav-logo");
   if (logo) {
@@ -225,15 +175,12 @@ function animateBooksMarquee() {
   if (!track || !window.gsap) return;
 
   const distance = track.scrollWidth / 2;
-  const marquee = gsap.to(track, {
+  gsap.to(track, {
     x: -distance,
     duration: 35,
     ease: "none",
     repeat: -1,
   });
-
-  track.addEventListener("mouseenter", () => marquee.pause());
-  track.addEventListener("mouseleave", () => marquee.resume());
 }
 
 async function initGsapAnimations() {
@@ -246,7 +193,6 @@ async function initGsapAnimations() {
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
-  setupSubtitleCarousel();
   initGsapAnimations().catch((error) =>
     console.warn("GSAP failed to initialize", error)
   );

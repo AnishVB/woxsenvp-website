@@ -155,5 +155,41 @@
         <p>© Dr. Raul V. Rodriguez</p>
       </div>
     </footer>
+
+    <script>
+      const carousel = document.getElementById("subtitle-carousel");
+      const slideHeightRem = 2.8;
+      const transitionMs = 600;
+      let index = 0;
+      let busy = false;
+
+      // Clone the first slide to allow a seamless wrap
+      const firstClone = carousel.children[0].cloneNode(true);
+      carousel.appendChild(firstClone);
+      const total = carousel.children.length; // includes clone
+
+      function nextSlide() {
+        if (busy) return;
+        busy = true;
+
+        index += 1;
+        carousel.style.transition = `transform ${transitionMs}ms ease`;
+        carousel.style.transform = `translateY(-${index * slideHeightRem}rem)`;
+
+        const atClone = index === total - 1;
+
+        setTimeout(() => {
+          if (atClone) {
+            carousel.style.transition = "none";
+            index = 0;
+            carousel.style.transform = "translateY(0)";
+            void carousel.offsetHeight; // force reflow
+          }
+          busy = false;
+        }, transitionMs);
+      }
+
+      setInterval(nextSlide, 3000);
+    </script>
   </body>
 </html>
