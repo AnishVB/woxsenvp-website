@@ -198,9 +198,9 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 18px;
-  min-height: 68px;
-  line-height: 1.1;
+  gap: 12px;
+  min-height: 64px;
+  line-height: 1.05;
 
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
@@ -208,7 +208,7 @@ img {
 }
 
 .nav-logo {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: white;
   position: relative;
@@ -216,7 +216,7 @@ img {
   align-items: center;
   overflow: hidden;
   line-height: 1;
-  height: 1.7em;
+  height: auto;
   padding: 0;
 }
 
@@ -487,13 +487,13 @@ img {
 
   /* Hero section adjustments */
   .hero {
-    padding: 140px 20px 110px;
+    padding: 140px 18px 110px;
     min-height: 100vh;
     height: auto;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-position: 88% center;
+    background-position: 84% center;
   }
 
   .hero-content {
@@ -508,14 +508,14 @@ img {
   }
 
   .hero-title {
-    font-size: 1.45rem;
-    margin-bottom: 6px;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
   }
 
   .hero-subtitle,
   .hero-carousel-inner div {
-    font-size: 0.85rem;
-    line-height: 1.32;
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 
   .hero-carousel {
@@ -583,7 +583,7 @@ img {
   height: 100vh;
   background-image: url("assets/images/profhpbg1.jpg");
   background-size: cover;
-  background-position: 92% center;
+  background-position: 90% center;
   position: relative;
 
   display: flex;
