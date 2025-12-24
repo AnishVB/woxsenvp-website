@@ -6,6 +6,7 @@ html {
   background: #02053f;
   overscroll-behavior: none;
   scroll-behavior: smooth;
+  overflow-x: hidden; /* prevent horizontal creep from transformed elements */
 }
 
 @font-face {
@@ -407,17 +408,22 @@ img {
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
+    align-self: center;
   }
 
   .navbar {
     flex-wrap: wrap;
     padding: 15px 20px;
+    align-items: center;
+    gap: 12px;
   }
 
   .nav-logo {
     font-size: 20px;
     height: auto;
-    line-height: 1.2;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
   }
 
   .nav-links {
@@ -558,6 +564,8 @@ img {
   align-items: center;
   padding-left: 60px;
   text-align: left;
+  width: 100%;
+  overflow: hidden;
 }
 
 .hero::before {
@@ -569,8 +577,8 @@ img {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-top: 180px;
-  padding-bottom: 120px;
+  padding-top: 230px;
+  padding-bottom: 150px;
   position: relative;
 }
 
@@ -710,7 +718,7 @@ img {
 
 @media (max-width: 900px) {
   .hero.hero-executive {
-    padding: 140px 24px 90px;
+    padding: 190px 24px 110px;
     background-position: center;
     justify-content: center;
   }
@@ -747,7 +755,7 @@ img {
 
 @media (max-width: 600px) {
   .hero.hero-executive {
-    padding: 120px 18px 70px;
+    padding: 150px 18px 80px;
   }
 
   .hero.hero-executive h1 {
@@ -857,6 +865,8 @@ img {
 .recent-video {
   padding: 80px 40px 40px;
   text-align: center;
+  width: 100%;
+  overflow: hidden;
 }
 
 .video-container {
@@ -885,6 +895,8 @@ img {
 .books {
   padding: var(--space-section) 0;
   text-align: center;
+  width: 100%;
+  overflow: hidden;
 }
 
 .books-carousel {
