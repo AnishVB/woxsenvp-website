@@ -475,20 +475,28 @@ img {
 
   /* Hero section adjustments */
   .hero {
-    padding: 100px 20px 80px;
+    padding: 120px 20px 90px;
     min-height: 100vh;
     height: auto;
     justify-content: center;
+    align-items: center;
     text-align: center;
+    background-position: center top;
   }
 
   .hero-content {
-    max-width: 100%;
+    max-width: 720px;
+    width: 100%;
     text-align: center;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: 2.1rem;
     margin-bottom: 10px;
   }
 
