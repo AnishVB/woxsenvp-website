@@ -417,11 +417,13 @@ img {
   }
 
   .navbar {
-    flex-wrap: wrap;
+    /* Use grid on mobile so logo + hamburger stay aligned */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-auto-rows: min-content;
     padding: 15px 20px;
     align-items: center;
     gap: 12px;
-    justify-content: space-between;
   }
 
   .nav-logo {
@@ -430,16 +432,25 @@ img {
     line-height: 1.1;
     display: flex;
     align-items: center;
-    flex: 1 1 auto;
+    /* Keep the brand on a single line to avoid wrapping */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 2px 0;
+    /* Ensure it sits in the first grid column */
+    grid-column: 1;
   }
 
   .hamburger {
     margin-left: auto;
+    /* Stick hamburger to the second grid column */
+    grid-column: 2;
+    justify-self: end;
   }
 
   .nav-links {
-    order: 3;
+    /* Place links below the header row across full width */
+    grid-column: 1 / -1;
     width: 100%;
     flex-direction: column;
     gap: 0;
@@ -493,7 +504,6 @@ img {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-position: 84% center;
   }
 
   .hero-content {
@@ -505,6 +515,8 @@ img {
     flex-direction: column;
     align-items: center;
     gap: 12px;
+    /* Push titles down on mobile */
+    padding-top: 100px;
   }
 
   .hero-title {
@@ -521,12 +533,32 @@ img {
   .hero-carousel {
     height: auto;
     min-height: 2rem;
+    max-width: 100%;
+    width: 100%;
+    overflow: visible;
   }
 
   .hero-carousel-inner div {
     font-size: 0.95rem;
     white-space: normal;
     word-wrap: break-word;
+    word-break: break-word;
+    text-align: center;
+    max-width: 100%;
+    line-height: 1.45;
+  }
+
+  /* Executive education hero: push titles down on mobile */
+  .hero.hero-executive {
+    padding-top: 220px;
+    padding-bottom: 140px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero.hero-executive .hero-content {
+    padding-top: 100px;
   }
 
   /* Trust card adjustments */
@@ -957,6 +989,13 @@ img {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Mobile/tablet: center the subject so the face stays fully in frame */
+@media (max-width: 900px) {
+  .hero {
+    background-position: 65% center !important;
   }
 }
 
