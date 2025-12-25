@@ -413,7 +413,10 @@ img {
   .hamburger {
     display: flex;
     align-self: center;
-    padding: 4px 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 36px;
   }
 
   .navbar {
@@ -516,11 +519,11 @@ img {
     align-items: center;
     gap: 12px;
     /* Push titles down on mobile */
-    padding-top: 100px;
+    padding-top: 150px;
   }
 
   .hero-title {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-bottom: 8px;
   }
 
@@ -558,7 +561,7 @@ img {
   }
 
   .hero.hero-executive .hero-content {
-    padding-top: 100px;
+    padding-top: 150px;
   }
 
   /* Trust card adjustments */
