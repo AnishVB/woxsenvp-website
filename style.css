@@ -579,7 +579,7 @@ img {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-position: 62% center;
+    background-position: calc(62% + 160px) center !important;
   }
 
   .hero.hero-executive .hero-content {
