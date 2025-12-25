@@ -80,6 +80,21 @@ function setupLoaderTransitions() {
   const loader = document.querySelector(".loader-overlay");
   if (!loader) return;
 
+  let loaderText = loader.querySelector(".loader-text");
+  if (!loaderText) {
+    loaderText = document.createElement("span");
+    loaderText.className = "loader-text";
+    loader.appendChild(loaderText);
+  }
+
+  const setLoaderLabel = (label) => {
+    const safeLabel = (label || "").trim();
+    loaderText.textContent = safeLabel || document.title || "";
+  };
+
+  // Set initial label to current page title
+  setLoaderLabel(document.title);
+
   setTimeout(() => {
     loader.classList.add("loader-hidden");
     loader.classList.remove("loader-visible");
@@ -97,6 +112,16 @@ function setupLoaderTransitions() {
         !link.getAttribute("target")
       ) {
         e.preventDefault();
+
+        const linkText = (link.textContent || "").trim();
+        const fileName = (targetUrl.split("/").pop() || "").replace(
+          ".html",
+          ""
+        );
+        const fallback = fileName ? fileName.replace(/[-_]/g, " ") : targetUrl;
+        const label = linkText || fallback;
+
+        setLoaderLabel(label);
         loader.classList.remove("loader-hidden");
         loader.classList.add("loader-visible");
 
@@ -199,6 +224,197 @@ function animateBooksMarquee() {
   });
 }
 
+// =========================================================
+// PATENT CARD STACK ANIMATION
+// =========================================================
+
+function initPatentStack() {
+  const patentStack = document.querySelector(".patent-stack");
+  if (!patentStack) return;
+
+  const cards = Array.from(patentStack.querySelectorAll(".patent-stack-card"));
+  if (cards.length === 0) return;
+
+  let currentIndex = 0;
+  let isPaused = false;
+
+  function rotateCards() {
+    if (isPaused) return;
+
+    // Move the front card to the back
+    currentIndex = (currentIndex + 1) % cards.length;
+
+    cards.forEach((card, i) => {
+      const newIndex = (i - currentIndex + cards.length) % cards.length;
+      card.setAttribute("data-index", newIndex);
+    });
+  }
+
+  // Auto-rotate every 4 seconds
+  const intervalId = setInterval(rotateCards, 4000);
+
+  // Pause on hover
+  patentStack.addEventListener("mouseenter", () => {
+    isPaused = true;
+  });
+
+  patentStack.addEventListener("mouseleave", () => {
+    isPaused = false;
+  });
+
+  // Click to rotate
+  cards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if (card.getAttribute("data-index") === "0") {
+        rotateCards();
+      }
+    });
+  });
+
+  // Clean up on page unload
+  window.addEventListener("beforeunload", () => {
+    clearInterval(intervalId);
+  });
+}
+
+// =========================================================
+// UPCOMING PATENTS CAROUSEL
+// =========================================================
+
+function initUpcomingPatentsCarousel() {
+  const container = document.querySelector(".carousel-container");
+  if (!container) return;
+
+  const track = container.querySelector(".carousel-track");
+  const items = Array.from(container.querySelectorAll(".carousel-item"));
+  const prevBtn = container.querySelector(".carousel-btn-prev");
+  const nextBtn = container.querySelector(".carousel-btn-next");
+  const indicatorsContainer = container.querySelector(".carousel-indicators");
+
+  if (!track || items.length === 0) return;
+
+  let currentIndex = 0;
+  let autoplayInterval = null;
+  const autoplayDelay = 4000;
+  const pauseOnHover = true;
+
+  // Create indicators
+  items.forEach((_, index) => {
+    const indicator = document.createElement("div");
+    indicator.classList.add("carousel-indicator");
+    if (index === 0) indicator.classList.add("active");
+    indicator.addEventListener("click", () => goToSlide(index));
+    indicatorsContainer.appendChild(indicator);
+  });
+
+  const indicators = Array.from(
+    indicatorsContainer.querySelectorAll(".carousel-indicator")
+  );
+
+  function updateCarousel() {
+    const offset = -currentIndex * 100;
+    track.style.transform = `translateX(${offset}%)`;
+
+    // Update indicators
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle("active", index === currentIndex);
+    });
+  }
+
+  function goToSlide(index) {
+    const len = items.length;
+    currentIndex = ((index % len) + len) % len; // wrap both directions
+    updateCarousel();
+    resetAutoplay();
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % items.length;
+    updateCarousel();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    updateCarousel();
+  }
+
+  function startAutoplay() {
+    if (autoplayInterval) return;
+    autoplayInterval = setInterval(nextSlide, autoplayDelay);
+  }
+
+  function stopAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+      autoplayInterval = null;
+    }
+  }
+
+  function resetAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  // Event listeners
+  prevBtn.addEventListener("click", () => {
+    prevSlide();
+    resetAutoplay();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    nextSlide();
+    resetAutoplay();
+  });
+
+  // Pause on hover
+  if (pauseOnHover) {
+    container.addEventListener("mouseenter", stopAutoplay);
+    container.addEventListener("mouseleave", startAutoplay);
+  }
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      prevSlide();
+      resetAutoplay();
+    } else if (e.key === "ArrowRight") {
+      nextSlide();
+      resetAutoplay();
+    }
+  });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  track.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  track.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    if (touchStartX - touchEndX > swipeThreshold) {
+      nextSlide();
+      resetAutoplay();
+    } else if (touchEndX - touchStartX > swipeThreshold) {
+      prevSlide();
+      resetAutoplay();
+    }
+  }
+
+  // Initialize
+  updateCarousel();
+  startAutoplay();
+
+  // Cleanup
+  window.addEventListener("beforeunload", stopAutoplay);
+}
+
 async function initGsapAnimations() {
   await ensureGsap();
   animateNavbarAndHero();
@@ -210,6 +426,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
   highlightActiveNavLink();
+  initPatentStack();
+  initUpcomingPatentsCarousel();
   initGsapAnimations().catch((error) =>
     console.warn("GSAP failed to initialize", error)
   );
