@@ -158,38 +158,98 @@
 
     <script>
       const carousel = document.getElementById("subtitle-carousel");
-      const slideHeightRem = 2.8;
+      const carouselContainer = document.querySelector(".hero-carousel");
       const transitionMs = 600;
       let index = 0;
       let busy = false;
+      let total = 0;
+      let heights = [];
+      let positions = [];
+      let offset = 0; // current translateY in px (derived from positions)
 
       // Clone the first slide to allow a seamless wrap
       const firstClone = carousel.children[0].cloneNode(true);
       carousel.appendChild(firstClone);
-      const total = carousel.children.length; // includes clone
+      total = carousel.children.length; // includes clone
+
+      function computeHeights() {
+        const children = Array.from(carousel.children);
+        const baseTop = children[0] ? children[0].offsetTop : 0;
+        heights = children.map((el) => Math.ceil(el.offsetHeight));
+        positions = children.map((el) => Math.max(0, el.offsetTop - baseTop));
+
+        const currentHeight = heights[index] || heights[0] || 0;
+        const currentOffset = positions[index] || positions[0] || 0;
+        offset = currentOffset;
+        if (carouselContainer) {
+          carouselContainer.style.height = `${currentHeight}px`;
+        }
+        carousel.style.transform = `translateY(-${offset}px)`;
+      }
+
+      // Initial compute; ensure we recompute after fonts finish loading
+      computeHeights();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          computeHeights();
+          carousel.style.transform = `translateY(-${offset}px)`;
+        });
+      }
 
       function nextSlide() {
         if (busy) return;
         busy = true;
 
+        // Advance index and move to exact next slide position
         index += 1;
+
         carousel.style.transition = `transform ${transitionMs}ms ease`;
-        carousel.style.transform = `translateY(-${index * slideHeightRem}rem)`;
+        const targetOffset = positions[index] || positions[0] || 0;
+        offset = targetOffset;
+        carousel.style.transform = `translateY(-${targetOffset}px)`;
+
+        const nextHeight = heights[index] || heights[0] || 0;
+        if (carouselContainer) {
+          carouselContainer.style.height = `${nextHeight}px`;
+        }
 
         const atClone = index === total - 1;
 
         setTimeout(() => {
           if (atClone) {
+            // Reset to start
             carousel.style.transition = "none";
             index = 0;
-            carousel.style.transform = "translateY(0)";
+            offset = positions[0] || 0;
+            carousel.style.transform = `translateY(-${offset}px)`;
             void carousel.offsetHeight; // force reflow
+            // Recompute heights in case layout changed
+            computeHeights();
           }
           busy = false;
         }, transitionMs);
       }
 
-      setInterval(nextSlide, 3000);
+      const intervalId = setInterval(nextSlide, 3000);
+
+      // Recompute heights on resize to accommodate wrapping changes
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          computeHeights();
+          // transform updated inside computeHeights
+        }, 150);
+      });
+
+      // Also observe content size changes (e.g., font adjustments) and recompute
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(() => {
+          computeHeights();
+          // transform updated inside computeHeights
+        });
+        ro.observe(carousel);
+      }
     </script>
   </body>
 </html>

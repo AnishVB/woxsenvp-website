@@ -519,36 +519,57 @@ img {
     align-items: center;
     gap: 12px;
     /* Push titles down on mobile */
-    padding-top: 150px;
+    padding-top: 80px;
   }
 
-  .hero-title {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
+  /* Homepage hero title size on mobile */
+  .hero h1 {
+    font-size: 1.8rem;
+    line-height: 1.15;
+    margin: 0 0 10px;
   }
 
-  .hero-subtitle,
-  .hero-carousel-inner div {
-    font-size: 0.9rem;
+  .hero-subtitle {
+    font-size: 0.95rem;
     line-height: 1.4;
   }
 
   .hero-carousel {
-    height: auto;
-    min-height: 2rem;
-    max-width: 100%;
+    /* Container clips to current slide height; JS sets the exact height */
+    height: 1rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    overflow: visible;
+    max-width: 100%;
+    margin-top: 6px; /* consistent spacing from title */
+  }
+
+  .hero-carousel-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero-carousel-inner div {
-    font-size: 0.95rem;
-    white-space: normal;
+    font-size: 0.725rem !important; /* ~half of desktop 1.45rem */
+    white-space: normal !important;
     word-wrap: break-word;
     word-break: break-word;
     text-align: center;
-    max-width: 100%;
-    line-height: 1.45;
+    max-width: 100% !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    width: 100%;
+  }
+
+  /* Disable reveal transform on hero for mobile to avoid position interference */
+  .hero .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   /* Executive education hero: push titles down on mobile */
@@ -558,10 +579,11 @@ img {
     align-items: center;
     justify-content: center;
     text-align: center;
+    background-position: 62% center;
   }
 
   .hero.hero-executive .hero-content {
-    padding-top: 150px;
+    padding-top: 120px;
   }
 
   /* Trust card adjustments */
@@ -777,6 +799,8 @@ img {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.16);
 }
+
+/* (Removed duplicate mobile overrides to reduce conflicts) */
 
 @media (max-width: 900px) {
   .hero.hero-executive {
