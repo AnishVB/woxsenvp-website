@@ -224,10 +224,6 @@ function animateBooksMarquee() {
   });
 }
 
-// =========================================================
-// PATENT CARD STACK ANIMATION
-// =========================================================
-
 function initPatentStack() {
   const patentStack = document.querySelector(".patent-stack");
   if (!patentStack) return;
@@ -241,7 +237,6 @@ function initPatentStack() {
   function rotateCards() {
     if (isPaused) return;
 
-    // Move the front card to the back
     currentIndex = (currentIndex + 1) % cards.length;
 
     cards.forEach((card, i) => {
@@ -250,10 +245,8 @@ function initPatentStack() {
     });
   }
 
-  // Auto-rotate every 4 seconds
   const intervalId = setInterval(rotateCards, 4000);
 
-  // Pause on hover
   patentStack.addEventListener("mouseenter", () => {
     isPaused = true;
   });
@@ -262,7 +255,6 @@ function initPatentStack() {
     isPaused = false;
   });
 
-  // Click to rotate
   cards.forEach((card) => {
     card.addEventListener("click", (e) => {
       if (card.getAttribute("data-index") === "0") {
@@ -271,15 +263,10 @@ function initPatentStack() {
     });
   });
 
-  // Clean up on page unload
   window.addEventListener("beforeunload", () => {
     clearInterval(intervalId);
   });
 }
-
-// =========================================================
-// UPCOMING PATENTS CAROUSEL
-// =========================================================
 
 function initUpcomingPatentsCarousel() {
   const container = document.querySelector(".carousel-container");
@@ -298,7 +285,6 @@ function initUpcomingPatentsCarousel() {
   const autoplayDelay = 4000;
   const pauseOnHover = true;
 
-  // Create indicators
   items.forEach((_, index) => {
     const indicator = document.createElement("div");
     indicator.classList.add("carousel-indicator");
@@ -315,7 +301,6 @@ function initUpcomingPatentsCarousel() {
     const offset = -currentIndex * 100;
     track.style.transform = `translateX(${offset}%)`;
 
-    // Update indicators
     indicators.forEach((indicator, index) => {
       indicator.classList.toggle("active", index === currentIndex);
     });
@@ -323,7 +308,7 @@ function initUpcomingPatentsCarousel() {
 
   function goToSlide(index) {
     const len = items.length;
-    currentIndex = ((index % len) + len) % len; // wrap both directions
+    currentIndex = ((index % len) + len) % len;
     updateCarousel();
     resetAutoplay();
   }
@@ -355,8 +340,7 @@ function initUpcomingPatentsCarousel() {
     startAutoplay();
   }
 
-  // Event listeners
-  prevBtn.addEventListener("click", () => {
+  nextBtn.addEventListener("click", () => {
     prevSlide();
     resetAutoplay();
   });
@@ -366,13 +350,11 @@ function initUpcomingPatentsCarousel() {
     resetAutoplay();
   });
 
-  // Pause on hover
   if (pauseOnHover) {
     container.addEventListener("mouseenter", stopAutoplay);
     container.addEventListener("mouseleave", startAutoplay);
   }
 
-  // Keyboard navigation
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") {
       prevSlide();
@@ -383,7 +365,6 @@ function initUpcomingPatentsCarousel() {
     }
   });
 
-  // Touch/swipe support
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -407,11 +388,9 @@ function initUpcomingPatentsCarousel() {
     }
   }
 
-  // Initialize
   updateCarousel();
   startAutoplay();
 
-  // Cleanup
   window.addEventListener("beforeunload", stopAutoplay);
 }
 

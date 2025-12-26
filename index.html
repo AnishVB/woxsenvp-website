@@ -10,14 +10,12 @@
 
   <body>
     <div class="loader-overlay"></div>
-    <!-- NAVBAR -->
     <header class="nav-container">
       <nav class="navbar">
         <a class="nav-logo" href="index.html" aria-label="Home">
           Raul V. Rodriguez
         </a>
 
-        <!-- Hamburger Menu Button -->
         <button
           class="hamburger"
           aria-label="Toggle menu"
@@ -41,7 +39,6 @@
       </nav>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="hero">
       <div class="hero-content reveal">
         <h1>Dr. Raul V. Rodriguez</h1>
@@ -72,7 +69,6 @@
     </div>
     TRUST FLOATING CARD - DISABLED -->
 
-    <!-- RECENT VIDEO -->
     <section class="recent-video reveal">
       <h2>Recent Video</h2>
       <div class="video-container">
@@ -85,7 +81,6 @@
       </div>
     </section>
 
-    <!-- BOOKS SECTION -->
     <section class="books reveal">
       <h2>Books</h2>
 
@@ -104,7 +99,6 @@
           <div class="book-card"><img src="assets/images/book11.png" /></div>
           <div class="book-card"><img src="assets/images/book12.png" /></div>
 
-          <!-- duplicate for infinite loop -->
           <div class="book-card"><img src="assets/images/book1.png" /></div>
           <div class="book-card"><img src="assets/images/book2.png" /></div>
           <div class="book-card"><img src="assets/images/book3.png" /></div>
@@ -125,7 +119,6 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer fade-section">
       <div class="footer-container">
         <div class="footer-col">
@@ -187,7 +180,6 @@
         carousel.style.transform = `translateY(-${offset}px)`;
       }
 
-      // Initial compute; ensure we recompute after fonts finish loading
       computeHeights();
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(() => {
@@ -200,7 +192,6 @@
         if (busy) return;
         busy = true;
 
-        // Advance index and move to exact next slide position
         index += 1;
 
         carousel.style.transition = `transform ${transitionMs}ms ease`;
@@ -217,13 +208,11 @@
 
         setTimeout(() => {
           if (atClone) {
-            // Reset to start
             carousel.style.transition = "none";
             index = 0;
             offset = positions[0] || 0;
             carousel.style.transform = `translateY(-${offset}px)`;
-            void carousel.offsetHeight; // force reflow
-            // Recompute heights in case layout changed
+            void carousel.offsetHeight;
             computeHeights();
           }
           busy = false;
@@ -232,21 +221,17 @@
 
       const intervalId = setInterval(nextSlide, 3000);
 
-      // Recompute heights on resize to accommodate wrapping changes
       let resizeTimer;
       window.addEventListener("resize", () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
           computeHeights();
-          // transform updated inside computeHeights
         }, 150);
       });
 
-      // Also observe content size changes (e.g., font adjustments) and recompute
       if (window.ResizeObserver) {
         const ro = new ResizeObserver(() => {
           computeHeights();
-          // transform updated inside computeHeights
         });
         ro.observe(carousel);
       }

@@ -6,7 +6,7 @@ html {
   background: #02053f;
   overscroll-behavior: none;
   scroll-behavior: smooth;
-  overflow-x: hidden; /* prevent horizontal creep from transformed elements */
+  overflow-x: hidden;
 }
 
 @font-face {
@@ -30,8 +30,8 @@ html {
 }
 
 :root {
-  --color-bg-top: #00032b; /* slightly deeper top */
-  --color-bg-mid: #000647; /* darker mid */
+  --color-bg-top: #00032b;
+  --color-bg-mid: #000647;
   --color-bg-bottom: #02064fec;
 
   --color-white: #ffffff;
@@ -128,7 +128,6 @@ main ol {
   color: var(--color-text);
 }
 
-/* Global image responsive settings */
 img {
   max-width: 100%;
   height: auto;
@@ -138,7 +137,6 @@ img {
     GLOBAL SCROLL ANIMATION
   ========================================================= */
 
-/* Reveal Animation */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -242,7 +240,6 @@ img {
     var(--delay, 0ms);
 }
 
-/* Add spacing for word separation */
 .nav-logo .letter:nth-child(5),
 .nav-logo .letter:nth-child(8) {
   margin-right: 0.15em;
@@ -408,7 +405,6 @@ img {
   display: block;
 }
 
-/* Show hamburger and adjust nav on mobile */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
@@ -420,7 +416,6 @@ img {
   }
 
   .navbar {
-    /* Use grid on mobile so logo + hamburger stay aligned */
     display: grid;
     grid-template-columns: 1fr auto;
     grid-auto-rows: min-content;
@@ -435,24 +430,20 @@ img {
     line-height: 1.1;
     display: flex;
     align-items: center;
-    /* Keep the brand on a single line to avoid wrapping */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 2px 0;
-    /* Ensure it sits in the first grid column */
     grid-column: 1;
   }
 
   .hamburger {
     margin-left: auto;
-    /* Stick hamburger to the second grid column */
     grid-column: 2;
     justify-self: end;
   }
 
   .nav-links {
-    /* Place links below the header row across full width */
     grid-column: 1 / -1;
     width: 100%;
     flex-direction: column;
@@ -486,7 +477,6 @@ img {
     border-bottom: none;
   }
 
-  /* Hamburger animation when menu is open */
   .hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translate(8px, 8px);
   }
@@ -499,7 +489,6 @@ img {
     transform: rotate(-45deg) translate(7px, -6px);
   }
 
-  /* Hero section adjustments */
   .hero {
     padding: 140px 18px 110px;
     min-height: 100vh;
@@ -518,7 +507,6 @@ img {
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    /* Push titles down on mobile */
     padding-top: 80px;
   }
 
@@ -535,7 +523,6 @@ img {
   }
 
   .hero-carousel {
-    /* Container clips to current slide height; JS sets the exact height */
     height: 1rem;
     overflow: hidden;
     display: flex;
@@ -543,7 +530,7 @@ img {
     justify-content: center;
     width: 100%;
     max-width: 100%;
-    margin-top: 6px; /* consistent spacing from title */
+    margin-top: 6px;
   }
 
   .hero-carousel-inner {
@@ -555,7 +542,7 @@ img {
   }
 
   .hero-carousel-inner div {
-    font-size: 0.725rem !important; /* ~half of desktop 1.45rem */
+    font-size: 0.725rem !important;
     white-space: normal !important;
     word-wrap: break-word;
     word-break: break-word;
@@ -566,13 +553,11 @@ img {
     width: 100%;
   }
 
-  /* Disable reveal transform on hero for mobile to avoid position interference */
   .hero .reveal {
     opacity: 1 !important;
     transform: none !important;
   }
 
-  /* Executive education hero: push titles down on mobile */
   .hero.hero-executive {
     padding-top: 220px;
     padding-bottom: 140px;
@@ -586,7 +571,6 @@ img {
     padding-top: 120px;
   }
 
-  /* Trust card adjustments */
   .trust-floating-card {
     width: 95%;
     margin: -40px auto 40px;
@@ -601,17 +585,15 @@ img {
     height: 35px;
   }
 
-  /* Recent video adjustments */
   .recent-video {
     padding: 50px 20px 20px;
   }
 
   .video-container {
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
     min-height: 220px;
   }
 
-  /* Books carousel adjustments */
   .books {
     padding: 50px 0;
   }
@@ -799,8 +781,6 @@ img {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.16);
 }
-
-/* (Removed duplicate mobile overrides to reduce conflicts) */
 
 @media (max-width: 900px) {
   .hero.hero-executive {
@@ -1019,7 +999,6 @@ img {
   }
 }
 
-/* Mobile/tablet: center the subject so the face stays fully in frame */
 @media (max-width: 900px) {
   .hero {
     background-position: 65% center !important;
@@ -1049,11 +1028,10 @@ img {
   ========================================================= */
 
 .about-page {
-  padding-top: 120px; /* space under navbar */
+  padding-top: 120px;
   padding-bottom: 80px;
 }
 
-/* Subnav under the main navbar */
 .about-subnav {
   position: relative;
   max-width: 1100px;
@@ -1104,8 +1082,6 @@ img {
   width: 100%;
 }
 
-/* HERO - BIO SECTION */
-
 .about-hero-section {
   padding: 60px 10vw 40px;
 }
@@ -1127,7 +1103,7 @@ img {
 
 .about-hero-photo img {
   width: 100%;
-  max-width: 380px; /* slightly bigger portrait */
+  max-width: 380px;
   height: auto;
   border-radius: 22px;
   box-shadow: var(--shadow-strong);
@@ -1151,7 +1127,6 @@ img {
   display: block;
   height: auto;
   border-radius: 22px;
-
   object-fit: contain;
   box-shadow: var(--shadow-strong);
 }
@@ -1177,12 +1152,9 @@ img {
   padding-left: 1.2rem;
 }
 
-/* Make lists comfortable */
 .about-text-narrow ul li {
   margin-bottom: 10px;
 }
-
-/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .about-hero-inner {
@@ -1247,7 +1219,6 @@ img {
     Engagements PAGE
   ========================================================= */
 
-/* Center the post and ensure it never exceeds its container */
 #linkedin-embed-container {
   display: flex;
   justify-content: center;
@@ -1255,7 +1226,6 @@ img {
   width: 100%;
 }
 
-/* Ensure the iframe scales down on small screens */
 #linkedin-embed-container iframe {
   max-width: 504px; /* Keeps it from getting too big on desktop */
   width: 100%;
@@ -1332,7 +1302,6 @@ img {
   transform: translateY(-3px);
 }
 
-/* Contact page responsive */
 @media (max-width: 900px) {
   .contact-row {
     flex-direction: column;
@@ -1353,7 +1322,7 @@ img {
 
   .contact-form input,
   .contact-form textarea {
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
   }
 }
 
@@ -1425,7 +1394,6 @@ img {
   color: var(--color-light);
 }
 
-/* Books page responsive */
 @media (max-width: 900px) {
   .books-container {
     grid-template-columns: repeat(3, 1fr);
@@ -1512,7 +1480,7 @@ img {
 
 .view-profile-text {
   font-size: 1rem;
-  color: var(--color-accent); /* Matches your accent color */
+  color: var(--color-accent);
   margin-left: 10px;
   font-weight: 400;
 }
@@ -1530,7 +1498,6 @@ img {
   padding: 20px;
 }
 
-/* Responsive adjustment: stack columns on mobile */
 @media (max-width: 900px) {
   .engagements-layout {
     grid-template-columns: 1fr;
@@ -1616,7 +1583,6 @@ img {
   font-size: 0.9rem;
 }
 
-/* Footer responsive */
 @media (max-width: 768px) {
   .footer {
     padding: 40px 20px 20px;
@@ -1752,25 +1718,21 @@ img {
     RESPONSIVE UTILITIES
   ========================================================= */
 
-/* Prevent horizontal scrolling on all devices */
 body {
   overflow-x: hidden;
   width: 100%;
 }
 
-/* Ensure all containers respect viewport width */
 * {
   box-sizing: border-box;
 }
 
-/* Better text rendering on all devices */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Improve tap targets for touch devices */
 @media (pointer: coarse) {
   a,
   button {
@@ -1783,45 +1745,38 @@ body {
     CUSTOM SCROLLBAR
   ========================================================= */
 
-/* width */
 ::-webkit-scrollbar {
   width: 7px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #0b0000;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #040a7e;
   border-radius: 10px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #01043d;
 }
 
 /* =========================================================
-      Page Transition Loader 
-   ========================================================= */
+    PAGE TRANSITION LOADER
+  ========================================================= */
 .loader-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  /* Background Gradient */
   background: linear-gradient(135deg, #0b0000 0%, #01043d 50%, #040a7e 100%);
   z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
-
-  /* Initial State */
   transform: scale(1);
   opacity: 1;
   visibility: visible;
@@ -1831,7 +1786,7 @@ body {
 .loader-overlay .loader-text {
   font-family: "Arial Black", sans-serif;
   font-weight: 900;
-  font-size: clamp(72px, 18vw, 140px); /* smaller for more headroom */
+  font-size: clamp(72px, 18vw, 140px);
   text-align: center;
 
   background: linear-gradient(315deg, #0b0000 0%, #01043d 50%, #040a7e 100%);
@@ -1846,12 +1801,10 @@ body {
   word-break: break-word;
 }
 
-/* ARRIVING: Zooms OUT past the camera */
 .loader-hidden {
   animation: pushOutPastCamera 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* LEAVING: Zooms IN from outside to cover the screen */
 .loader-visible {
   animation: pushInFromOutside 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   pointer-events: auto;
@@ -2015,7 +1968,6 @@ body {
   grid-column: span 2;
 }
 
-/* Center last 3 cards */
 .paper-card:nth-child(17) {
   grid-column: 2 / span 2;
 }
@@ -2076,7 +2028,6 @@ body {
     grid-column: span 2;
   }
 
-  /* Center last card in 3-column layout (19 cards = 6 rows + 1) */
   .paper-card:nth-child(17) {
     grid-column: span 2;
   }
@@ -2096,13 +2047,11 @@ body {
     grid-column: span 2;
   }
 
-  /* Reset for 2-column layout */
   .paper-card:nth-child(17),
   .paper-card:nth-child(19) {
     grid-column: span 2;
   }
 
-  /* Center last card in 2-column grid */
   .paper-card:nth-child(19) {
     grid-column: 2 / span 2;
   }
@@ -2170,7 +2119,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80px 40px 170px; /* extra bottom space so glow isn't clipped */
+  padding: 80px 40px 170px;
   min-height: 600px;
 }
 
@@ -2326,7 +2275,7 @@ body {
   ========================================================= */
 
 .carousel-container {
-  padding: 60px 40px 150px; /* extra bottom padding for glow/shadow */
+  padding: 60px 40px 150px;
   max-width: 1200px;
   margin: 0 auto;
 }
