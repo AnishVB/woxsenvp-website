@@ -158,12 +158,11 @@
       let total = 0;
       let heights = [];
       let positions = [];
-      let offset = 0; // current translateY in px (derived from positions)
+      let offset = 0;
 
-      // Clone the first slide to allow a seamless wrap
       const firstClone = carousel.children[0].cloneNode(true);
       carousel.appendChild(firstClone);
-      total = carousel.children.length; // includes clone
+      total = carousel.children.length;
 
       function computeHeights() {
         const children = Array.from(carousel.children);

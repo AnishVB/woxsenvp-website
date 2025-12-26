@@ -92,7 +92,6 @@ function setupLoaderTransitions() {
     loaderText.textContent = safeLabel || document.title || "";
   };
 
-  // Set initial label to current page title
   setLoaderLabel(document.title);
 
   setTimeout(() => {
@@ -113,13 +112,24 @@ function setupLoaderTransitions() {
       ) {
         e.preventDefault();
 
-        const linkText = (link.textContent || "").trim();
         const fileName = (targetUrl.split("/").pop() || "").replace(
           ".html",
           ""
         );
-        const fallback = fileName ? fileName.replace(/[-_]/g, " ") : targetUrl;
-        const label = linkText || fallback;
+        const pageNames = {
+          "": "Home",
+          index: "Home",
+          about: "About",
+          research: "Research",
+          engagements: "Engagements",
+          press: "Press",
+          executiveedu: "Executive Education",
+          newsletter: "Newsletter",
+          "newsletter-archives": "Newsletter Archives",
+          books: "Books",
+          contact: "Contact",
+        };
+        const label = pageNames[fileName] || fileName.replace(/[-_]/g, " ");
 
         setLoaderLabel(label);
         loader.classList.remove("loader-hidden");
@@ -401,12 +411,133 @@ async function initGsapAnimations() {
   animateBooksMarquee();
 }
 
+function initNewsletterNavigation() {
+  const numberGridButtons = document.querySelectorAll(".newsletter-number-btn");
+  const viewOlderBtn = document.querySelector(".view-older-btn");
+  const readMoreButtons = document.querySelectorAll(
+    ".read-more-btn, .archive-read-more-btn"
+  );
+  const modal = document.getElementById("newsletterModal");
+  const modalClose = document.querySelector(".modal-close");
+  const modalBody = document.getElementById("modalBody");
+
+  if (numberGridButtons.length > 0) {
+    numberGridButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const newsletterNum = button.getAttribute("data-newsletter");
+        const newsletterItem = document.querySelector(
+          `.newsletter-item[data-newsletter="${newsletterNum}"]`
+        );
+
+        if (newsletterItem) {
+          numberGridButtons.forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+
+          setTimeout(() => {
+            newsletterItem.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }, 50);
+        }
+      });
+    });
+  }
+
+  if (viewOlderBtn) {
+    viewOlderBtn.addEventListener("click", () => {
+      window.location.href = "newsletter-archives.html";
+    });
+  }
+
+  if (readMoreButtons.length > 0 && modal && modalBody) {
+    readMoreButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const newsletterItem = button.closest(
+          ".newsletter-item, .archive-newsletter-item"
+        );
+        if (newsletterItem) {
+          const title = newsletterItem.querySelector("h3").textContent;
+          const date = newsletterItem.querySelector(
+            ".newsletter-date, .archive-newsletter-date"
+          ).textContent;
+          const image = newsletterItem.querySelector("img").src;
+
+          modalBody.innerHTML = `
+            <img src="${image}" alt="${title}" style="width: 100%; max-height: 300px; object-fit: cover; margin-bottom: 30px; border-radius: 8px;" />
+            <h2>${title}</h2>
+            <p style="color: var(--color-accent); font-weight: 600; margin-bottom: 20px;">${date}</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <h3 style="margin-top: 30px;">Key Points</h3>
+            <ul>
+              <li>Innovation in cognitive technology</li>
+              <li>Research-backed methodologies</li>
+              <li>Practical applications for modern challenges</li>
+              <li>Future trends in artificial intelligence</li>
+            </ul>
+          `;
+
+          modal.classList.add("active");
+          modal.style.display = "flex";
+          document.body.style.overflow = "hidden";
+        }
+      });
+    });
+  }
+
+  if (modalClose && modal) {
+    modalClose.addEventListener("click", () => {
+      modal.classList.remove("active");
+      setTimeout(() => {
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+      }, 300);
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("active");
+        setTimeout(() => {
+          modal.style.display = "none";
+          document.body.style.overflow = "";
+        }, 300);
+      }
+    });
+  }
+}
+
+function initBackToTop() {
+  const backToTopBtn = document.querySelector(".back-to-top");
+  if (!backToTopBtn) return;
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add("visible");
+    } else {
+      backToTopBtn.classList.remove("visible");
+    }
+  });
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
   highlightActiveNavLink();
   initPatentStack();
   initUpcomingPatentsCarousel();
+  initNewsletterNavigation();
+  initBackToTop();
   initGsapAnimations().catch((error) =>
     console.warn("GSAP failed to initialize", error)
   );
