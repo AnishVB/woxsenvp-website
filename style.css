@@ -79,6 +79,7 @@ body {
   background-attachment: fixed;
 
   line-height: 1.6;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.35); /* subtle edge so slats are visible */
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
@@ -2072,84 +2073,104 @@ body {
 }
 
 /* =========================================================
-    PAGE TRANSITION LOADER
+    BLINDS TRANSITION - DYNAMIC OVERLAY
   ========================================================= */
-.loader-overlay {
+.blinds-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg, #0b0000 0%, #01043d 50%, #040a7e 100%);
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 99998;
   pointer-events: none;
-  transform: scale(1);
-  opacity: 1;
-  visibility: visible;
-  will-change: transform, opacity;
+  display: none;
+  perspective: 1400px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-bg-top) 0%,
+    var(--color-bg-mid) 40%,
+    var(--color-bg-bottom) 100%
+  );
 }
 
-.loader-overlay .loader-text {
-  font-family: "Arial Black", sans-serif;
-  font-weight: 900;
-  font-size: clamp(72px, 18vw, 140px);
-  text-align: center;
+.blind {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    var(--color-bg-top) 0%,
+    var(--color-bg-mid) 40%,
+    var(--color-bg-bottom) 100%
+  );
+  top: 0;
+  left: 0;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+  box-shadow: inset -1.5px 0 6px rgba(0, 0, 0, 0.28); /* visible edge without heavy darkening */
+}
 
-  background: linear-gradient(315deg, #4c87ff 0%, #2c5aff 50%, #ffffff 100%);
+.blinds-signature {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(48px, 12vw, 140px);
+  font-weight: 400;
+  background: linear-gradient(315deg, #ffffff 0%, #e5e5e5 50%, #4c87ff 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(76, 135, 255, 0.6));
+  opacity: 0;
+  z-index: 99999;
+  pointer-events: none;
+  letter-spacing: 2px;
+  font-style: italic;
+  display: none;
+  padding: 48px; /* give more breathing room so the R does not clip */
+  white-space: nowrap;
+}
 
-  filter: drop-shadow(0 0 20px rgba(76, 135, 255, 0.4));
-  line-height: 1.2;
-  padding: 20px 8px;
-  max-width: 90vw;
-  word-break: break-word;
-  letter-spacing: -0.02em;
+/* =========================================================
+    PAGE TRANSITION LOADER - DISABLED
+  ========================================================= */
+.loader-overlay {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.loader-overlay .loader-text {
+  display: none !important;
 }
 
 .loader-hidden {
-  animation: pushOutScreen 0.75s cubic-bezier(0.6, 0.04, 0.98, 0.34) forwards;
+  display: none !important;
 }
 
 .loader-visible {
-  animation: pushInScreen 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  pointer-events: auto;
+  display: none !important;
 }
 
 @keyframes pushOutScreen {
   0% {
-    transform: scale(1) translateZ(0);
-    opacity: 1;
-    visibility: visible;
-  }
-  50% {
-    filter: brightness(1.2);
+    opacity: 0;
   }
   100% {
-    transform: scale(1.5) translateZ(100px);
     opacity: 0;
-    visibility: hidden;
-    filter: brightness(0.5);
   }
 }
 
 @keyframes pushInScreen {
   0% {
-    transform: scale(1.5) translateZ(100px);
     opacity: 0;
-    filter: brightness(0.5);
-  }
-  50% {
-    filter: brightness(1.2);
   }
   100% {
-    transform: scale(1) translateZ(0);
-    opacity: 1;
-    filter: brightness(1);
+    opacity: 0;
   }
 }
 

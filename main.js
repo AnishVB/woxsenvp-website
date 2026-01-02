@@ -76,29 +76,146 @@ function highlightActiveNavLink() {
   });
 }
 
-function setupLoaderTransitions() {
-  const loader = document.querySelector(".loader-overlay");
-  if (!loader) return;
+function createBlindsContainer() {
+  if (!document.querySelector(".blinds-container")) {
+    const container = document.createElement("div");
+    container.className = "blinds-container";
+    document.body.insertBefore(container, document.body.firstChild);
 
-  let loaderText = loader.querySelector(".loader-text");
-  if (!loaderText) {
-    loaderText = document.createElement("span");
-    loaderText.className = "loader-text";
-    loader.appendChild(loaderText);
+    const signature = document.createElement("div");
+    signature.className = "blinds-signature";
+    signature.textContent = "R";
+    document.body.insertBefore(signature, document.body.firstChild);
+  }
+}
+
+async function playBlindsAnimation() {
+  await ensureGsap();
+
+  return new Promise((resolve) => {
+    createBlindsContainer();
+
+    const container = document.querySelector(".blinds-container");
+    const signature = document.querySelector(".blinds-signature");
+
+    container.innerHTML = "";
+    const blindCount = 28; // thin panels for clearer blinds look
+    const blindWidth = Math.ceil(window.innerWidth / blindCount) + 1; // slight overlap to hide seams
+
+    container.style.display = "block"; // show overlay immediately to avoid flash
+    signature.style.display = "block";
+    gsap.set(signature, { opacity: 0 });
+
+    for (let i = 0; i < blindCount; i++) {
+      const blind = document.createElement("div");
+      blind.className = "blind";
+      blind.style.width = blindWidth + "px";
+      blind.style.left = i * blindWidth + "px";
+      blind.style.height = "100%";
+      container.appendChild(blind);
+    }
+
+    const blinds = container.querySelectorAll(".blind");
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        container.style.display = "none";
+        signature.style.display = "none";
+      },
+    });
+
+    // Start blinds rotated away from view for flip effect
+    gsap.set(blinds, { rotateY: -110, transformPerspective: 1400 });
+
+    // Close blinds: flip in left-to-right
+    timeline.to(
+      blinds,
+      {
+        rotateY: 0,
+        duration: 0.9,
+        ease: "power2.inOut",
+        stagger: {
+          amount: 0.5,
+          from: "start",
+        },
+      },
+      0
+    );
+
+    // Show signature while closing
+    timeline.to(signature, { opacity: 1, duration: 0.6 }, 0.25);
+
+    // Hold closed briefly and trigger navigation while covered
+    timeline.to({}, { duration: 0.2 });
+    timeline.add(() => {
+      sessionStorage.setItem("blindsOpenNext", "1");
+      resolve();
+    });
+  });
+}
+
+// Play only the opening animation if flagged (after navigation)
+async function playBlindsOpenIfNeeded() {
+  const shouldOpen = sessionStorage.getItem("blindsOpenNext");
+  if (!shouldOpen) return;
+  sessionStorage.removeItem("blindsOpenNext");
+
+  createBlindsContainer();
+  const container = document.querySelector(".blinds-container");
+  const signature = document.querySelector(".blinds-signature");
+
+  container.style.display = "block"; // cover immediately to prevent flash
+  signature.style.display = "block";
+  gsap.set(signature, { opacity: 1 });
+  gsap.set(document.body, { opacity: 0 });
+
+  await ensureGsap();
+
+  container.innerHTML = "";
+  const blindCount = 28;
+  const blindWidth = Math.ceil(window.innerWidth / blindCount) + 1; // overlap to remove seams
+
+  for (let i = 0; i < blindCount; i++) {
+    const blind = document.createElement("div");
+    blind.className = "blind";
+    blind.style.width = blindWidth + "px";
+    blind.style.left = i * blindWidth + "px";
+    blind.style.height = "100%";
+    container.appendChild(blind);
   }
 
-  const setLoaderLabel = (label) => {
-    const safeLabel = (label || "").trim();
-    loaderText.textContent = safeLabel || document.title || "";
-  };
+  const blinds = container.querySelectorAll(".blind");
 
-  setLoaderLabel(document.title);
+  // start closed
+  gsap.set(blinds, { rotateY: 0, transformPerspective: 1400 });
 
-  setTimeout(() => {
-    loader.classList.add("loader-hidden");
-    loader.classList.remove("loader-visible");
-  }, 50);
+  const timeline = gsap.timeline({
+    onComplete: () => {
+      container.style.display = "none";
+      signature.style.display = "none";
+      gsap.to(document.body, { opacity: 1, duration: 0.6, ease: "power2.out" });
+    },
+  });
 
+  // Open blinds: flip out to the right to reveal page
+  timeline.to(
+    blinds,
+    {
+      rotateY: 110,
+      duration: 0.9,
+      ease: "power2.inOut",
+      stagger: {
+        amount: 0.5,
+        from: "start",
+      },
+    },
+    0
+  );
+
+  // Fade signature out during open
+  timeline.to(signature, { opacity: 0, duration: 0.5 }, 0.2);
+}
+
+function setupLoaderTransitions() {
   const links = document.querySelectorAll("a");
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -112,32 +229,10 @@ function setupLoaderTransitions() {
       ) {
         e.preventDefault();
 
-        const fileName = (targetUrl.split("/").pop() || "").replace(
-          ".html",
-          ""
-        );
-        const pageNames = {
-          "": "Home",
-          index: "Home",
-          about: "About",
-          research: "Research",
-          engagements: "Engagements",
-          press: "Press",
-          executiveedu: "Executive Education",
-          newsletter: "Newsletter",
-          "newsletter-archives": "Newsletter Archives",
-          books: "Books",
-          contact: "Contact",
-        };
-        const label = pageNames[fileName] || fileName.replace(/[-_]/g, " ");
-
-        setLoaderLabel(label);
-        loader.classList.remove("loader-hidden");
-        loader.classList.add("loader-visible");
-
-        setTimeout(() => {
+        // Play blinds animation and navigate
+        playBlindsAnimation().then(() => {
           window.location.href = targetUrl;
-        }, 600);
+        });
       }
     });
   });
@@ -551,7 +646,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initUpcomingPatentsCarousel();
   initNewsletterNavigation();
   initBackToTop();
-  initGsapAnimations().catch((error) =>
-    console.warn("GSAP failed to initialize", error)
-  );
+  initGsapAnimations()
+    .then(() => {
+      playBlindsOpenIfNeeded();
+    })
+    .catch((error) => console.warn("GSAP failed to initialize", error));
 });
