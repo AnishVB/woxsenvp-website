@@ -642,6 +642,93 @@ function initBackToTop() {
   });
 }
 
+async function playInitialPageLoadTransition() {
+  const isFirstLoad =
+    !sessionStorage.getItem("blindsOpenNext") &&
+    !sessionStorage.getItem("hasVisited");
+  if (!isFirstLoad) return;
+
+  // Mark as visited so it only plays once per session
+  sessionStorage.setItem("hasVisited", "1");
+
+  // Hide page content initially
+  document.body.style.opacity = "0";
+
+  await ensureGsap();
+
+  return new Promise((resolve) => {
+    createBlindsContainer();
+
+    const container = document.querySelector(".blinds-container");
+    const signature = document.querySelector(".blinds-signature");
+
+    container.innerHTML = "";
+    const blindCount = 28;
+    const blindWidth = Math.ceil(window.innerWidth / blindCount) + 1;
+
+    container.style.display = "block";
+    signature.style.display = "block";
+    gsap.set(signature, { opacity: 0 });
+
+    for (let i = 0; i < blindCount; i++) {
+      const blind = document.createElement("div");
+      blind.className = "blind";
+      blind.style.width = blindWidth + "px";
+      blind.style.left = i * blindWidth + "px";
+      blind.style.height = "100%";
+      container.appendChild(blind);
+    }
+
+    const blinds = container.querySelectorAll(".blind");
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        container.style.display = "none";
+        signature.style.display = "none";
+        document.body.style.opacity = "1";
+      },
+    });
+
+    // Close: flip blinds in
+    gsap.set(blinds, { rotateY: -110, transformPerspective: 1400 });
+    timeline.to(
+      blinds,
+      {
+        rotateY: 0,
+        duration: 0.9,
+        ease: "power2.inOut",
+        stagger: { amount: 0.5, from: "start" },
+      },
+      0
+    );
+
+    timeline.to(signature, { opacity: 1, duration: 0.6 }, 0.25);
+
+    // Hold closed
+    timeline.to({}, { duration: 0.4 });
+
+    // Open: flip blinds out to reveal page
+    timeline.to(
+      blinds,
+      {
+        rotateY: 110,
+        duration: 0.9,
+        ease: "power2.inOut",
+        stagger: { amount: 0.5, from: "start" },
+      },
+      "-=0.1"
+    );
+
+    timeline.to(signature, { opacity: 0, duration: 0.5 }, "-=0.7");
+
+    // Fade in page content as blinds open
+    timeline.to(document.body, { opacity: 1, duration: 0.6 }, "-=0.8");
+
+    timeline.add(() => {
+      resolve();
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
@@ -651,7 +738,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initNewsletterNavigation();
   initBackToTop();
   initGsapAnimations()
-    .then(() => {
+    .then(async () => {
+      await playInitialPageLoadTransition();
       playBlindsOpenIfNeeded();
     })
     .catch((error) => console.warn("GSAP failed to initialize", error));
