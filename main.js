@@ -3,6 +3,20 @@ const GSAP_SRC =
 const GSAP_SCROLLTRIGGER_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js";
 
+const SIGNATURE_SVG = `
+  <svg
+    class="signature-svg"
+    viewBox="0 0 800 600"
+    aria-hidden="true"
+    focusable="false"
+    role="presentation"
+  >
+    <path
+      d="m236.59998,332.26586c1.79605,-4.95814 6.02359,-13.81201 14.36843,-26.44339c12.68995,-19.20844 25.76795,-39.40547 37.71713,-64.45578c13.27155,-27.82249 24.30241,-50.82365 32.32897,-67.76117c6.13387,-12.94364 7.87906,-21.34908 12.57238,-23.13797c1.65935,-0.63248 1.89389,0.14912 3.59211,8.26356c3.6581,17.47907 14.7127,39.59645 21.55264,69.41389c7.56587,32.98207 16.39809,67.20251 25.14475,97.51002c7.05179,24.4347 11.52027,40.63323 8.98027,42.97052c-1.26998,1.16862 -3.66797,-1.61312 -10.77632,-13.2217c-9.0775,-14.82438 -18.28853,-30.92672 -34.12502,-46.27594c-14.89089,-14.43273 -26.2339,-24.04533 -35.92107,-29.74882c-3.38289,-1.99175 -0.04067,1.81043 7.18421,3.30542c8.93499,1.84881 13.53311,1.13911 16.16448,-1.65271c3.7213,-3.94827 1.79605,-6.61085 1.79605,-8.26356c0,-1.65271 0.40001,-2.10889 7.18421,3.30542c3.83772,3.06277 7.73107,5.83528 14.36843,3.30542c4.69332,-1.78889 10.35236,-4.17783 14.36843,-11.56899c1.60646,-2.95645 1.79605,-3.30542 3.59211,-3.30542c1.79605,0 3.72881,2.67295 5.38816,3.30542c2.34663,0.89445 3.59211,1.65271 5.38816,1.65271c0,0 3.41759,-2.02325 7.18421,-3.30542c6.94535,-2.3642 14.36843,-3.30542 21.55264,-3.30542c1.79605,0 5.38816,0 7.18421,0c0,0 2.32213,-1.16865 3.59211,0c1.26998,1.16865 1.79605,1.65271 3.59211,0c7.18421,-6.61085 10.40624,-15.01891 14.36843,-23.13797c3.29043,-6.74251 7.18421,-9.91627 10.77632,-3.30542c3.59211,6.61085 11.29462,14.65672 14.36843,21.48526c2.17348,4.82851 3.59211,4.95814 3.59211,3.30542c0,-1.65271 0,-3.30542 0,-4.95814c0,0 3.59211,-3.30542 7.18421,-6.61085c0,0 -0.55222,-1.96012 1.79605,-4.95814c2.97033,-3.79221 6.63172,-7.28998 12.57238,-14.87441c2.34828,-2.99801 5.69697,-7.5374 7.18421,-6.61085c8.00912,4.98966 9.02719,21.46988 17.96054,44.62323c10.83327,28.07755 21.53324,60.63458 25.14475,92.55188c3.16206,27.94505 4.86071,56.97444 -5.38816,62.80306c-6.11129,3.47555 -19.17225,-8.44191 -30.53291,-31.40153c-12.47613,-25.2139 -15.26552,-51.17784 -16.16448,-69.41391c-0.6511,-13.20813 1.79605,-21.48526 1.79605,-24.79068l1.79605,0l1.79605,3.30542l0,1.65271"
+    />
+  </svg>
+`;
+
 const loadScriptOnce = (src) =>
   new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`)) {
@@ -77,16 +91,38 @@ function highlightActiveNavLink() {
 }
 
 function createBlindsContainer() {
-  if (!document.querySelector(".blinds-container")) {
-    const container = document.createElement("div");
+  let container = document.querySelector(".blinds-container");
+  let signature = document.querySelector(".blinds-signature");
+
+  if (!container) {
+    container = document.createElement("div");
     container.className = "blinds-container";
     document.body.insertBefore(container, document.body.firstChild);
+  }
 
-    const signature = document.createElement("div");
+  if (!signature) {
+    signature = document.createElement("div");
     signature.className = "blinds-signature";
-    signature.textContent = "R";
     document.body.insertBefore(signature, document.body.firstChild);
   }
+
+  if (signature && !signature.querySelector(".signature-svg")) {
+    signature.innerHTML = SIGNATURE_SVG;
+  }
+}
+
+function restartSignatureDraw(signatureEl) {
+  const path = signatureEl?.querySelector("path");
+  if (!path) return;
+
+  const length = path.getTotalLength();
+  path.style.setProperty("--signature-length", length);
+  path.style.strokeDasharray = length;
+  path.style.strokeDashoffset = length;
+  path.style.animation = "none";
+  path.classList.remove("drawing");
+  void path.getBoundingClientRect();
+  path.classList.add("drawing");
 }
 
 async function playBlindsAnimation(targetUrl) {
@@ -105,6 +141,7 @@ async function playBlindsAnimation(targetUrl) {
     container.style.display = "block"; // show overlay immediately to avoid flash
     signature.style.display = "block";
     gsap.set(signature, { opacity: 0 });
+    restartSignatureDraw(signature);
 
     for (let i = 0; i < blindCount; i++) {
       const blind = document.createElement("div");
@@ -148,8 +185,8 @@ async function playBlindsAnimation(targetUrl) {
     // Show signature while closing
     timeline.to(signature, { opacity: 1, duration: 0.6 }, 0.25);
 
-    // Hold closed briefly before navigating
-    timeline.to({}, { duration: 0.3 });
+    // Hold closed briefly before navigating (increased to show full draw)
+    timeline.to({}, { duration: 0.8 });
   });
 }
 
@@ -188,17 +225,21 @@ async function playBlindsOpenIfNeeded() {
   // start closed (matching end state from close animation)
   gsap.set(blinds, { rotateY: 0, transformPerspective: 1400 });
 
+  // Pre-set all page elements to hidden
+  const reveals = document.querySelectorAll(".reveal");
+  const fades = document.querySelectorAll(".fade-section");
+  const navbar = document.querySelector(".nav-container");
+  const hero = document.querySelector(".hero h1");
+
+  gsap.set(reveals, { opacity: 0, y: 100, scale: 0.95 });
+  gsap.set(fades, { opacity: 0, scale: 0.92 });
+  gsap.set(navbar, { opacity: 0, y: -40 });
+  gsap.set(hero, { opacity: 0, y: 30 });
+
   // Brief delay to ensure everything is ready
   await new Promise((resolve) => setTimeout(resolve, 50));
 
-  const timeline = gsap.timeline({
-    onComplete: () => {
-      container.style.display = "none";
-      signature.style.display = "none";
-      const hideStyle = document.getElementById("blinds-hide-style");
-      if (hideStyle) hideStyle.remove();
-    },
-  });
+  const timeline = gsap.timeline();
 
   // Open blinds: flip out to the right to reveal page
   timeline.to(
@@ -215,10 +256,91 @@ async function playBlindsOpenIfNeeded() {
     0
   );
 
-  // Fade signature out during open
-  timeline.to(signature, { opacity: 0, duration: 0.5 }, 0.2);
+  // Fade signature out after opening animation completes
+  timeline.to(signature, { opacity: 0, duration: 1.2 }, 0.2);
 
-  // Reveal page content as blinds open (hide-style is removed onComplete)
+  // Remove hide-style at 0.5s so page is visible early
+  timeline.call(
+    () => {
+      const hideStyle = document.getElementById("blinds-hide-style");
+      if (hideStyle) hideStyle.remove();
+    },
+    null,
+    0.5
+  );
+
+  // At 1.2s: hide overlay elements COMPLETELY and EARLY
+  timeline.call(
+    () => {
+      container.style.display = "none";
+      signature.style.display = "none";
+      container.style.visibility = "hidden";
+      signature.style.visibility = "hidden";
+      container.style.pointerEvents = "none";
+      signature.style.pointerEvents = "none";
+      container.style.opacity = "0";
+      signature.style.opacity = "0";
+    },
+    null,
+    1.2
+  );
+
+  // Animate navbar at 1.3s (right after page visible)
+  if (navbar) {
+    timeline.to(
+      navbar,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out",
+      },
+      1.3
+    );
+  }
+
+  // Animate hero at 1.4s
+  if (hero) {
+    timeline.to(
+      hero,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.1,
+        ease: "power3.out",
+      },
+      1.4
+    );
+  }
+
+  // Start reveals at 1.5s with stagger
+  reveals.forEach((el, i) => {
+    timeline.to(
+      el,
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.5,
+        ease: "power4.out",
+      },
+      1.5 + i * 0.2
+    );
+  });
+
+  // Animate fades starting at 1.8s
+  fades.forEach((el, i) => {
+    timeline.to(
+      el,
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1.3,
+        ease: "power3.out",
+      },
+      1.8 + i * 0.15
+    );
+  });
 }
 
 function setupLoaderTransitions() {
@@ -244,6 +366,10 @@ function setupLoaderTransitions() {
 
 function animateNavbarAndHero() {
   if (!window.gsap) return;
+
+  // Skip if blinds transition is about to play entrance animations
+  const skipInitialAnimation = sessionStorage.getItem("blindsOpenNext");
+  if (skipInitialAnimation) return;
 
   gsap.from(".nav-container", {
     y: -40,
@@ -290,7 +416,15 @@ function animateSectionsOnScroll() {
     return;
   }
 
-  gsap.set(reveals, { opacity: 0, y: 50 });
+  // Skip setting initial state if blinds transition is pending
+  // The playBlindsOpenIfNeeded will handle initial animations
+  const skipInitialSetup = sessionStorage.getItem("blindsOpenNext");
+
+  if (!skipInitialSetup) {
+    gsap.set(reveals, { opacity: 0, y: 50 });
+    gsap.set(fades, { opacity: 0 });
+  }
+
   reveals.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
@@ -305,7 +439,6 @@ function animateSectionsOnScroll() {
     });
   });
 
-  gsap.set(fades, { opacity: 0 });
   fades.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
@@ -669,6 +802,7 @@ async function playInitialPageLoadTransition() {
     container.style.display = "block";
     signature.style.display = "block";
     gsap.set(signature, { opacity: 0 });
+    restartSignatureDraw(signature);
 
     for (let i = 0; i < blindCount; i++) {
       const blind = document.createElement("div");

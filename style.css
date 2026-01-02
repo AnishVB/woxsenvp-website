@@ -2117,22 +2117,42 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Great Vibes", cursive;
-  font-size: clamp(48px, 12vw, 140px);
-  font-weight: 400;
-  background: linear-gradient(315deg, #ffffff 0%, #e5e5e5 50%, #4c87ff 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px rgba(76, 135, 255, 0.6));
-  opacity: 0;
-  z-index: 99999;
-  pointer-events: none;
-  letter-spacing: 2px;
-  font-style: italic;
   display: none;
-  padding: 48px; /* give more breathing room so the R does not clip */
-  white-space: nowrap;
+  pointer-events: none;
+  z-index: 99999;
+  padding: 32px;
+}
+
+.blinds-signature .signature-svg {
+  width: clamp(220px, 34vw, 440px);
+  height: auto;
+  display: block;
+}
+
+.blinds-signature .signature-svg path {
+  stroke: #e9edff;
+  stroke-width: 6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 18px rgba(76, 135, 255, 0.6));
+  stroke-dasharray: var(--signature-length, 2400);
+  stroke-dashoffset: var(--signature-length, 2400);
+}
+
+@keyframes signature-draw {
+  from {
+    stroke-dashoffset: var(--signature-length, 2400);
+    opacity: 0.85;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.signature-svg path.drawing {
+  animation: signature-draw 1.8s ease-in-out forwards !important;
 }
 
 /* =========================================================
