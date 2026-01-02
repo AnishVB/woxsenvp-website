@@ -406,6 +406,19 @@ function initUpcomingPatentsCarousel() {
 
 async function initGsapAnimations() {
   await ensureGsap();
+
+  const autoRevealSelectors = [
+    ".stack-card",
+    ".paper-card",
+    ".research-link-card",
+    ".carousel-item",
+  ];
+
+  autoRevealSelectors
+    .map((selector) => Array.from(document.querySelectorAll(selector)))
+    .flat()
+    .forEach((el) => el.classList.add("reveal"));
+
   animateNavbarAndHero();
   animateSectionsOnScroll();
   animateBooksMarquee();

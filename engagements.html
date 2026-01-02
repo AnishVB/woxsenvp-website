@@ -45,43 +45,57 @@
       </nav>
     </header>
 
-    <main class="engagements-page">
-      <section class="engagements-section reveal">
-        <h1>Upcoming Engagements & Insights</h1>
+    <section class="engagements-hero">
+      <div class="engagements-hero-content reveal">
+        <p class="eyebrow">Public talks · Media ·  leadership</p>
+        <h1>Engagements & Insights</h1>
+        
+      </div>
+    </section>
 
-        <div class="engagements-layout">
-          <div class="engagements-upcoming">
-            <h2>Upcoming Engagements</h2>
-            <p>
-              No public speaking engagements are currently scheduled. Please
-              check back soon for updates!
-            </p>
+    <main class="engagements-page">
+      <section class="latest-engagements reveal">
+        <div class="section-header latest-header">
+          <div class="latest-headings">
+            <h1 class="latest-title">Latest Engagements</h1>
+            <p class="eyebrow">Recent highlights</p>
+          </div>
+        </div>
+
+        <div class="carousel">
+          <div class="carousel-track"></div>
+          <button class="carousel-btn carousel-btn-prev" aria-label="Previous">❮</button>
+          <button class="carousel-btn carousel-btn-next" aria-label="Next">❯</button>
+          <div class="carousel-indicators"></div>
+        </div>
+      </section>
+
+      <section class="engagements-linkedin-section reveal">
+        <div class="linkedin-flex">
+          <div class="linkedin-info">
+            <p class="eyebrow">Social updates</p>
+            <div class="section-header-inline">
+              <h2 class="section-title">Dr. Rodriguez on LinkedIn</h2>
+              <a
+                href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
+                target="_blank"
+                class="view-profile-text"
+              >View Profile</a>
+            </div>
+            <p class="section-subtitle">Latest post, research notes, and media highlights in one place.</p>
           </div>
 
-          <div class="engagements-linkedin">
-            <a
-              href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
-              target="_blank"
-              class="linkedin-link"
-            >
-              <h2>
-                Dr. Rodriguez on LinkedIn
-                <span class="view-profile-text">(View Profile)</span>
-              </h2>
-            </a>
-
-            <div class="linkedin-embed-wrapper">
-              <div id="linkedin-embed-container">
-                <iframe
-                  src="https://www.linkedin.com/embed/feed/update/urn:li:share:7407359369236877312?collapsed=1"
-                  height="612"
-                  width="100%"
-                  frameborder="0"
-                  allowfullscreen=""
-                  title="Embedded post"
-                >
-                </iframe>
-              </div>
+          <div class="linkedin-card">
+            <div id="linkedin-embed-container">
+              <iframe
+                src="https://www.linkedin.com/embed/feed/update/urn:li:share:7407359369236877312?collapsed=1"
+                height="600"
+                width="100%"
+                frameborder="0"
+                allowfullscreen=""
+                title="Embedded post"
+              >
+              </iframe>
             </div>
           </div>
         </div>
@@ -132,7 +146,7 @@
 
     <!-- Calendar and Events Script -->
     <script>
-      // Sample events data
+   
       const eventsData = {
         '2025-12-27': [
           { title: 'Event Title Placeholder', time: '2:00 PM', location: 'Location Placeholder', description: 'Event description placeholder - replace with actual event details.' }
@@ -222,14 +236,93 @@
       });
     </script>
 
-    <!-- Footer was here, now continuing... -->
+    <!-- Carousel Script -->
+    <script>
+      const carouselData = [
+        { image: 'assets/images/engagement-1.jpg', caption: 'Speaking engagement 1' },
+        { image: 'assets/images/engagement-2.jpg', caption: 'Speaking engagement 2' },
+        { image: 'assets/images/engagement-3.jpg', caption: 'Speaking engagement 3' },
+        { image: 'assets/images/engagement-4.jpg', caption: 'Speaking engagement 4' },
+        { image: 'assets/images/engagement-5.jpg', caption: 'Speaking engagement 5' },
+        { image: 'assets/images/engagement-6.jpg', caption: 'Speaking engagement 6' },
+        { image: 'assets/images/engagement-7.jpg', caption: 'Speaking engagement 7' },
+        { image: 'assets/images/engagement-8.jpg', caption: 'Speaking engagement 8' },
+        { image: 'assets/images/engagement-9.jpg', caption: 'Speaking engagement 9' },
+        { image: 'assets/images/engagement-10.jpg', caption: 'Speaking engagement 10' },
+        { image: 'assets/images/engagement-11.jpg', caption: 'Speaking engagement 11' },
+        { image: 'assets/images/engagement-12.jpg', caption: 'Speaking engagement 12' },
+        { image: 'assets/images/engagement-13.jpg', caption: 'Speaking engagement 13' },
+        { image: 'assets/images/engagement-14.jpg', caption: 'Speaking engagement 14' },
+        { image: 'assets/images/engagement-15.jpg', caption: 'Speaking engagement 15' }
+      ];
+
+      let currentSlide = 0;
+
+      function initCarousel() {
+        const track = document.querySelector('.carousel-track');
+        const indicatorsContainer = document.querySelector('.carousel-indicators');
+
+        carouselData.forEach((item, index) => {
+          const slide = document.createElement('div');
+          slide.className = 'carousel-slide';
+          slide.innerHTML = `
+            <img src="${item.image}" alt="${item.caption}" loading="lazy">
+            <div class="carousel-slide-caption">${item.caption}</div>
+          `;
+          track.appendChild(slide);
+
+          const indicator = document.createElement('div');
+          indicator.className = 'indicator' + (index === 0 ? ' active' : '');
+          indicator.addEventListener('click', () => goToSlide(index));
+          indicatorsContainer.appendChild(indicator);
+        });
+
+        document.querySelector('.carousel-btn-prev').addEventListener('click', prevSlide);
+        document.querySelector('.carousel-btn-next').addEventListener('click', nextSlide);
+        setInterval(nextSlide, 6000);
+      }
+
+      function updateCarousel() {
+        const track = document.querySelector('.carousel-track');
+        const offset = -currentSlide * 100;
+        track.style.transform = `translateX(${offset}%)`;
+
+        document.querySelectorAll('.indicator').forEach((ind, index) => {
+          ind.classList.toggle('active', index === currentSlide);
+        });
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % carouselData.length;
+        updateCarousel();
+      }
+
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
+        updateCarousel();
+      }
+
+      function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (document.querySelector('.carousel-track')) {
+          initCarousel();
+          updateCarousel();
+        }
+      });
+    </script>
     </main>
 
     <footer class="footer fade-section">
       <div class="footer-container">
         <div class="footer-col">
           <h3>Woxsen University</h3>
-          <p>Kamkole, Sadasivpet, Hyderabad, Telangana 502345</p>
+          <a href="https://www.google.com/maps/place/Woxsen+University/@17.6496171,77.7971506,995m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bc9533c6aaaaaab:0x4f10ac8424d0d1dc!8m2!3d17.649612!4d77.7997255!16s%2Fm%2F01115txn?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D" target="_blank" class="footer-address">
+            Kamkole, Sadasivpet, Hyderabad, Telangana 502345
+          </a>
 
           <a href="https://www.woxsen.edu.in" target="_blank"
             >www.woxsen.edu.in</a
@@ -247,7 +340,7 @@
           <a href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
             >LinkedIn</a
           >
-          <a href="#">Twitter / X</a>
+          <a href="mailto:raul.rodriguez@woxsen.edu.in" class="footer-email">Email</a>
         </div>
       </div>
 
