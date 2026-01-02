@@ -89,7 +89,7 @@ function createBlindsContainer() {
   }
 }
 
-async function playBlindsAnimation() {
+async function playBlindsAnimation(targetUrl) {
   await ensureGsap();
 
   return new Promise((resolve) => {
@@ -118,8 +118,12 @@ async function playBlindsAnimation() {
     const blinds = container.querySelectorAll(".blind");
     const timeline = gsap.timeline({
       onComplete: () => {
-        container.style.display = "none";
-        signature.style.display = "none";
+        // Animation complete, now navigate
+        sessionStorage.setItem("blindsOpenNext", "1");
+        if (targetUrl) {
+          window.location.href = targetUrl;
+        }
+        resolve();
       },
     });
 
@@ -144,12 +148,8 @@ async function playBlindsAnimation() {
     // Show signature while closing
     timeline.to(signature, { opacity: 1, duration: 0.6 }, 0.25);
 
-    // Hold closed briefly and trigger navigation while covered
-    timeline.to({}, { duration: 0.2 });
-    timeline.add(() => {
-      sessionStorage.setItem("blindsOpenNext", "1");
-      resolve();
-    });
+    // Hold closed briefly before navigating
+    timeline.to({}, { duration: 0.3 });
   });
 }
 
@@ -165,10 +165,10 @@ async function playBlindsOpenIfNeeded() {
 
   container.style.display = "block"; // cover immediately to prevent flash
   signature.style.display = "block";
-  gsap.set(signature, { opacity: 1 });
-  gsap.set(document.body, { opacity: 0 });
 
   await ensureGsap();
+
+  gsap.set(signature, { opacity: 1 });
 
   container.innerHTML = "";
   const blindCount = 28;
@@ -185,14 +185,18 @@ async function playBlindsOpenIfNeeded() {
 
   const blinds = container.querySelectorAll(".blind");
 
-  // start closed
+  // start closed (matching end state from close animation)
   gsap.set(blinds, { rotateY: 0, transformPerspective: 1400 });
+
+  // Brief delay to ensure everything is ready
+  await new Promise((resolve) => setTimeout(resolve, 50));
 
   const timeline = gsap.timeline({
     onComplete: () => {
       container.style.display = "none";
       signature.style.display = "none";
-      gsap.to(document.body, { opacity: 1, duration: 0.6, ease: "power2.out" });
+      const hideStyle = document.getElementById("blinds-hide-style");
+      if (hideStyle) hideStyle.remove();
     },
   });
 
@@ -213,6 +217,8 @@ async function playBlindsOpenIfNeeded() {
 
   // Fade signature out during open
   timeline.to(signature, { opacity: 0, duration: 0.5 }, 0.2);
+
+  // Reveal page content as blinds open (hide-style is removed onComplete)
 }
 
 function setupLoaderTransitions() {
@@ -229,10 +235,8 @@ function setupLoaderTransitions() {
       ) {
         e.preventDefault();
 
-        // Play blinds animation and navigate
-        playBlindsAnimation().then(() => {
-          window.location.href = targetUrl;
-        });
+        // Play blinds animation and navigate when timeline triggers it
+        playBlindsAnimation(targetUrl);
       }
     });
   });
