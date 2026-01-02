@@ -228,13 +228,8 @@ async function playBlindsOpenIfNeeded() {
   // Pre-set all page elements to hidden
   const reveals = document.querySelectorAll(".reveal");
   const fades = document.querySelectorAll(".fade-section");
-  const navbar = document.querySelector(".nav-container");
-  const hero = document.querySelector(".hero h1");
-
-  gsap.set(reveals, { opacity: 0, y: 100, scale: 0.95 });
-  gsap.set(fades, { opacity: 0, scale: 0.92 });
-  gsap.set(navbar, { opacity: 0, y: -40 });
-  gsap.set(hero, { opacity: 0, y: 30 });
+  gsap.set(reveals, { opacity: 0, y: 70 });
+  gsap.set(fades, { opacity: 0 });
 
   // Brief delay to ensure everything is ready
   await new Promise((resolve) => setTimeout(resolve, 50));
@@ -259,88 +254,51 @@ async function playBlindsOpenIfNeeded() {
   // Fade signature out after opening animation completes
   timeline.to(signature, { opacity: 0, duration: 1.2 }, 0.2);
 
-  // Remove hide-style at 0.5s so page is visible early
+  // Remove hide-style EARLY (at 0.8s) so page is visible behind blinds
   timeline.call(
     () => {
       const hideStyle = document.getElementById("blinds-hide-style");
       if (hideStyle) hideStyle.remove();
     },
     null,
-    0.5
+    0.8
   );
 
-  // At 1.2s: hide overlay elements COMPLETELY and EARLY
+  // At 1.4s: hide overlay elements
   timeline.call(
     () => {
       container.style.display = "none";
       signature.style.display = "none";
-      container.style.visibility = "hidden";
-      signature.style.visibility = "hidden";
-      container.style.pointerEvents = "none";
-      signature.style.pointerEvents = "none";
-      container.style.opacity = "0";
-      signature.style.opacity = "0";
     },
     null,
-    1.2
+    1.4
   );
 
-  // Animate navbar at 1.3s (right after page visible)
-  if (navbar) {
-    timeline.to(
-      navbar,
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out",
-      },
-      1.3
-    );
-  }
+  // At 1.4s: start LONGER entrance animations
+  timeline.call(
+    () => {
+      reveals.forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 1.4,
+          ease: "power3.out",
+          delay: i * 0.15,
+        });
+      });
 
-  // Animate hero at 1.4s
-  if (hero) {
-    timeline.to(
-      hero,
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.1,
-        ease: "power3.out",
-      },
-      1.4
-    );
-  }
-
-  // Start reveals at 1.5s with stagger
-  reveals.forEach((el, i) => {
-    timeline.to(
-      el,
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.5,
-        ease: "power4.out",
-      },
-      1.5 + i * 0.2
-    );
-  });
-
-  // Animate fades starting at 1.8s
-  fades.forEach((el, i) => {
-    timeline.to(
-      el,
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1.3,
-        ease: "power3.out",
-      },
-      1.8 + i * 0.15
-    );
-  });
+      fades.forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 1,
+          duration: 1.2,
+          ease: "power2.out",
+          delay: 0.4 + i * 0.12,
+        });
+      });
+    },
+    null,
+    1.4
+  );
 }
 
 function setupLoaderTransitions() {
@@ -366,10 +324,6 @@ function setupLoaderTransitions() {
 
 function animateNavbarAndHero() {
   if (!window.gsap) return;
-
-  // Skip if blinds transition is about to play entrance animations
-  const skipInitialAnimation = sessionStorage.getItem("blindsOpenNext");
-  if (skipInitialAnimation) return;
 
   gsap.from(".nav-container", {
     y: -40,
@@ -416,15 +370,7 @@ function animateSectionsOnScroll() {
     return;
   }
 
-  // Skip setting initial state if blinds transition is pending
-  // The playBlindsOpenIfNeeded will handle initial animations
-  const skipInitialSetup = sessionStorage.getItem("blindsOpenNext");
-
-  if (!skipInitialSetup) {
-    gsap.set(reveals, { opacity: 0, y: 50 });
-    gsap.set(fades, { opacity: 0 });
-  }
-
+  gsap.set(reveals, { opacity: 0, y: 50 });
   reveals.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
@@ -439,6 +385,7 @@ function animateSectionsOnScroll() {
     });
   });
 
+  gsap.set(fades, { opacity: 0 });
   fades.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
