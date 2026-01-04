@@ -711,13 +711,11 @@ function initNewsletterNavigation() {
           const date = newsletterItem.querySelector(
             ".newsletter-date, .archive-newsletter-date"
           ).textContent;
-          const image = newsletterItem.querySelector("img").src;
 
           modalBody.innerHTML = `
-            <img src="${image}" alt="${title}" style="width: 100%; max-height: 300px; object-fit: cover; margin-bottom: 30px; border-radius: 8px;" />
-            <h2>${title}</h2>
-            <p style="color: var(--color-accent); font-weight: 600; margin-bottom: 20px;">${date}</p>
-            <p>newsletter 1 content</p>
+            <h3 class="modal-title">${title}</h3>
+            <p class="newsletter-date modal-date">${date}</p>
+            <p>newsletter content coming soon.</p>
           `;
 
           modal.classList.add("active");

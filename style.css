@@ -3637,10 +3637,25 @@ body.modal-open {
   font-weight: 700;
 }
 
+.modal-body .modal-title {
+  color: var(--color-accent);
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
 .modal-body .newsletter-date {
   display: block;
   margin-bottom: 30px;
   font-size: 1rem;
+}
+
+.modal-body .modal-date {
+  display: block;
+  margin-bottom: 22px;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .modal-body p {
