@@ -281,20 +281,24 @@ async function playBlindsOpenIfNeeded() {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: 1.4,
-          ease: "power3.out",
-          delay: i * 0.15,
+          duration: 1.6,
+          ease: "power4.out",
+          delay: i * 0.12,
         });
       });
 
       fades.forEach((el, i) => {
         gsap.to(el, {
           opacity: 1,
-          duration: 1.2,
-          ease: "power2.out",
-          delay: 0.4 + i * 0.12,
+          duration: 1.4,
+          ease: "power3.out",
+          delay: 0.3 + i * 0.1,
         });
       });
+
+      // Trigger navbar and hero animations after blinds open
+      animateNavbarAndHero();
+      animateSectionsOnScroll();
     },
     null,
     1.4
@@ -326,29 +330,29 @@ function animateNavbarAndHero() {
   if (!window.gsap) return;
 
   gsap.from(".nav-container", {
-    y: -40,
+    y: -60,
     opacity: 0,
-    duration: 0.8,
-    ease: "power3.out",
+    duration: 1.2,
+    ease: "power4.out",
   });
 
   const heroTimeline = gsap.timeline();
   heroTimeline.from(".hero h1", {
     opacity: 0,
-    y: 30,
-    duration: 0.9,
-    ease: "power3.out",
-    delay: 0.15,
+    y: 50,
+    duration: 1.4,
+    ease: "power4.out",
+    delay: 0.2,
   });
 
   const logo = document.querySelector(".nav-logo");
   if (logo) {
     gsap.from(logo, {
       opacity: 0,
-      y: -20,
-      duration: 0.8,
-      ease: "power3.out",
-      delay: 0.05,
+      y: -30,
+      duration: 1.2,
+      ease: "power4.out",
+      delay: 0.1,
     });
   }
 }
@@ -370,16 +374,16 @@ function animateSectionsOnScroll() {
     return;
   }
 
-  gsap.set(reveals, { opacity: 0, y: 50 });
+  gsap.set(reveals, { opacity: 0, y: 80 });
   reveals.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
       y: 0,
-      duration: 0.9,
-      ease: "power3.out",
+      duration: 1.2,
+      ease: "power4.out",
       scrollTrigger: {
         trigger: el,
-        start: "top 80%",
+        start: "top 82%",
         toggleActions: "play none none reverse",
       },
     });
@@ -389,14 +393,37 @@ function animateSectionsOnScroll() {
   fades.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
-      duration: 0.8,
-      ease: "power2.out",
+      duration: 1.0,
+      ease: "power3.out",
       scrollTrigger: {
         trigger: el,
         start: "top 85%",
         toggleActions: "play none none reverse",
       },
     });
+  });
+}
+
+function animateFooterSignature() {
+  const footerSig = document.querySelector(".footer-signature-svg");
+  if (!footerSig || !window.ScrollTrigger) return;
+
+  const path = footerSig.querySelector("path");
+  if (!path) return;
+
+  const trigger = ScrollTrigger.create({
+    trigger: ".footer",
+    onEnter: () => {
+      const length = path.getTotalLength();
+      path.style.setProperty("--signature-length", length);
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+      path.style.animation = "none";
+      path.classList.remove("drawing");
+      void path.getBoundingClientRect();
+      path.classList.add("drawing");
+    },
+    once: true,
   });
 }
 
@@ -488,6 +515,7 @@ function initUpcomingPatentsCarousel() {
 
   function updateCarousel() {
     const offset = -currentIndex * 100;
+    track.style.transition = "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
     track.style.transform = `translateX(${offset}%)`;
 
     indicators.forEach((indicator, index) => {
@@ -601,6 +629,7 @@ async function initGsapAnimations() {
   animateNavbarAndHero();
   animateSectionsOnScroll();
   animateBooksMarquee();
+  animateFooterSignature();
 }
 
 function initNewsletterNavigation() {
@@ -660,15 +689,7 @@ function initNewsletterNavigation() {
             <img src="${image}" alt="${title}" style="width: 100%; max-height: 300px; object-fit: cover; margin-bottom: 30px; border-radius: 8px;" />
             <h2>${title}</h2>
             <p style="color: var(--color-accent); font-weight: 600; margin-bottom: 20px;">${date}</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <h3 style="margin-top: 30px;">Key Points</h3>
-            <ul>
-              <li>Innovation in cognitive technology</li>
-              <li>Research-backed methodologies</li>
-              <li>Practical applications for modern challenges</li>
-              <li>Future trends in artificial intelligence</li>
-            </ul>
+            <p>newsletter 1 content</p>
           `;
 
           modal.classList.add("active");
@@ -681,9 +702,11 @@ function initNewsletterNavigation() {
 
   if (modalClose && modal) {
     modalClose.addEventListener("click", () => {
+      modal.classList.add("closing");
       modal.classList.remove("active");
       setTimeout(() => {
         modal.style.display = "none";
+        modal.classList.remove("closing");
         document.body.style.overflow = "";
       }, 300);
     });
@@ -692,9 +715,11 @@ function initNewsletterNavigation() {
   if (modal) {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
+        modal.classList.add("closing");
         modal.classList.remove("active");
         setTimeout(() => {
           modal.style.display = "none";
+          modal.classList.remove("closing");
           document.body.style.overflow = "";
         }, 300);
       }
@@ -810,6 +835,25 @@ async function playInitialPageLoadTransition() {
   });
 }
 
+function initContactVideoBoomerang() {
+  const video = document.getElementById("contactVideo");
+  if (!video) return;
+
+  let playbackDirection = 1;
+
+  video.addEventListener("timeupdate", () => {
+    if (playbackDirection === 1 && video.currentTime >= video.duration - 0.1) {
+      playbackDirection = -1;
+      video.playbackRate = -1;
+    } else if (playbackDirection === -1 && video.currentTime <= 0.1) {
+      playbackDirection = 1;
+      video.playbackRate = 1;
+    }
+  });
+
+  video.playbackRate = 1;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
@@ -818,6 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initUpcomingPatentsCarousel();
   initNewsletterNavigation();
   initBackToTop();
+  initContactVideoBoomerang();
   initGsapAnimations()
     .then(async () => {
       await playInitialPageLoadTransition();

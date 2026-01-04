@@ -140,8 +140,9 @@ img {
 
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
+  transform: translateY(60px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.visible {
@@ -150,13 +151,13 @@ img {
 }
 
 .fade-in {
-  animation: fadePulse 1s ease forwards;
+  animation: fadePulse 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadePulse {
   0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(30px);
   }
   100% {
     opacity: 1;
@@ -1072,7 +1073,7 @@ img {
   bottom: 0;
   width: 0;
   height: 2px;
-  background: var(--color-accent);
+  background: #2d5cbf;
   transition: width 0.25s ease;
 }
 
@@ -1241,6 +1242,27 @@ img {
 
 .contact-page {
   padding-top: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.contact-page > *:not(.contact-bg-video) {
+  position: relative;
+  z-index: 1;
 }
 
 .contact-row {
@@ -1302,6 +1324,12 @@ img {
 
 .send-btn:hover {
   transform: translateY(-3px);
+}
+
+.contact-map {
+  padding: 0 40px;
+  max-width: 1200px;
+  margin: 40px auto;
 }
 
 @media (max-width: 900px) {
@@ -1476,6 +1504,140 @@ img {
 /* =========================================================
     CAROUSEL STYLES
   ========================================================= */
+
+/* Fanned Carousel Styles */
+.fanned-carousel-container {
+  position: relative;
+  width: 100%;
+  height: 550px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 60px 0;
+  perspective: 1200px;
+}
+
+.fanned-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fanned-card {
+  position: absolute;
+  width: 380px;
+  height: 480px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 24, 68, 0.95),
+    rgba(6, 10, 42, 0.98)
+  );
+}
+
+.fanned-card:hover {
+  filter: drop-shadow(0 30px 80px rgba(76, 135, 255, 0.4));
+}
+
+.fanned-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fanned-card-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.6),
+    transparent
+  );
+  color: var(--color-white);
+  padding: 40px 20px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.fanned-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(76, 135, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.fanned-btn:hover {
+  background: rgba(76, 135, 255, 1);
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 12px 32px rgba(76, 135, 255, 0.5);
+}
+
+.fanned-btn-prev {
+  left: -80px;
+}
+
+.fanned-btn-next {
+  right: -80px;
+}
+
+@media (max-width: 1200px) {
+  .fanned-card {
+    width: 320px;
+    height: 420px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fanned-carousel-container {
+    height: 450px;
+  }
+
+  .fanned-card {
+    width: 280px;
+    height: 380px;
+  }
+
+  .fanned-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+
+  .fanned-btn-prev {
+    left: 10px;
+  }
+
+  .fanned-btn-next {
+    right: 10px;
+  }
+}
 
 .carousel {
   position: relative;
@@ -1870,7 +2032,6 @@ img {
 }
 
 .footer-email:hover {
-  text-decoration: underline;
   color: #ffffff;
 }
 
@@ -1886,11 +2047,33 @@ img {
 
 .footer-bottom {
   text-align: center;
-  margin-top: 40px;
-  padding-top: 20px;
+  margin-top: 15px;
+  padding-top: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: #ccc;
   font-size: 0.9rem;
+}
+
+.footer-signature-svg {
+  height: 200px;
+  width: auto;
+  display: block;
+  margin: 0 auto -15px auto;
+}
+
+.footer-signature-svg path {
+  stroke: #e9edff;
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(76, 135, 255, 0.6));
+  stroke-dasharray: var(--signature-length, 2400);
+  stroke-dashoffset: var(--signature-length, 2400);
+}
+
+.footer-signature-svg path.drawing {
+  animation: signature-draw 1.8s ease-in-out forwards !important;
 }
 
 @media (max-width: 768px) {
@@ -3047,6 +3230,18 @@ body {
   padding: 20px;
 }
 
+.newsletter-modal.closing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeOut 0.3s ease;
+}
+
+.newsletter-modal.closing .newsletter-modal-content {
+  animation: slideDown 0.3s ease;
+}
+
 .newsletter-modal-content {
   background: linear-gradient(
     135deg,
@@ -3142,6 +3337,26 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
   }
 }
 
