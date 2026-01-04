@@ -854,6 +854,25 @@ function initContactVideoBoomerang() {
   video.playbackRate = 1;
 }
 
+function initHeroVideoBoomerang() {
+  const video = document.getElementById("heroVideo");
+  if (!video) return;
+
+  let direction = 1;
+
+  video.addEventListener("timeupdate", () => {
+    if (direction === 1 && video.currentTime >= video.duration - 0.1) {
+      direction = -1;
+      video.playbackRate = -1;
+    } else if (direction === -1 && video.currentTime <= 0.1) {
+      direction = 1;
+      video.playbackRate = 1;
+    }
+  });
+
+  video.playbackRate = 1;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
@@ -862,6 +881,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initUpcomingPatentsCarousel();
   initNewsletterNavigation();
   initBackToTop();
+  initHeroVideoBoomerang();
   initContactVideoBoomerang();
   initGsapAnimations()
     .then(async () => {

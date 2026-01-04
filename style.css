@@ -621,18 +621,15 @@ img {
 
 .hero {
   height: 100vh;
-  background-image: url("assets/images/profhpbg1.jpg");
-  background-size: cover;
-  background-position: 90% center;
   position: relative;
-
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-  padding-left: 60px;
+  align-items: flex-end;
+  padding: 110px 60px 90px;
   text-align: left;
   width: 100%;
   overflow: hidden;
+  background: none;
 }
 
 .hero::before {
@@ -666,6 +663,52 @@ img {
   position: relative;
   z-index: 2;
   max-width: 800px;
+  padding-bottom: 0;
+  transform: translateY(40px);
+}
+
+.hero-bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: saturate(1.05) brightness(0.9);
+}
+
+.hero-cutout {
+  position: absolute;
+  right: -360px;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+  animation: cutout-slide-in 0.9s ease-out 0.2s forwards;
+}
+
+.hero-cutout img {
+  display: block;
+  height: 86vh;
+  max-height: 820px;
+  width: auto;
+  object-fit: contain;
+  transform: translateY(0);
+  filter: drop-shadow(0 30px 45px rgba(0, 0, 0, 0.55));
+}
+
+@keyframes cutout-slide-in {
+  from {
+    transform: translateX(120px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .hero-title {
@@ -1242,6 +1285,7 @@ img {
 
 .contact-page {
   padding-top: 120px;
+  padding-bottom: 0;
   position: relative;
   overflow: hidden;
 }
@@ -1327,9 +1371,9 @@ img {
 }
 
 .contact-map {
-  padding: 0 40px;
+  padding: 0 40px 40px;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 40px auto 0;
 }
 
 @media (max-width: 900px) {
@@ -1990,7 +2034,7 @@ img {
 .footer {
   background: rgba(0, 0, 20, 0.7);
   padding: 60px 40px 20px;
-  margin-top: 60px;
+  margin-top: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -4011,6 +4055,16 @@ body {
   width: 100%;
   height: 100%;
   border-radius: var(--radius-large);
+}
+
+.video-wrapper video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-large);
+  object-fit: cover;
 }
 
 .featured-video-desc {
