@@ -440,6 +440,32 @@ function animateBooksMarquee() {
   });
 }
 
+function animateEndorsements() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  const cards = document.querySelectorAll(".endorsement-card");
+  if (!cards.length) return;
+
+  gsap.set(cards, { opacity: 0, y: 40, rotateX: 6, scale: 0.98 });
+
+  cards.forEach((card, index) => {
+    gsap.to(card, {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      scale: 1,
+      duration: 1.1,
+      ease: "power3.out",
+      delay: index * 0.05,
+      scrollTrigger: {
+        trigger: card,
+        start: "top 82%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
+}
+
 function initPatentStack() {
   const patentStack = document.querySelector(".patent-stack");
   if (!patentStack) return;
@@ -619,6 +645,7 @@ async function initGsapAnimations() {
     ".paper-card",
     ".research-link-card",
     ".carousel-item",
+    ".endorsement-card",
   ];
 
   autoRevealSelectors
@@ -630,6 +657,7 @@ async function initGsapAnimations() {
   animateSectionsOnScroll();
   animateBooksMarquee();
   animateFooterSignature();
+  animateEndorsements();
 }
 
 function initNewsletterNavigation() {
@@ -873,6 +901,149 @@ function initHeroVideoBoomerang() {
   video.playbackRate = 1;
 }
 
+function initPaperCardFlip() {
+  const cards = document.querySelectorAll(".paper-card");
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    const titleEl = card.querySelector(".paper-title");
+    const abstractEl = card.querySelector(".paper-abstract");
+
+    if (!titleEl || !abstractEl) return;
+
+    const flipToBack = () => {
+      // Flip to show "Click for paper abstract"
+      gsap.to(card, {
+        rotationY: 180,
+        duration: 0.6,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+
+      gsap.to(titleEl, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+      gsap.set(titleEl, { pointerEvents: "none", delay: 0.3 });
+
+      // Show flip text
+      gsap.set(abstractEl, { display: "block" });
+      gsap.to(abstractEl, {
+        opacity: 1,
+        duration: 0.3,
+        delay: 0.2,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+    };
+
+    const flipToFront = () => {
+      // Flip back to show title
+      gsap.to(card, {
+        rotationY: 0,
+        duration: 0.6,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+
+      gsap.to(abstractEl, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.inOut",
+        overwrite: true,
+        onComplete: () => {
+          gsap.set(abstractEl, { display: "none" });
+        },
+      });
+
+      gsap.to(titleEl, {
+        opacity: 1,
+        duration: 0.3,
+        delay: 0.2,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+      gsap.set(titleEl, { pointerEvents: "auto", delay: 0.5 });
+    };
+
+    card.addEventListener("mouseenter", flipToBack);
+    card.addEventListener("mouseleave", flipToFront);
+  });
+}
+
+function initResearchAbstractModal() {
+  const modal = document.getElementById("abstractModal");
+  const cards = document.querySelectorAll(".paper-card");
+  if (!modal || !cards.length) return;
+
+  const titleEl = modal.querySelector(".abstract-modal__title");
+  const bodyEl = modal.querySelector(".abstract-modal__body");
+  const closeBtn = modal.querySelector(".abstract-modal__close");
+
+  if (!titleEl || !bodyEl || !closeBtn) return;
+
+  const openModal = (title, abstract) => {
+    titleEl.textContent = title || "Abstract";
+    bodyEl.textContent = abstract || "Abstract unavailable.";
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    closeBtn.focus({ preventScroll: true });
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  };
+
+  closeBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    closeModal();
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("open")) {
+      closeModal();
+    }
+  });
+
+  cards.forEach((card) => {
+    const abstractEl = card.querySelector(".paper-abstract");
+    if (!abstractEl) return;
+
+    const title = card.querySelector(".paper-title")?.textContent?.trim();
+
+    const showAbstract = () => {
+      const abstract = abstractEl.textContent.trim();
+      openModal(title, abstract);
+    };
+
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+
+    card.addEventListener("click", (event) => {
+      event.preventDefault();
+      showAbstract();
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showAbstract();
+      }
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
@@ -883,6 +1054,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initBackToTop();
   initHeroVideoBoomerang();
   initContactVideoBoomerang();
+  initPaperCardFlip();
+  initResearchAbstractModal();
   initGsapAnimations()
     .then(async () => {
       await playInitialPageLoadTransition();
