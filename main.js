@@ -365,7 +365,9 @@ function animateSectionsOnScroll() {
     reveals.forEach((el) => {
       el.classList.add("visible");
       el.style.opacity = 1;
-      el.style.transform = "translateY(0)";
+      if (!el.classList.contains("hero-content")) {
+        el.style.transform = "translateY(0)";
+      }
     });
     fades.forEach((el) => {
       el.classList.add("visible");
@@ -374,8 +376,18 @@ function animateSectionsOnScroll() {
     return;
   }
 
-  gsap.set(reveals, { opacity: 0, y: 80 });
-  reveals.forEach((el) => {
+  const revealsToAnimate = Array.from(reveals).filter(
+    (el) => !el.classList.contains("hero-content")
+  );
+  gsap.set(revealsToAnimate, { opacity: 0, y: 80 });
+
+  // Make hero-content visible from the start
+  const heroContent = document.querySelector(".hero-content");
+  if (heroContent) {
+    gsap.set(heroContent, { opacity: 1, y: 0 });
+  }
+
+  revealsToAnimate.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
       y: 0,

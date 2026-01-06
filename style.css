@@ -510,6 +510,7 @@ img {
     align-items: center;
     gap: 12px;
     padding-top: 80px;
+    transform: translateY(30px);
   }
 
   .hero h1 {
@@ -624,12 +625,15 @@ img {
   position: relative;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: center;
   padding: 110px 60px 90px;
   text-align: left;
   width: 100%;
   overflow: hidden;
-  background: none;
+  background: url("assets/images/profhpbg1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero::before {
@@ -664,7 +668,7 @@ img {
   z-index: 2;
   max-width: 800px;
   padding-bottom: 0;
-  transform: translateY(40px);
+  transform: translateY(30px);
 }
 
 .hero-bg-video {
