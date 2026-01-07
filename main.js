@@ -358,62 +358,8 @@ function animateNavbarAndHero() {
 }
 
 function animateSectionsOnScroll() {
-  const reveals = document.querySelectorAll(".reveal");
-  const fades = document.querySelectorAll(".fade-section");
-
-  if (!window.gsap || !window.ScrollTrigger) {
-    reveals.forEach((el) => {
-      el.classList.add("visible");
-      el.style.opacity = 1;
-      if (!el.classList.contains("hero-content")) {
-        el.style.transform = "translateY(0)";
-      }
-    });
-    fades.forEach((el) => {
-      el.classList.add("visible");
-      el.style.opacity = 1;
-    });
-    return;
-  }
-
-  const revealsToAnimate = Array.from(reveals).filter(
-    (el) => !el.classList.contains("hero-content")
-  );
-  gsap.set(revealsToAnimate, { opacity: 0, y: 80 });
-
-  // Make hero-content visible from the start
-  const heroContent = document.querySelector(".hero-content");
-  if (heroContent) {
-    gsap.set(heroContent, { opacity: 1, y: 0 });
-  }
-
-  revealsToAnimate.forEach((el) => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 1.2,
-      ease: "power4.out",
-      scrollTrigger: {
-        trigger: el,
-        start: "top 82%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
-
-  gsap.set(fades, { opacity: 0 });
-  fades.forEach((el) => {
-    gsap.to(el, {
-      opacity: 1,
-      duration: 1.0,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: el,
-        start: "top 85%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
+  // Disabled - using new experimental scroll animations instead
+  return;
 }
 
 function animateFooterSignature() {
@@ -1054,6 +1000,268 @@ function initResearchAbstractModal() {
   });
 }
 
+function initExperimentalScrollAnimations() {
+  console.log("🎬 Experimental Scroll Animations STARTED");
+
+  if (!window.gsap || !window.ScrollTrigger) {
+    console.log("❌ GSAP or ScrollTrigger not loaded");
+    return;
+  }
+
+  console.log("✅ GSAP and ScrollTrigger found, initializing animations...");
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ==================== SMOOTH PARALLAX - IMAGES MOVE GRACEFULLY ====================
+  // Disabled: Causes text-image overlap on scroll
+  // gsap.utils.toArray("img:not(.nav-logo)").forEach((img, idx) => {
+  //   gsap.to(img, {
+  //     scrollTrigger: {
+  //       trigger: img,
+  //       start: "top bottom",
+  //       end: "bottom top",
+  //       scrub: 1,
+  //     },
+  //     y: 80,
+  //     ease: "none",
+  //   });
+  // });
+
+  // ==================== TEXT BLUR TO CLEAR EFFECT ====================
+  gsap.utils.toArray("h2, h3, p, li").forEach((text) => {
+    // Skip about-hero-text to prevent movement
+    if (text.closest(".about-hero-text")) return;
+
+    // Only apply blur animation if element is below viewport on load
+    const rect = text.getBoundingClientRect();
+    const isInitiallyVisible = rect.top < window.innerHeight;
+
+    if (!isInitiallyVisible) {
+      gsap.fromTo(
+        text,
+        {
+          filter: "blur(10px)",
+          opacity: 0.2,
+          x: -60,
+        },
+        {
+          scrollTrigger: {
+            trigger: text,
+            start: "top bottom",
+            end: "top 85%",
+            scrub: 1.5,
+          },
+          filter: "blur(0px)",
+          opacity: 1,
+          x: 0,
+          ease: "power2.out",
+        }
+      );
+    }
+  });
+
+  // ==================== IMAGE SCALE UP ON SCROLL ====================
+  gsap.utils.toArray("section img, .article-card img").forEach((img) => {
+    gsap.fromTo(
+      img,
+      {
+        scale: 0.4,
+      },
+      {
+        scrollTrigger: {
+          trigger: img,
+          start: "top 80%",
+          end: "top 30%",
+          scrub: 1.5,
+        },
+        scale: 1,
+        ease: "power2.out",
+      }
+    );
+  });
+
+  // ==================== CARD REVEAL - SMOOTH SCALE & FADE ====================
+  gsap.utils
+    .toArray(".article-card, .endorsement-card, .book-card")
+    .forEach((card, idx) => {
+      gsap.fromTo(
+        card,
+        {
+          opacity: 0,
+          scale: 0.9,
+          y: 60,
+          filter: "blur(8px)",
+        },
+        {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            end: "top 50%",
+            scrub: 1.2,
+          },
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          filter: "blur(0px)",
+          ease: "power2.out",
+        }
+      );
+
+      // Subtle lift + rotation on scroll
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 1,
+        },
+        y: -40,
+        rotationZ: idx % 2 === 0 ? 1 : -1,
+        ease: "sine.inOut",
+      });
+    });
+
+  // ==================== SECTION FADE IN ====================
+  gsap.utils.toArray("section").forEach((section) => {
+    gsap.fromTo(
+      section,
+      {
+        opacity: 0.5,
+        y: 40,
+      },
+      {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          end: "top 55%",
+          scrub: 1,
+        },
+        opacity: 1,
+        y: 0,
+        ease: "power2.out",
+      }
+    );
+  });
+
+  // ==================== SUBTLE IMAGE ZOOM ====================
+  gsap.utils.toArray(".book-card img, .fanned-card img").forEach((img) => {
+    gsap.to(img, {
+      scrollTrigger: {
+        trigger: img,
+        start: "top 80%",
+        end: "bottom 20%",
+        scrub: 1,
+      },
+      scale: 1.05,
+      ease: "sine.inOut",
+    });
+  });
+
+  // ==================== TEXT STAGGER REVEAL ====================
+  gsap.utils.toArray(".article-card h3").forEach((heading) => {
+    const words = heading.textContent.split(" ");
+    heading.innerHTML = words
+      .map(
+        (word) =>
+          `<span style="display:inline-block; overflow:hidden;"><span style="display:inline-block;">${word}</span></span>`
+      )
+      .join(" ");
+
+    gsap.fromTo(
+      heading.querySelectorAll("span > span"),
+      {
+        y: 30,
+        opacity: 0,
+      },
+      {
+        scrollTrigger: {
+          trigger: heading,
+          start: "top 80%",
+          end: "top 60%",
+          scrub: 1,
+        },
+        y: 0,
+        opacity: 1,
+        stagger: {
+          each: 0.05,
+        },
+        ease: "power2.out",
+      }
+    );
+  });
+
+  // ==================== GENTLE PARALLAX MOVEMENT ON SCROLL VELOCITY ====================
+  ScrollTrigger.create({
+    onUpdate: (self) => {
+      const velocity = self.getVelocity();
+
+      // Apply subtle opacity shift based on scroll speed
+      if (Math.abs(velocity) > 100) {
+        gsap.to("body", {
+          opacity: 0.98,
+          duration: 0.3,
+          overwrite: "auto",
+        });
+      } else {
+        gsap.to("body", {
+          opacity: 1,
+          duration: 0.5,
+          overwrite: "auto",
+        });
+      }
+    },
+  });
+
+  // ==================== NAV SUBTLE SCALE & ROUNDED ON SCROLL ====================
+  gsap.to(".nav-container", {
+    scrollTrigger: {
+      trigger: "body",
+      start: "top top",
+      end: "200px top",
+      scrub: 1,
+    },
+    scale: 0.95,
+    ease: "sine.inOut",
+  });
+
+  // Add border-radius to navbar when scrolling
+  ScrollTrigger.create({
+    onUpdate: (self) => {
+      const navbar = document.querySelector(".navbar");
+      if (navbar) {
+        if (self.progress > 0) {
+          navbar.style.borderRadius = "28px";
+          navbar.style.margin = "8px 20px";
+        } else {
+          navbar.style.borderRadius = "0px";
+          navbar.style.margin = "0px";
+        }
+      }
+    },
+  });
+
+  // ==================== SECTION UNDERLINE REVEAL ====================
+  // Removed per user request
+
+  // ==================== SMOOTH IMAGE PARALLAX DEPTH ====================
+  // Disabled: Causes text-image overlap on scroll
+  // gsap.utils.toArray("img").forEach((img, idx) => {
+  //   const randomDepth = 30 + (idx % 3) * 20;
+  //   gsap.to(img, {
+  //     scrollTrigger: {
+  //       trigger: img,
+  //       start: "top bottom",
+  //       end: "top top",
+  //       scrub: 1,
+  //     },
+  //     y: randomDepth,
+  //     ease: "sine.inOut",
+  //   });
+  // });
+
+  ScrollTrigger.refresh();
+  console.log("✅ All smooth animations initialized");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupHamburger();
   setupLoaderTransitions();
@@ -1068,6 +1276,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initResearchAbstractModal();
   initGsapAnimations()
     .then(async () => {
+      // Initialize scroll animations AFTER GSAP loads
+      initExperimentalScrollAnimations();
       await playInitialPageLoadTransition();
       playBlindsOpenIfNeeded();
     })
