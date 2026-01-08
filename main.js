@@ -3,19 +3,21 @@ const GSAP_SRC =
 const GSAP_SCROLLTRIGGER_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js";
 
-const SIGNATURE_SVG = `
-  <svg
-    class="signature-svg"
-    viewBox="0 0 800 600"
-    aria-hidden="true"
-    focusable="false"
-    role="presentation"
-  >
-    <path
-      d="m236.59998,332.26586c1.79605,-4.95814 6.02359,-13.81201 14.36843,-26.44339c12.68995,-19.20844 25.76795,-39.40547 37.71713,-64.45578c13.27155,-27.82249 24.30241,-50.82365 32.32897,-67.76117c6.13387,-12.94364 7.87906,-21.34908 12.57238,-23.13797c1.65935,-0.63248 1.89389,0.14912 3.59211,8.26356c3.6581,17.47907 14.7127,39.59645 21.55264,69.41389c7.56587,32.98207 16.39809,67.20251 25.14475,97.51002c7.05179,24.4347 11.52027,40.63323 8.98027,42.97052c-1.26998,1.16862 -3.66797,-1.61312 -10.77632,-13.2217c-9.0775,-14.82438 -18.28853,-30.92672 -34.12502,-46.27594c-14.89089,-14.43273 -26.2339,-24.04533 -35.92107,-29.74882c-3.38289,-1.99175 -0.04067,1.81043 7.18421,3.30542c8.93499,1.84881 13.53311,1.13911 16.16448,-1.65271c3.7213,-3.94827 1.79605,-6.61085 1.79605,-8.26356c0,-1.65271 0.40001,-2.10889 7.18421,3.30542c3.83772,3.06277 7.73107,5.83528 14.36843,3.30542c4.69332,-1.78889 10.35236,-4.17783 14.36843,-11.56899c1.60646,-2.95645 1.79605,-3.30542 3.59211,-3.30542c1.79605,0 3.72881,2.67295 5.38816,3.30542c2.34663,0.89445 3.59211,1.65271 5.38816,1.65271c0,0 3.41759,-2.02325 7.18421,-3.30542c6.94535,-2.3642 14.36843,-3.30542 21.55264,-3.30542c1.79605,0 5.38816,0 7.18421,0c0,0 2.32213,-1.16865 3.59211,0c1.26998,1.16865 1.79605,1.65271 3.59211,0c7.18421,-6.61085 10.40624,-15.01891 14.36843,-23.13797c3.29043,-6.74251 7.18421,-9.91627 10.77632,-3.30542c3.59211,6.61085 11.29462,14.65672 14.36843,21.48526c2.17348,4.82851 3.59211,4.95814 3.59211,3.30542c0,-1.65271 0,-3.30542 0,-4.95814c0,0 3.59211,-3.30542 7.18421,-6.61085c0,0 -0.55222,-1.96012 1.79605,-4.95814c2.97033,-3.79221 6.63172,-7.28998 12.57238,-14.87441c2.34828,-2.99801 5.69697,-7.5374 7.18421,-6.61085c8.00912,4.98966 9.02719,21.46988 17.96054,44.62323c10.83327,28.07755 21.53324,60.63458 25.14475,92.55188c3.16206,27.94505 4.86071,56.97444 -5.38816,62.80306c-6.11129,3.47555 -19.17225,-8.44191 -30.53291,-31.40153c-12.47613,-25.2139 -15.26552,-51.17784 -16.16448,-69.41391c-0.6511,-13.20813 1.79605,-21.48526 1.79605,-24.79068l1.79605,0l1.79605,3.30542l0,1.65271"
-    />
-  </svg>
-`;
+const SIGNATURE_SRC = "assets/images/rvr_fullsig.svg";
+let _signatureCache = null;
+
+async function loadSignatureMarkup() {
+  if (_signatureCache) return _signatureCache;
+  try {
+    const res = await fetch(SIGNATURE_SRC, { cache: "no-cache" });
+    const txt = await res.text();
+    _signatureCache = txt;
+    return txt;
+  } catch (err) {
+    console.error("Failed to load signature SVG", err);
+    return null;
+  }
+}
 
 const loadScriptOnce = (src) =>
   new Promise((resolve, reject) => {
@@ -78,10 +80,20 @@ function highlightActiveNavLink() {
   const navLinks = document.querySelectorAll(".nav-links a");
   if (!navLinks.length) return;
 
-  const current = window.location.pathname.split("/").pop() || "index.html";
+  const normalize = (value) => {
+    if (!value) return "index";
+    return value
+      .split(/[?#]/)[0]
+      .replace(/index\.html?$/i, "index")
+      .replace(/\.html?$/i, "")
+      .replace(/\/+/g, "")
+      .toLowerCase();
+  };
+
+  const current = normalize(window.location.pathname.split("/").pop());
 
   navLinks.forEach((link) => {
-    const target = (link.getAttribute("href") || "").split("#")[0];
+    const target = normalize((link.getAttribute("href") || "").split("#")[0]);
     if (target === current) {
       link.classList.add("active");
     } else {
@@ -105,28 +117,53 @@ function createBlindsContainer() {
     signature.className = "blinds-signature";
     document.body.insertBefore(signature, document.body.firstChild);
   }
+}
 
-  if (signature && !signature.querySelector(".signature-svg")) {
-    signature.innerHTML = SIGNATURE_SVG;
+async function ensureBlindsSignatureInjected() {
+  createBlindsContainer();
+  const signature = document.querySelector(".blinds-signature");
+  if (!signature) return;
+  if (signature.querySelector("svg")) return;
+
+  const markup = await loadSignatureMarkup();
+  if (!markup) return;
+  signature.innerHTML = markup;
+  // ensure class present for styling
+  const svg = signature.querySelector("svg");
+  if (svg && !svg.classList.contains("signature-svg")) {
+    svg.classList.add("signature-svg");
   }
 }
 
 function restartSignatureDraw(signatureEl) {
-  const path = signatureEl?.querySelector("path");
-  if (!path) return;
+  const shapes = Array.from(
+    signatureEl?.querySelectorAll(
+      "path, polyline, polygon, line, circle, ellipse"
+    ) || []
+  );
+  if (!shapes.length) return;
 
-  const length = path.getTotalLength();
-  path.style.setProperty("--signature-length", length);
-  path.style.strokeDasharray = length;
-  path.style.strokeDashoffset = length;
-  path.style.animation = "none";
-  path.classList.remove("drawing");
-  void path.getBoundingClientRect();
-  path.classList.add("drawing");
+  shapes.forEach((el) => {
+    const length =
+      typeof el.getTotalLength === "function" ? el.getTotalLength() : 2400;
+    el.style.setProperty("--signature-length", length);
+    el.style.strokeDasharray = length;
+    el.style.strokeDashoffset = length;
+    el.style.animation = "none";
+    el.classList.remove("drawing");
+  });
+
+  void signatureEl.getBoundingClientRect();
+
+  shapes.forEach((el, idx) => {
+    el.style.animationDelay = `${idx * 0.08}s`;
+    el.classList.add("drawing");
+  });
 }
 
 async function playBlindsAnimation(targetUrl) {
   await ensureGsap();
+  await ensureBlindsSignatureInjected();
 
   return new Promise((resolve) => {
     createBlindsContainer();
@@ -196,6 +233,7 @@ async function playBlindsOpenIfNeeded() {
   if (!shouldOpen) return;
   sessionStorage.removeItem("blindsOpenNext");
 
+  await ensureBlindsSignatureInjected();
   createBlindsContainer();
   const container = document.querySelector(".blinds-container");
   const signature = document.querySelector(".blinds-signature");
@@ -363,25 +401,42 @@ function animateSectionsOnScroll() {
 }
 
 function animateFooterSignature() {
-  const footerSig = document.querySelector(".footer-signature-svg");
-  if (!footerSig || !window.ScrollTrigger) return;
+  const footerSigs = Array.from(
+    document.querySelectorAll(".footer-signature-svg")
+  );
+  if (!footerSigs.length || !window.ScrollTrigger) return;
 
-  const path = footerSig.querySelector("path");
-  if (!path) return;
-
-  const trigger = ScrollTrigger.create({
+  ScrollTrigger.create({
     trigger: ".footer",
-    onEnter: () => {
-      const length = path.getTotalLength();
-      path.style.setProperty("--signature-length", length);
-      path.style.strokeDasharray = length;
-      path.style.strokeDashoffset = length;
-      path.style.animation = "none";
-      path.classList.remove("drawing");
-      void path.getBoundingClientRect();
-      path.classList.add("drawing");
-    },
+    start: "top bottom",
     once: true,
+    onEnter: () => {
+      footerSigs.forEach((footerSig) => {
+        const shapes = Array.from(
+          footerSig.querySelectorAll(
+            "path, polyline, polygon, line, circle, ellipse"
+          )
+        );
+        if (!shapes.length) return;
+
+        shapes.forEach((el) => {
+          const length =
+            typeof el.getTotalLength === "function"
+              ? el.getTotalLength()
+              : 2400;
+          el.style.setProperty("--signature-length", length);
+          el.style.strokeDasharray = length;
+          el.style.strokeDashoffset = length;
+          el.style.animation = "none";
+          el.classList.remove("drawing");
+        });
+        void footerSig.getBoundingClientRect();
+        shapes.forEach((el, idx) => {
+          el.style.animationDelay = `${idx * 0.08}s`;
+          el.classList.add("drawing");
+        });
+      });
+    },
   });
 }
 
@@ -614,8 +669,27 @@ async function initGsapAnimations() {
   animateNavbarAndHero();
   animateSectionsOnScroll();
   animateBooksMarquee();
+  await injectFooterSignature();
   animateFooterSignature();
   animateEndorsements();
+}
+
+async function injectFooterSignature() {
+  const footerSigs = Array.from(
+    document.querySelectorAll(".footer-signature-svg")
+  );
+  if (!footerSigs.length) return;
+
+  const markup = await loadSignatureMarkup();
+  if (!markup) return;
+
+  footerSigs.forEach((el) => {
+    el.innerHTML = markup;
+    const svg = el.querySelector("svg");
+    if (svg && !svg.classList.contains("signature-svg")) {
+      svg.classList.add("signature-svg");
+    }
+  });
 }
 
 function initNewsletterNavigation() {
@@ -1223,40 +1297,21 @@ function initExperimentalScrollAnimations() {
     ease: "sine.inOut",
   });
 
-  // Add border-radius to navbar when scrolling
+  let navbarRounded = false;
   ScrollTrigger.create({
     onUpdate: (self) => {
       const navbar = document.querySelector(".navbar");
-      if (navbar) {
-        if (self.progress > 0) {
-          navbar.style.borderRadius = "28px";
-          navbar.style.margin = "8px 20px";
-        } else {
-          navbar.style.borderRadius = "0px";
-          navbar.style.margin = "0px";
-        }
+      if (!navbar) return;
+      const shouldRound = self.progress > 0;
+      if (shouldRound === navbarRounded) return;
+      navbarRounded = shouldRound;
+      if (shouldRound) {
+        navbar.classList.add("navbar-rounded");
+      } else {
+        navbar.classList.remove("navbar-rounded");
       }
     },
   });
-
-  // ==================== SECTION UNDERLINE REVEAL ====================
-  // Removed per user request
-
-  // ==================== SMOOTH IMAGE PARALLAX DEPTH ====================
-  // Disabled: Causes text-image overlap on scroll
-  // gsap.utils.toArray("img").forEach((img, idx) => {
-  //   const randomDepth = 30 + (idx % 3) * 20;
-  //   gsap.to(img, {
-  //     scrollTrigger: {
-  //       trigger: img,
-  //       start: "top bottom",
-  //       end: "top top",
-  //       scrub: 1,
-  //     },
-  //     y: randomDepth,
-  //     ease: "sine.inOut",
-  //   });
-  // });
 
   ScrollTrigger.refresh();
   console.log("✅ All smooth animations initialized");
