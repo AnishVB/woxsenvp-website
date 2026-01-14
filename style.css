@@ -3612,8 +3612,7 @@ body.modal-open {
 }
 
 .newsletter-page {
-  padding: 80px 40px 100px;
-  max-width: 1000px;
+  padding: 80px 0 100px;
   margin: 0 auto;
 }
 
@@ -4184,11 +4183,11 @@ body.modal-open {
 
 .newsletter-archives-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
-  padding: 40px;
-  max-width: 1400px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  padding: 40px 80px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .archive-newsletter-item {
@@ -4263,17 +4262,17 @@ body.modal-open {
 
 @media (max-width: 1200px) {
   .newsletter-archives-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    padding: 35px;
+    padding: 35px 60px;
   }
 }
 
 @media (max-width: 900px) {
   .newsletter-archives-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
-    padding: 30px;
+    padding: 30px 40px;
   }
 
   .archive-back-button {
@@ -4283,7 +4282,7 @@ body.modal-open {
 
 @media (max-width: 768px) {
   .newsletter-archives-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     padding: 25px;
   }
@@ -4316,7 +4315,7 @@ body.modal-open {
 
 @media (max-width: 480px) {
   .newsletter-archives-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(1, 1fr);
     gap: 12px;
     padding: 20px;
   }

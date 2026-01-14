@@ -13,15 +13,15 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      // Hide content immediately (except the blinds overlay) if transition flag is set
-      if (sessionStorage.getItem("blindsOpenNext")) {
-        document.documentElement.style.background = "#02053f";
-        const hideStyle = document.createElement("style");
-        hideStyle.id = "blinds-hide-style";
-        hideStyle.textContent =
-          "body > *:not(.blinds-container):not(.blinds-signature){visibility:hidden !important;}";
-        document.head.appendChild(hideStyle);
-      }
+      sessionStorage.removeItem("blindsOpenNext");
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => el.classList.add("visible"));
+        document
+          .querySelectorAll(".fade-section")
+          .forEach((el) => (el.style.opacity = "1"));
+      });
     </script>
     <script defer src="main.js"></script>
   </head>
