@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -58,21 +58,34 @@
     <section
       class="hero hero-home"
       style="
-        background-image: url('assets/images/profhpbg1.jpg');
+        background-image: url(&quot;assets/images/finraul.png&quot;);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
       "
     >
       <div class="hero-content">
-        <h1>Dr. Raul V. Rodriguez</h1>
+        <h1
+          style="
+            color: black;
+            text-shadow:
+              1px 1px 0 #ccc,
+              2px 2px 0 #bbb,
+              3px 3px 0 #aaa,
+              4px 4px 0 #999,
+              5px 5px 10px rgba(0, 0, 0, 0.5);
+          "
+        >
+          Dr. Raul V. Rodriguez
+        </h1>
 
         <div class="hero-carousel">
           <div class="hero-carousel-inner" id="subtitle-carousel">
             <div>Vice President, Woxsen University</div>
             <div>Steven Pinker Professor of Cognitive Psychology</div>
             <div>
-              Board Member | Cognitive Technologist | Behavioural Engineer
+              Board Member | Cognitive Technologist | Computational Social
+              Scientist
             </div>
           </div>
         </div>
@@ -354,7 +367,7 @@
               <p class="event-location">📍 ${event.location}</p>
               <p class="event-description">${event.description}</p>
             </div>
-          `
+          `,
             )
             .join("");
         }

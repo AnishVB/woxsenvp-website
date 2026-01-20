@@ -55,7 +55,7 @@ function setupHamburger() {
     navLinks.classList.toggle("active");
     hamburger.setAttribute(
       "aria-expanded",
-      hamburger.classList.contains("active")
+      hamburger.classList.contains("active"),
     );
   });
 
@@ -138,8 +138,8 @@ async function ensureBlindsSignatureInjected() {
 function restartSignatureDraw(signatureEl) {
   const shapes = Array.from(
     signatureEl?.querySelectorAll(
-      "path, polyline, polygon, line, circle, ellipse"
-    ) || []
+      "path, polyline, polygon, line, circle, ellipse",
+    ) || [],
   );
   if (!shapes.length) return;
 
@@ -216,7 +216,7 @@ async function playBlindsAnimation(targetUrl) {
           from: "start",
         },
       },
-      0
+      0,
     );
 
     // Show signature while closing
@@ -286,7 +286,7 @@ async function playBlindsOpenIfNeeded() {
         from: "start",
       },
     },
-    0
+    0,
   );
 
   // Fade signature out after opening animation completes
@@ -299,7 +299,7 @@ async function playBlindsOpenIfNeeded() {
       if (hideStyle) hideStyle.remove();
     },
     null,
-    0.8
+    0.8,
   );
 
   // At 1.4s: hide overlay elements
@@ -309,7 +309,7 @@ async function playBlindsOpenIfNeeded() {
       signature.style.display = "none";
     },
     null,
-    1.4
+    1.4,
   );
 
   // At 1.4s: start LONGER entrance animations
@@ -339,7 +339,7 @@ async function playBlindsOpenIfNeeded() {
       animateSectionsOnScroll();
     },
     null,
-    1.4
+    1.4,
   );
 }
 
@@ -366,6 +366,16 @@ function setupLoaderTransitions() {
 
 function animateNavbarAndHero() {
   if (!window.gsap) return;
+
+  // Apply backdrop-filter before animation starts
+  const navbar = document.querySelector(".navbar");
+  if (navbar) {
+    navbar.style.backdropFilter = "blur(12px)";
+    navbar.style.webkitBackdropFilter = "blur(12px)";
+    navbar.style.background = "rgba(255, 255, 255, 0.14)";
+    navbar.style.border = "1px solid rgba(255, 255, 255, 0.22)";
+    navbar.style.boxShadow = "0 10px 35px rgba(0, 0, 0, 0.28)";
+  }
 
   gsap.from(".nav-container", {
     y: -60,
@@ -402,7 +412,7 @@ function animateSectionsOnScroll() {
 
 function animateFooterSignature() {
   const footerSigs = Array.from(
-    document.querySelectorAll(".footer-signature-svg")
+    document.querySelectorAll(".footer-signature-svg"),
   );
   if (!footerSigs.length || !window.ScrollTrigger) return;
 
@@ -414,8 +424,8 @@ function animateFooterSignature() {
       footerSigs.forEach((footerSig) => {
         const shapes = Array.from(
           footerSig.querySelectorAll(
-            "path, polyline, polygon, line, circle, ellipse"
-          )
+            "path, polyline, polygon, line, circle, ellipse",
+          ),
         );
         if (!shapes.length) return;
 
@@ -489,6 +499,9 @@ function initPatentStack() {
   let currentIndex = 0;
   let isPaused = false;
 
+  // ensure initial ordering
+  cards.forEach((card, i) => card.setAttribute("data-index", i));
+
   function rotateCards() {
     if (isPaused) return;
 
@@ -510,11 +523,15 @@ function initPatentStack() {
     isPaused = false;
   });
 
-  cards.forEach((card) => {
-    card.addEventListener("click", (e) => {
-      if (card.getAttribute("data-index") === "0") {
-        rotateCards();
-      }
+  cards.forEach((card, originalIndex) => {
+    card.addEventListener("click", () => {
+      const clickedIndex = Number(card.getAttribute("data-index")) || 0;
+      // bring clicked card to front
+      currentIndex = (currentIndex + clickedIndex) % cards.length;
+      cards.forEach((c, i) => {
+        const newIndex = (i - currentIndex + cards.length) % cards.length;
+        c.setAttribute("data-index", newIndex);
+      });
     });
   });
 
@@ -549,7 +566,7 @@ function initUpcomingPatentsCarousel() {
   });
 
   const indicators = Array.from(
-    indicatorsContainer.querySelectorAll(".carousel-indicator")
+    indicatorsContainer.querySelectorAll(".carousel-indicator"),
   );
 
   function updateCarousel() {
@@ -676,7 +693,7 @@ async function initGsapAnimations() {
 
 async function injectFooterSignature() {
   const footerSigs = Array.from(
-    document.querySelectorAll(".footer-signature-svg")
+    document.querySelectorAll(".footer-signature-svg"),
   );
   if (!footerSigs.length) return;
 
@@ -696,7 +713,7 @@ function initNewsletterNavigation() {
   const numberGridButtons = document.querySelectorAll(".newsletter-number-btn");
   const viewOlderBtn = document.querySelector(".view-older-btn");
   const readMoreButtons = document.querySelectorAll(
-    ".read-more-btn, .archive-read-more-btn"
+    ".read-more-btn, .archive-read-more-btn",
   );
   const modal = document.getElementById("newsletterModal");
   const modalClose = document.querySelector(".modal-close");
@@ -707,7 +724,7 @@ function initNewsletterNavigation() {
       button.addEventListener("click", () => {
         const newsletterNum = button.getAttribute("data-newsletter");
         const newsletterItem = document.querySelector(
-          `.newsletter-item[data-newsletter="${newsletterNum}"]`
+          `.newsletter-item[data-newsletter="${newsletterNum}"]`,
         );
 
         if (newsletterItem) {
@@ -736,12 +753,12 @@ function initNewsletterNavigation() {
       button.addEventListener("click", (e) => {
         e.preventDefault();
         const newsletterItem = button.closest(
-          ".newsletter-item, .archive-newsletter-item"
+          ".newsletter-item, .archive-newsletter-item",
         );
         if (newsletterItem) {
           const title = newsletterItem.querySelector("h3").textContent;
           const date = newsletterItem.querySelector(
-            ".newsletter-date, .archive-newsletter-date"
+            ".newsletter-date, .archive-newsletter-date",
           ).textContent;
 
           modalBody.innerHTML = `
@@ -862,7 +879,7 @@ async function playInitialPageLoadTransition() {
         ease: "power2.inOut",
         stagger: { amount: 0.5, from: "start" },
       },
-      0
+      0,
     );
 
     timeline.to(signature, { opacity: 1, duration: 0.6 }, 0.25);
@@ -879,7 +896,7 @@ async function playInitialPageLoadTransition() {
         ease: "power2.inOut",
         stagger: { amount: 0.5, from: "start" },
       },
-      "-=0.1"
+      "-=0.1",
     );
 
     timeline.to(signature, { opacity: 0, duration: 0.5 }, "-=0.7");
@@ -938,18 +955,55 @@ function initPaperCardFlip() {
   cards.forEach((card) => {
     const titleEl = card.querySelector(".paper-title");
     const abstractEl = card.querySelector(".paper-abstract");
-
     if (!titleEl || !abstractEl) return;
 
+    // Store the full abstract content
+    const fullAbstract = abstractEl.innerHTML;
+    // Add the prompt element if not present
+    let prompt = abstractEl.querySelector(".paper-abstract-prompt");
+    if (!prompt) {
+      prompt = document.createElement("span");
+      prompt.className = "paper-abstract-prompt";
+      prompt.textContent = "Click for paper abstract";
+      abstractEl.appendChild(prompt);
+    }
+    // Wrap the abstract text in a span for easy show/hide
+    let abstractText = abstractEl.querySelector(".paper-abstract-text");
+    if (!abstractText) {
+      abstractText = document.createElement("span");
+      abstractText.className = "paper-abstract-text";
+      abstractText.innerHTML = fullAbstract;
+      abstractEl.insertBefore(abstractText, prompt);
+    }
+    // Style for layout
+    abstractEl.style.position = "absolute";
+    abstractEl.style.top = "0";
+    abstractEl.style.left = "0";
+    abstractEl.style.width = "100%";
+    abstractEl.style.height = "100%";
+    abstractEl.style.display = "flex";
+    abstractEl.style.flexDirection = "column";
+    abstractEl.style.alignItems = "center";
+    abstractEl.style.justifyContent = "center";
+    abstractEl.style.opacity = 0;
+    abstractEl.style.transition = "opacity 0.3s cubic-bezier(0.16,1,0.3,1)";
+    prompt.style.display = "block";
+    prompt.style.marginTop = "12px";
+    abstractText.style.display = "block";
+
     const flipToBack = () => {
-      // Flip to show "Click for paper abstract"
+      // Hide the abstract text, show the prompt
+      abstractText.style.display = "none";
+      prompt.style.display = "block";
       gsap.to(card, {
         rotationY: 180,
         duration: 0.6,
         ease: "power2.inOut",
         overwrite: true,
+        onStart: () => {
+          card.style.backfaceVisibility = "visible";
+        },
       });
-
       gsap.to(titleEl, {
         opacity: 0,
         duration: 0.3,
@@ -957,9 +1011,7 @@ function initPaperCardFlip() {
         overwrite: true,
       });
       gsap.set(titleEl, { pointerEvents: "none", delay: 0.3 });
-
-      // Show flip text
-      gsap.set(abstractEl, { display: "block" });
+      gsap.set(abstractEl, { display: "flex" });
       gsap.to(abstractEl, {
         opacity: 1,
         duration: 0.3,
@@ -970,14 +1022,18 @@ function initPaperCardFlip() {
     };
 
     const flipToFront = () => {
-      // Flip back to show title
+      // Show the abstract text, hide the prompt
+      abstractText.style.display = "block";
+      prompt.style.display = "none";
       gsap.to(card, {
         rotationY: 0,
         duration: 0.6,
         ease: "power2.inOut",
         overwrite: true,
+        onComplete: () => {
+          card.style.backfaceVisibility = "visible";
+        },
       });
-
       gsap.to(abstractEl, {
         opacity: 0,
         duration: 0.3,
@@ -987,7 +1043,6 @@ function initPaperCardFlip() {
           gsap.set(abstractEl, { display: "none" });
         },
       });
-
       gsap.to(titleEl, {
         opacity: 1,
         duration: 0.3,
@@ -1128,7 +1183,7 @@ function initExperimentalScrollAnimations() {
           opacity: 1,
           x: 0,
           ease: "power2.out",
-        }
+        },
       );
     }
   });
@@ -1149,7 +1204,7 @@ function initExperimentalScrollAnimations() {
         },
         scale: 1,
         ease: "power2.out",
-      }
+      },
     );
   });
 
@@ -1177,7 +1232,7 @@ function initExperimentalScrollAnimations() {
           y: 0,
           filter: "blur(0px)",
           ease: "power2.out",
-        }
+        },
       );
 
       // Subtle lift + rotation on scroll
@@ -1212,7 +1267,7 @@ function initExperimentalScrollAnimations() {
         opacity: 1,
         y: 0,
         ease: "power2.out",
-      }
+      },
     );
   });
 
@@ -1236,7 +1291,7 @@ function initExperimentalScrollAnimations() {
     heading.innerHTML = words
       .map(
         (word) =>
-          `<span style="display:inline-block; overflow:hidden;"><span style="display:inline-block;">${word}</span></span>`
+          `<span style="display:inline-block; overflow:hidden;"><span style="display:inline-block;">${word}</span></span>`,
       )
       .join(" ");
 
@@ -1259,7 +1314,7 @@ function initExperimentalScrollAnimations() {
           each: 0.05,
         },
         ease: "power2.out",
-      }
+      },
     );
   });
 
