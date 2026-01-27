@@ -1,3 +1,28 @@
+// Simple subtitle carousel for homepage hero
+function initHeroSubtitleCarousel() {
+  const carousel = document.getElementById("subtitle-carousel");
+  if (!carousel) return;
+  const items = Array.from(carousel.children);
+  if (items.length < 2) return;
+  let current = 0;
+  // Hide all except first
+  items.forEach((el, i) => {
+    el.style.opacity = i === 0 ? "1" : "0";
+    el.style.transition = "opacity 0.7s cubic-bezier(0.16,1,0.3,1)";
+    el.style.position = "absolute";
+    el.style.left = 0;
+    el.style.right = 0;
+    el.style.width = "100%";
+    el.style.top = 0;
+  });
+  carousel.style.position = "relative";
+  function showNext() {
+    items[current].style.opacity = "0";
+    current = (current + 1) % items.length;
+    items[current].style.opacity = "1";
+  }
+  setInterval(showNext, 3000);
+}
 const GSAP_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js";
 const GSAP_SCROLLTRIGGER_SRC =
@@ -49,14 +74,37 @@ function setupHamburger() {
   const navLinks = document.querySelector(".nav-links");
 
   if (!hamburger || !navLinks) return;
+  // Scroll lock helpers
+  let scrollLockHandler = (e) => {
+    e.preventDefault();
+  };
 
   hamburger.addEventListener("click", () => {
     hamburger.classList.toggle("active");
     navLinks.classList.toggle("active");
-    hamburger.setAttribute(
-      "aria-expanded",
-      hamburger.classList.contains("active"),
-    );
+    const isActive = hamburger.classList.contains("active");
+    hamburger.setAttribute("aria-expanded", isActive);
+    if (isActive) {
+      document.body.classList.add("no-scroll");
+      document.documentElement.classList.add("no-scroll");
+      window.addEventListener("touchmove", scrollLockHandler, {
+        passive: false,
+      });
+      window.addEventListener("wheel", scrollLockHandler, { passive: false });
+      window.addEventListener("scroll", scrollLockHandler, { passive: false });
+    } else {
+      document.body.classList.remove("no-scroll");
+      document.documentElement.classList.remove("no-scroll");
+      window.removeEventListener("touchmove", scrollLockHandler, {
+        passive: false,
+      });
+      window.removeEventListener("wheel", scrollLockHandler, {
+        passive: false,
+      });
+      window.removeEventListener("scroll", scrollLockHandler, {
+        passive: false,
+      });
+    }
   });
 
   navLinks.querySelectorAll("a").forEach((link) => {
@@ -64,6 +112,17 @@ function setupHamburger() {
       hamburger.classList.remove("active");
       navLinks.classList.remove("active");
       hamburger.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("no-scroll");
+      document.documentElement.classList.remove("no-scroll");
+      window.removeEventListener("touchmove", scrollLockHandler, {
+        passive: false,
+      });
+      window.removeEventListener("wheel", scrollLockHandler, {
+        passive: false,
+      });
+      window.removeEventListener("scroll", scrollLockHandler, {
+        passive: false,
+      });
     });
   });
 
@@ -72,6 +131,17 @@ function setupHamburger() {
       hamburger.classList.remove("active");
       navLinks.classList.remove("active");
       hamburger.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("no-scroll");
+      document.documentElement.classList.remove("no-scroll");
+      window.removeEventListener("touchmove", scrollLockHandler, {
+        passive: false,
+      });
+      window.removeEventListener("wheel", scrollLockHandler, {
+        passive: false,
+      });
+      window.removeEventListener("scroll", scrollLockHandler, {
+        passive: false,
+      });
     }
   });
 }
@@ -1384,6 +1454,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactVideoBoomerang();
   initPaperCardFlip();
   initResearchAbstractModal();
+  initHeroSubtitleCarousel();
   initGsapAnimations()
     .then(async () => {
       // Initialize scroll animations AFTER GSAP loads
