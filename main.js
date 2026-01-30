@@ -830,13 +830,19 @@ function initNewsletterNavigation() {
           const date = newsletterItem.querySelector(
             ".newsletter-date, .archive-newsletter-date",
           ).textContent;
-
+          let content = "<p>newsletter content coming soon.</p>";
+          // Use full text if present (for first newsletter)
+          const contentDiv = newsletterItem.querySelector(
+            ".newsletter-content",
+          );
+          if (contentDiv && contentDiv.dataset.fulltext) {
+            content = contentDiv.dataset.fulltext;
+          }
           modalBody.innerHTML = `
             <h3 class="modal-title">${title}</h3>
             <p class="newsletter-date modal-date">${date}</p>
-            <p>newsletter content coming soon.</p>
+            ${content}
           `;
-
           modal.classList.add("active");
           modal.style.display = "flex";
           document.body.style.overflow = "hidden";

@@ -1,3 +1,23 @@
+/* Footer icon styles */
+.footer-icon {
+  display: inline-block;
+  margin: 0 4px 0 0;
+  transition: transform 0.2s;
+}
+.footer-icon img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: grayscale(0.2) brightness(0.95);
+  margin-bottom: -12px;
+  vertical-align: bottom;
+}
+.footer-icon:hover {
+  transform: scale(1.12) translateY(-2px);
+}
+.footer-icon:active {
+  transform: scale(0.98);
+}
 @media (max-width: 768px) {
   .hero.hero-home {
     display: flex !important;
@@ -26,15 +46,15 @@
   }
   .hero-carousel {
     margin: 0 auto 32px auto !important;
-    text-align: center !important;
-    align-items: center !important;
-    justify-content: center !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
     width: 100vw !important;
-    max-width: 100vw !important;
+    max-width: 98vw !important;
     min-width: 220px !important;
     word-break: break-word !important;
     white-space: normal !important;
-    padding: 0 32px 24px 32px !important;
+    padding: 0 12vw 24px 8vw !important;
     box-sizing: border-box !important;
     position: static !important;
     left: unset;
@@ -776,12 +796,13 @@ html.no-scroll {
     overflow: visible;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-    max-width: 100%;
+    max-width: 95%;
     margin-top: 6px;
     perspective: 800px;
     perspective-origin: center;
+    padding-right: 48px;
   }
 
   .hero-carousel-inner {
@@ -1175,15 +1196,17 @@ html.no-scroll {
 }
 
 .hero-carousel {
-  height: 3.2rem;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
+  max-width: 900px;
   margin-top: 10px;
   perspective: 1000px;
   perspective-origin: center;
+  padding-right: 64px;
 }
 
 .hero-carousel-inner {
@@ -3976,7 +3999,7 @@ body.modal-open {
 
 .newsletter-content {
   flex: 1;
-  padding: 30px 35px 30px 0;
+  padding: 30px 35px 30px 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -3996,6 +4019,8 @@ body.modal-open {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
+  padding-left: 6px;
+  padding-right: 6px;
   flex: 1;
   min-width: 200px;
 }
