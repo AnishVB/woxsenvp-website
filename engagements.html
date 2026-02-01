@@ -13,8 +13,8 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      // Hide content immediately (except the blinds overlay) if transition flag is set
-      if (sessionStorage.getItem("blindsOpenNext")) {
+      const isRefresh = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
         document.documentElement.style.background = "#02053f";
         const hideStyle = document.createElement("style");
         hideStyle.id = "blinds-hide-style";
@@ -62,7 +62,10 @@
       </nav>
     </header>
 
-    <section class="engagements-hero">
+    <section
+      class="engagements-hero"
+      style="background-image: url('assets/images/rvr engagements.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+    >
       <div class="engagements-hero-content reveal">
         <p class="eyebrow">Public talks · Media ·  leadership</p>
         <h1>Engagements & Insights</h1>
@@ -224,21 +227,19 @@
     <!-- Fanned Carousel Script -->
     <script>
       const carouselData = [
-        { image: 'assets/images/engagement-1.jpg', caption: 'Speaking engagement 1' },
-        { image: 'assets/images/engagement-2.jpg', caption: 'Speaking engagement 2' },
-        { image: 'assets/images/engagement-3.jpg', caption: 'Speaking engagement 3' },
-        { image: 'assets/images/engagement-4.jpg', caption: 'Speaking engagement 4' },
-        { image: 'assets/images/engagement-5.jpg', caption: 'Speaking engagement 5' },
-        { image: 'assets/images/engagement-6.jpg', caption: 'Speaking engagement 6' },
-        { image: 'assets/images/engagement-7.jpg', caption: 'Speaking engagement 7' },
-        { image: 'assets/images/engagement-8.jpg', caption: 'Speaking engagement 8' },
-        { image: 'assets/images/engagement-9.jpg', caption: 'Speaking engagement 9' },
-        { image: 'assets/images/engagement-10.jpg', caption: 'Speaking engagement 10' },
-        { image: 'assets/images/engagement-11.jpg', caption: 'Speaking engagement 11' },
-        { image: 'assets/images/engagement-12.jpg', caption: 'Speaking engagement 12' },
-        { image: 'assets/images/engagement-13.jpg', caption: 'Speaking engagement 13' },
-        { image: 'assets/images/engagement-14.jpg', caption: 'Speaking engagement 14' },
-        { image: 'assets/images/engagement-15.jpg', caption: 'Speaking engagement 15' }
+        { image: 'assets/images/recent highlights/112.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/1212.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/1709042724408.jpeg', caption: '' },
+        { image: 'assets/images/recent highlights/1722421221490.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/1729163622772.jpeg', caption: '' },
+        { image: 'assets/images/recent highlights/1731432655623.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/1731847628067.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/1732710383858.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/1732710384054.jpeg', caption: '' },
+        { image: 'assets/images/recent highlights/1737646679330.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/ljubljana.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/madrid.jpg', caption: '' },
+        { image: 'assets/images/recent highlights/singapore.jpg', caption: '' }
       ];
 
       let currentIndex = 0;

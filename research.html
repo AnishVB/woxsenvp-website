@@ -13,8 +13,9 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      // Hide content immediately (except the blinds overlay) if transition flag is set
-      if (sessionStorage.getItem("blindsOpenNext")) {
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
         document.documentElement.style.background = "#02053f";
         const hideStyle = document.createElement("style");
         hideStyle.id = "blinds-hide-style";

@@ -299,6 +299,14 @@ async function playBlindsAnimation(targetUrl) {
 
 // Play only the opening animation if flagged (after navigation)
 async function playBlindsOpenIfNeeded() {
+  // Clear flag if this is a page refresh (not a navigation)
+  const isRefresh =
+    performance.getEntriesByType("navigation")[0]?.type === "reload";
+  if (isRefresh) {
+    sessionStorage.removeItem("blindsOpenNext");
+    return;
+  }
+
   const shouldOpen = sessionStorage.getItem("blindsOpenNext");
   if (!shouldOpen) return;
   sessionStorage.removeItem("blindsOpenNext");
@@ -333,7 +341,7 @@ async function playBlindsOpenIfNeeded() {
   // start closed (matching end state from close animation)
   gsap.set(blinds, { rotateY: 0, transformPerspective: 1400 });
 
-  // Pre-set all page elements to hidden
+  // Pre-set all page elements to hidden (only during page transitions, not on refresh)
   const reveals = document.querySelectorAll(".reveal");
   const fades = document.querySelectorAll(".fade-section");
   gsap.set(reveals, { opacity: 0, y: 70 });
@@ -552,7 +560,7 @@ function animateEndorsements() {
       delay: index * 0.05,
       scrollTrigger: {
         trigger: card,
-        start: "top 82%",
+        start: "top 90%",
         toggleActions: "play none none reverse",
       },
     });
@@ -1252,7 +1260,7 @@ function initExperimentalScrollAnimations() {
           scrollTrigger: {
             trigger: text,
             start: "top bottom",
-            end: "top 85%",
+            end: "top 72%",
             scrub: 1.5,
           },
           filter: "blur(0px)",
@@ -1274,8 +1282,8 @@ function initExperimentalScrollAnimations() {
       {
         scrollTrigger: {
           trigger: img,
-          start: "top 80%",
-          end: "top 30%",
+          start: "top 90%",
+          end: "top 50%",
           scrub: 1.5,
         },
         scale: 1,
@@ -1288,6 +1296,7 @@ function initExperimentalScrollAnimations() {
   gsap.utils
     .toArray(".article-card, .endorsement-card, .book-card")
     .forEach((card, idx) => {
+      const isArticleCard = card.classList.contains("article-card");
       gsap.fromTo(
         card,
         {
@@ -1299,9 +1308,9 @@ function initExperimentalScrollAnimations() {
         {
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
+            start: "top 90%",
             end: "top 50%",
-            scrub: 1.2,
+            scrub: 0.8,
           },
           opacity: 1,
           scale: 1,
@@ -1315,45 +1324,47 @@ function initExperimentalScrollAnimations() {
       gsap.to(card, {
         scrollTrigger: {
           trigger: card,
-          start: "top 80%",
-          end: "bottom 20%",
-          scrub: 1,
+          start: "top 90%",
+          end: "bottom 50%",
+          scrub: 0.6,
         },
         y: -40,
-        rotationZ: idx % 2 === 0 ? 1 : -1,
+        rotationZ: isArticleCard ? 0 : idx % 2 === 0 ? 1 : -1,
         ease: "sine.inOut",
       });
     });
 
   // ==================== SECTION FADE IN ====================
-  gsap.utils.toArray("section").forEach((section) => {
-    gsap.fromTo(
-      section,
-      {
-        opacity: 0.5,
-        y: 40,
-      },
-      {
-        scrollTrigger: {
-          trigger: section,
-          start: "top 85%",
-          end: "top 55%",
-          scrub: 1,
+  gsap.utils
+    .toArray("section:not(.hero):not(.exec-ai-section)")
+    .forEach((section) => {
+      gsap.fromTo(
+        section,
+        {
+          opacity: 0.5,
+          y: 40,
         },
-        opacity: 1,
-        y: 0,
-        ease: "power2.out",
-      },
-    );
-  });
+        {
+          scrollTrigger: {
+            trigger: section,
+            start: "top 72%",
+            end: "top 47%",
+            scrub: 1,
+          },
+          opacity: 1,
+          y: 0,
+          ease: "power2.out",
+        },
+      );
+    });
 
   // ==================== SUBTLE IMAGE ZOOM ====================
   gsap.utils.toArray(".book-card img, .fanned-card img").forEach((img) => {
     gsap.to(img, {
       scrollTrigger: {
         trigger: img,
-        start: "top 80%",
-        end: "bottom 20%",
+        start: "top 90%",
+        end: "top 50%",
         scrub: 1,
       },
       scale: 1.05,
@@ -1362,37 +1373,38 @@ function initExperimentalScrollAnimations() {
   });
 
   // ==================== TEXT STAGGER REVEAL ====================
-  gsap.utils.toArray(".article-card h3").forEach((heading) => {
-    const words = heading.textContent.split(" ");
-    heading.innerHTML = words
-      .map(
-        (word) =>
-          `<span style="display:inline-block; overflow:hidden;"><span style="display:inline-block;">${word}</span></span>`,
-      )
-      .join(" ");
+  // Disabled for article cards due to text layout issues
+  // gsap.utils.toArray(".article-card h3").forEach((heading) => {
+  //   const words = heading.textContent.split(" ");
+  //   heading.innerHTML = words
+  //     .map(
+  //       (word) =>
+  //         `<span style="display:inline-block; overflow:hidden; vertical-align:baseline;"><span style="display:inline-block; vertical-align:baseline;">${word}</span></span>`,
+  //     )
+  //     .join(" ");
 
-    gsap.fromTo(
-      heading.querySelectorAll("span > span"),
-      {
-        y: 30,
-        opacity: 0,
-      },
-      {
-        scrollTrigger: {
-          trigger: heading,
-          start: "top 80%",
-          end: "top 60%",
-          scrub: 1,
-        },
-        y: 0,
-        opacity: 1,
-        stagger: {
-          each: 0.05,
-        },
-        ease: "power2.out",
-      },
-    );
-  });
+  //   gsap.fromTo(
+  //     heading.querySelectorAll("span > span"),
+  //     {
+  //       y: 30,
+  //       opacity: 0,
+  //     },
+  //     {
+  //       scrollTrigger: {
+  //         trigger: heading,
+  //         start: "top 68%",
+  //         end: "top 51%",
+  //         scrub: 1,
+  //       },
+  //       y: 0,
+  //       opacity: 1,
+  //       stagger: {
+  //         each: 0.05,
+  //       },
+  //       ease: "power2.out",
+  //     },
+  //   );
+  // });
 
   // ==================== GENTLE PARALLAX MOVEMENT ON SCROLL VELOCITY ====================
   ScrollTrigger.create({
@@ -1465,7 +1477,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(async () => {
       // Initialize scroll animations AFTER GSAP loads
       initExperimentalScrollAnimations();
-      await playInitialPageLoadTransition();
       playBlindsOpenIfNeeded();
     })
     .catch((error) => console.warn("GSAP failed to initialize", error));

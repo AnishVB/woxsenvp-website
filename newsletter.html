@@ -13,8 +13,9 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      // Hide content immediately (except the blinds overlay) if transition flag is set
-      if (sessionStorage.getItem("blindsOpenNext")) {
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
         document.documentElement.style.background = "#02053f";
         const hideStyle = document.createElement("style");
         hideStyle.id = "blinds-hide-style";
@@ -71,6 +72,9 @@
     </header>
 
     <section class="newsletter-hero">
+      <video class="newsletter-hero-bg" autoplay muted loop>
+        <source src="assets/videos/grid-scan.mp4" type="video/mp4" />
+      </video>
       <div class="newsletter-hero-content reveal">
         <h1 class="newsletter-title">Minds Eye</h1>
         <p class="newsletter-subtitle">
@@ -80,32 +84,7 @@
     </section>
 
     <main class="newsletter-page">
-      <div class="newsletter-controls">
-        <div class="newsletter-number-grid">
-          <button class="newsletter-number-btn" data-newsletter="1">1</button>
-          <button class="newsletter-number-btn" data-newsletter="2">2</button>
-          <button class="newsletter-number-btn" data-newsletter="3">3</button>
-          <button class="newsletter-number-btn" data-newsletter="4">4</button>
-          <button class="newsletter-number-btn" data-newsletter="5">5</button>
-          <button class="newsletter-number-btn" data-newsletter="6">6</button>
-          <button class="newsletter-number-btn" data-newsletter="7">7</button>
-          <button class="newsletter-number-btn" data-newsletter="8">8</button>
-          <button class="newsletter-number-btn" data-newsletter="9">9</button>
-          <button class="newsletter-number-btn" data-newsletter="10">10</button>
-          <button class="newsletter-number-btn" data-newsletter="11">11</button>
-          <button class="newsletter-number-btn" data-newsletter="12">12</button>
-          <button class="newsletter-number-btn" data-newsletter="13">13</button>
-          <button class="newsletter-number-btn" data-newsletter="14">14</button>
-          <button class="newsletter-number-btn" data-newsletter="15">15</button>
-          <button class="newsletter-number-btn" data-newsletter="16">16</button>
-          <button class="newsletter-number-btn" data-newsletter="17">17</button>
-          <button class="newsletter-number-btn" data-newsletter="18">18</button>
-          <button class="newsletter-number-btn" data-newsletter="19">19</button>
-          <button class="newsletter-number-btn" data-newsletter="20">20</button>
-        </div>
-        <button class="view-older-btn">View Older →</button>
-      </div>
-
+      <h2 class="newsletter-section-heading">Recent Newsletters</h2>
       <div class="newsletter-list" id="recentNewsletters">
         <div class="newsletter-item reveal" data-newsletter="1">
           <div
@@ -351,6 +330,32 @@
             <button class="read-more-btn">Read More</button>
           </div>
         </div>
+      </div>
+
+      <div class="newsletter-controls">
+        <div class="newsletter-number-grid">
+          <button class="newsletter-number-btn" data-newsletter="1">1</button>
+          <button class="newsletter-number-btn" data-newsletter="2">2</button>
+          <button class="newsletter-number-btn" data-newsletter="3">3</button>
+          <button class="newsletter-number-btn" data-newsletter="4">4</button>
+          <button class="newsletter-number-btn" data-newsletter="5">5</button>
+          <button class="newsletter-number-btn" data-newsletter="6">6</button>
+          <button class="newsletter-number-btn" data-newsletter="7">7</button>
+          <button class="newsletter-number-btn" data-newsletter="8">8</button>
+          <button class="newsletter-number-btn" data-newsletter="9">9</button>
+          <button class="newsletter-number-btn" data-newsletter="10">10</button>
+          <button class="newsletter-number-btn" data-newsletter="11">11</button>
+          <button class="newsletter-number-btn" data-newsletter="12">12</button>
+          <button class="newsletter-number-btn" data-newsletter="13">13</button>
+          <button class="newsletter-number-btn" data-newsletter="14">14</button>
+          <button class="newsletter-number-btn" data-newsletter="15">15</button>
+          <button class="newsletter-number-btn" data-newsletter="16">16</button>
+          <button class="newsletter-number-btn" data-newsletter="17">17</button>
+          <button class="newsletter-number-btn" data-newsletter="18">18</button>
+          <button class="newsletter-number-btn" data-newsletter="19">19</button>
+          <button class="newsletter-number-btn" data-newsletter="20">20</button>
+        </div>
+        <button class="view-older-btn">View Older →</button>
       </div>
     </main>
 

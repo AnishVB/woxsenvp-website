@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,8 +13,9 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      // Hide content immediately (except the blinds overlay) if transition flag is set
-      if (sessionStorage.getItem("blindsOpenNext")) {
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
         document.documentElement.style.background = "#02053f";
         const hideStyle = document.createElement("style");
         hideStyle.id = "blinds-hide-style";
@@ -81,7 +82,20 @@
           </p>
         </div>
         <div class="exec-ai-video">
-          <span>Video coming soon</span>
+          <video
+            controls
+            width="100%"
+            height="auto"
+            preload="metadata"
+            playsinline
+            poster="assets/images/rvr ee pic.jpg"
+          >
+            <source
+              src="assets/videos/Executive Edu Session.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </section>
@@ -90,28 +104,40 @@
       <h2>Featured Articles</h2>
       <div class="articles-grid">
         <a class="article-card" href="#" target="_blank" rel="noopener">
-          <img src="assets/images/article1.jpg" alt="Featured article 1" />
-          <h3>Article 1</h3>
+          <img src="assets/images/fa1.webp" alt="Featured article 1" />
+          <h3>
+            The Evolving Landscape of Indian Executive Education: Future
+            Directions
+          </h3>
         </a>
         <a class="article-card" href="#" target="_blank" rel="noopener">
-          <img src="assets/images/article2.jpg" alt="Featured article 2" />
-          <h3>Article 2</h3>
+          <img src="assets/images/fa2.webp" alt="Featured article 2" />
+          <h3>
+            AI Deployment in Executive Education: Challenges and Opportunities
+          </h3>
         </a>
         <a class="article-card" href="#" target="_blank" rel="noopener">
-          <img src="assets/images/article3.jpg" alt="Featured article 3" />
-          <h3>Article 3</h3>
+          <img src="assets/images/fa3.webp" alt="Featured article 3" />
+          <h3>
+            Navigating Global Crises: Implications for Executive Education
+          </h3>
         </a>
         <a class="article-card" href="#" target="_blank" rel="noopener">
-          <img src="assets/images/article4.jpg" alt="Featured article 4" />
-          <h3>Article 4</h3>
+          <img src="assets/images/fa4.webp" alt="Featured article 4" />
+          <h3>
+            The AI Paradox: Preparing Executive Leaders for an Automated Future
+          </h3>
         </a>
         <a class="article-card" href="#" target="_blank" rel="noopener">
-          <img src="assets/images/article5.jpg" alt="Featured article 5" />
-          <h3>Article 5</h3>
+          <img src="assets/images/fa5.webp" alt="Featured article 5" />
+          <h3>Executive Education at a Crossroads: Revolution or Rhetoric?</h3>
         </a>
         <a class="article-card" href="#" target="_blank" rel="noopener">
-          <img src="assets/images/article6.jpg" alt="Featured article 6" />
-          <h3>Article 6</h3>
+          <img src="assets/images/fa6.webp" alt="Featured article 6" />
+          <h3>
+            Reimagining the MBA: The Intellectual Evolution of Executive
+            Education
+          </h3>
         </a>
       </div>
     </section>

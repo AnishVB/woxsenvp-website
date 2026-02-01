@@ -13,7 +13,10 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      if (sessionStorage.getItem("blindsOpenNext")) {
+      // Only hide content if not a refresh
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
         document.documentElement.style.background = "#02053f";
         const hideStyle = document.createElement("style");
         hideStyle.id = "blinds-hide-style";
@@ -153,6 +156,22 @@
 
       <div class="book-button">
         <a href="books.html" class="btn-primary">View All Books</a>
+      </div>
+    </section>
+
+    <!-- LATEST EVENTS SECTION -->
+    <section class="latest-events reveal">
+      <h2>Latest Events</h2>
+      <div class="events-container">
+        <div class="event-banner">
+          <img src="assets/images/le1.webp" alt="Event 1" />
+        </div>
+        <div class="event-banner">
+          <img src="assets/images/le2.webp" alt="Event 2" />
+        </div>
+        <div class="event-banner">
+          <img src="assets/images/le3.webp" alt="Event 3" />
+        </div>
       </div>
     </section>
 

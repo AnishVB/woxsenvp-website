@@ -13,8 +13,9 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
-      // Hide content immediately (except the blinds overlay) if transition flag is set
-      if (sessionStorage.getItem("blindsOpenNext")) {
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
         document.documentElement.style.background = "#02053f";
         const hideStyle = document.createElement("style");
         hideStyle.id = "blinds-hide-style";
@@ -68,7 +69,13 @@
       <div class="featured-video-container">
         <h2 class="featured-video-title">Featured Video</h2>
         <div class="video-wrapper">
-          <video controls muted playsinline title="Featured Video">
+          <video
+            controls
+            muted
+            playsinline
+            title="Featured Video"
+            poster="assets/images/press thumbnail.webp"
+          >
             <source src="assets/videos/raul sports.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
