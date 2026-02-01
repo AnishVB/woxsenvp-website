@@ -758,6 +758,10 @@ html.no-scroll {
     color: black !important;
   }
 
+  .hero.hero-home h1 {
+    transform: translateX(-33px);
+  }
+
   .hero-subtitle {
     font-size: 0.85rem;
     line-height: 1.4;
@@ -805,6 +809,11 @@ html.no-scroll {
     opacity: 1;
     transition: all 0.4s ease;
     text-shadow: none;
+  }
+
+  .hero.hero-home .hero-carousel-inner div,
+  .hero.hero-home .hero-carousel-inner div.active {
+    color: #ffffff;
   }
 
   .hero-carousel-inner div.active {
