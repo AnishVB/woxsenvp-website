@@ -1,5 +1,5 @@
 <?php
-// Simple health check endpoint for uptime monitoring.
+// Organization: Woxsen University | Category: Health Check API
 header('Content-Type: application/json');
 
 echo json_encode([

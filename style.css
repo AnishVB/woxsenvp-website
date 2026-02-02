@@ -1,4 +1,4 @@
-/* Footer icon styles */
+/* Organization: Woxsen University | Category: Main Stylesheet */
 .footer-icon {
   display: inline-block;
   margin: 0 4px 0 0;
@@ -23,9 +23,7 @@
     background-position: 80% center !important;
   }
 }
-/* =========================================================
-    RESEARCH HERO SECTION
-  ========================================================= */
+/* Category: Research Hero Section */
 .research-hero {
   width: 100%;
   min-height: 100vh;
@@ -72,9 +70,7 @@
   color: var(--color-accent);
   margin-bottom: 12px;
 }
-/* =========================================================
-    GLOBAL THEME 
-  ========================================================= */
+/* Category: Global Theme */
 
 html {
   background: #02053f;
@@ -136,9 +132,7 @@ html {
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* =========================================================
-    PAGE BACKGROUND
-  ========================================================= */
+/* Category: Page Background */
 
 body {
   margin: 0;
@@ -168,9 +162,7 @@ body {
   color-scheme: dark;
 }
 
-/* =========================================================
-    GLOBAL MOBILE FIX
-  ========================================================= */
+/* Category: Global Mobile Fix */
 
 * {
   box-sizing: border-box;
@@ -238,7 +230,6 @@ video {
   ========================================================= */
 
 .reveal {
-  /* Don't hide by default - let GSAP handle it or show immediately on refresh */
   transition:
     opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
     transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -586,83 +577,91 @@ html.no-scroll {
 
   .nav-links {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 32px);
+    max-width: 400px;
+    max-height: 0;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     opacity: 0;
     pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(7, 7, 7, 0.94), rgba(9, 9, 9, 0.86)),
-      radial-gradient(
-        120% 140% at 10% 0%,
-        rgba(255, 255, 255, 0.06),
-        transparent 60%
-      );
-    backdrop-filter: blur(18px);
-    padding: 96px 28px 40px;
+    padding: 0 16px;
     margin: 0;
-    border: none;
-    border-radius: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(5, 5, 5, 0.85),
+        rgba(18, 18, 18, 0.78) 45%,
+        rgba(28, 28, 28, 0.7)
+      ) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
     overflow: hidden;
-    transform: translateY(-8px);
     transition:
       opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2000;
+    box-shadow: 
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
   }
 
   .nav-links.active {
     opacity: 1 !important;
     pointer-events: auto;
-    transform: translateY(0);
+    max-height: calc(100vh - 100px);
+    padding: 16px;
+    top: 72px;
   }
 
   .nav-links a {
     margin: 0;
-    padding: 14px 6px 14px 0;
+    padding: 12px 14px;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: clamp(1.6rem, 7vw, 2.4rem);
-    font-weight: 600;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
     text-align: left;
     width: 100%;
-    max-width: 520px;
     color: #ffffff !important;
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
     transition:
       opacity 0.3s ease,
       transform 0.3s ease,
       color 0.3s ease,
       background 0.3s ease;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
   }
 
   .nav-links a::after {
     content: "›";
-    font-size: 1.6em;
+    font-size: 1.3em;
     line-height: 1;
-    opacity: 0.65;
+    opacity: 0.5;
     transform: translateY(-1px);
-  }
-
-  .nav-links a:last-child {
-    border-bottom: none;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
   .nav-links a:hover {
-    background: rgba(255, 255, 255, 0.06);
-    text-shadow: 0 0 24px rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.15);
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+  }
+
+  .nav-links a:hover::after {
+    transform: translateX(4px) translateY(-1px);
+    opacity: 1;
   }
 
   .nav-links.active a {
@@ -804,7 +803,6 @@ html.no-scroll {
     line-height: 1.2 !important;
     margin-bottom: 0 !important;
     width: 100%;
-    /* Remove 3D effect for all layouts */
     transform: none;
     opacity: 1;
     transition: all 0.4s ease;
@@ -1620,6 +1618,12 @@ html.no-scroll {
 @media (max-width: 900px) {
   .about-hero-inner {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about-hero-photo {
+    order: -1;
   }
 
   .about-hero-section {
@@ -1703,7 +1707,8 @@ html.no-scroll {
   padding-bottom: 0;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0f0f14, #0a0a0f 55%, #0c0c12);
+  background-color: #05070d;
+  background-image: linear-gradient(135deg, #0f0f14, #0a0a0f 55%, #0c0c12);
 }
 
 .contact-page::before {
@@ -1766,6 +1771,7 @@ html.no-scroll {
 .contact-label {
   font-size: 1.2rem;
   color: var(--color-light);
+  margin: 2px 0;
 }
 
 .contact-form {
@@ -1822,7 +1828,41 @@ html.no-scroll {
   box-shadow: none;
 }
 
+.contact-map iframe {
+  width: 100%;
+  height: 450px;
+}
+
 @media (max-width: 900px) {
+  .contact-page {
+    background-image:
+      radial-gradient(
+        circle at 18% 22%,
+        rgba(255, 255, 255, 0.08),
+        transparent 38%
+      ),
+      linear-gradient(180deg, #070910 0%, #04050a 70%);
+  }
+
+  .contact-page::before {
+    background:
+      radial-gradient(
+        circle at 20% 18%,
+        rgba(255, 255, 255, 0.08),
+        transparent 36%
+      ),
+      radial-gradient(
+        circle at 78% 12%,
+        rgba(255, 255, 255, 0.06),
+        transparent 40%
+      ),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.75));
+  }
+
+  .contact-bg-video {
+    opacity: 0.35;
+  }
+
   .contact-row {
     flex-direction: column;
     gap: 40px;
@@ -2803,6 +2843,15 @@ html.no-scroll {
   margin-bottom: 8px;
 }
 
+.footer-phone {
+  margin-bottom: 2px;
+  font-size: calc(1em - 2px);
+}
+
+.footer-phone:last-of-type {
+  margin-bottom: 0;
+}
+
 .footer-address {
   color: #ccc !important;
 }
@@ -3105,7 +3154,7 @@ body {
   backface-visibility: hidden;
   transform-style: preserve-3d;
   will-change: transform;
-  box-shadow: inset -1.5px 0 8px rgba(0, 0, 0, 0.4); /* slightly stronger edge for darker scheme */
+  box-shadow: inset -1.5px 0 8px rgba(0, 0, 0, 0.4);
 }
 
 .blinds-signature {
@@ -3339,7 +3388,7 @@ body {
   overflow: visible;
   grid-column: span 2;
   transform-style: preserve-3d;
-  backface-visibility: visible; /* keep backside renderable during flip */
+  backface-visibility: visible;
 }
 
 .paper-card:nth-child(17) {

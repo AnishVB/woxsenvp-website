@@ -1,11 +1,10 @@
-// Simple subtitle carousel for homepage hero
+// Organization: Woxsen University | Category: Main JS
 function initHeroSubtitleCarousel() {
   const carousel = document.getElementById("subtitle-carousel");
   if (!carousel) return;
   const items = Array.from(carousel.children);
   if (items.length < 2) return;
   let current = 0;
-  // Hide all except first
   items.forEach((el, i) => {
     el.style.opacity = i === 0 ? "1" : "0";
     el.style.transition = "opacity 0.7s cubic-bezier(0.16,1,0.3,1)";
@@ -74,7 +73,7 @@ function setupHamburger() {
   const navLinks = document.querySelector(".nav-links");
 
   if (!hamburger || !navLinks) return;
-  // Scroll lock helpers
+
   let scrollLockHandler = (e) => {
     e.preventDefault();
   };
@@ -198,7 +197,7 @@ async function ensureBlindsSignatureInjected() {
   const markup = await loadSignatureMarkup();
   if (!markup) return;
   signature.innerHTML = markup;
-  // ensure class present for styling
+
   const svg = signature.querySelector("svg");
   if (svg && !svg.classList.contains("signature-svg")) {
     svg.classList.add("signature-svg");
@@ -242,10 +241,10 @@ async function playBlindsAnimation(targetUrl) {
     const signature = document.querySelector(".blinds-signature");
 
     container.innerHTML = "";
-    const blindCount = 28; // thin panels for clearer blinds look
-    const blindWidth = Math.ceil(window.innerWidth / blindCount) + 1; // slight overlap to hide seams
+    const blindCount = 28;
+    const blindWidth = Math.ceil(window.innerWidth / blindCount) + 1;
 
-    container.style.display = "block"; // show overlay immediately to avoid flash
+    container.style.display = "block";
     signature.style.display = "block";
     gsap.set(signature, { opacity: 0 });
     restartSignatureDraw(signature);
@@ -262,7 +261,6 @@ async function playBlindsAnimation(targetUrl) {
     const blinds = container.querySelectorAll(".blind");
     const timeline = gsap.timeline({
       onComplete: () => {
-        // Animation complete, now navigate
         sessionStorage.setItem("blindsOpenNext", "1");
         if (targetUrl) {
           window.location.href = targetUrl;
@@ -271,10 +269,8 @@ async function playBlindsAnimation(targetUrl) {
       },
     });
 
-    // Start blinds rotated away from view for flip effect
     gsap.set(blinds, { rotateY: -110, transformPerspective: 1400 });
 
-    // Close blinds: flip in left-to-right
     timeline.to(
       blinds,
       {
@@ -289,17 +285,13 @@ async function playBlindsAnimation(targetUrl) {
       0,
     );
 
-    // Show signature while closing
     timeline.to(signature, { opacity: 1, duration: 0.6 }, 0.25);
 
-    // Hold closed briefly before navigating (increased to show full draw)
     timeline.to({}, { duration: 0.8 });
   });
 }
 
-// Play only the opening animation if flagged (after navigation)
 async function playBlindsOpenIfNeeded() {
-  // Clear flag if this is a page refresh (not a navigation)
   const isRefresh =
     performance.getEntriesByType("navigation")[0]?.type === "reload";
   if (isRefresh) {
@@ -380,7 +372,6 @@ async function playBlindsOpenIfNeeded() {
     0.8,
   );
 
-  // At 1.4s: hide overlay elements
   timeline.call(
     () => {
       container.style.display = "none";
@@ -390,7 +381,6 @@ async function playBlindsOpenIfNeeded() {
     1.4,
   );
 
-  // At 1.4s: start LONGER entrance animations
   timeline.call(
     () => {
       reveals.forEach((el, i) => {
@@ -1013,6 +1003,106 @@ function initContactVideoBoomerang() {
   video.playbackRate = 1;
 }
 
+function initContactForm() {
+  const form = document.getElementById("contactForm");
+  if (!form) return;
+
+  const statusEl = form.querySelector(".form-status");
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const firstNameEl = form.querySelector('input[name="firstName"]');
+  const lastNameEl = form.querySelector('input[name="lastName"]');
+  const emailEl = form.querySelector('input[name="email"]');
+  const messageEl = form.querySelector('textarea[name="message"]');
+
+  const setStatus = (message, isError = false) => {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.style.color = isError ? "#ff9aa2" : "#b7f7c1";
+  };
+
+  const isValid = () => {
+    const firstName = (firstNameEl?.value || "").trim();
+    const lastName = (lastNameEl?.value || "").trim();
+    const email = (emailEl?.value || "").trim();
+    const message = (messageEl?.value || "").trim();
+    return Boolean(firstName && lastName && email && message);
+  };
+
+  const updateSubmitState = () => {
+    if (!submitBtn) return;
+    submitBtn.disabled = false;
+  };
+
+  updateSubmitState();
+
+  [firstNameEl, lastNameEl, emailEl, messageEl].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("input", updateSubmitState);
+    el.addEventListener("blur", updateSubmitState);
+    el.addEventListener("input", () => {
+      if (statusEl?.textContent === "Please fill in all fields to send") {
+        setStatus("");
+      }
+    });
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const firstName = (firstNameEl?.value || "").trim();
+    const lastName = (lastNameEl?.value || "").trim();
+    const email = (emailEl?.value || "").trim();
+    const message = (messageEl?.value || "").trim();
+
+    if (!firstName || !lastName || !email || !message) {
+      setStatus("Please fill in all fields to send", true);
+      updateSubmitState();
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "SENDING...";
+    }
+    setStatus("Sending your message...");
+
+    try {
+      const payload = {
+        name: `${firstName} ${lastName}`.trim(),
+        email,
+        message,
+      };
+
+      const response = await fetch("api/contact.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || result?.error) {
+        const errorMessage = result?.error || "Unable to send your message.";
+        setStatus(errorMessage, true);
+      } else {
+        setStatus("Thank you! Your message has been sent.");
+        form.reset();
+        if (submitBtn) {
+          submitBtn.textContent = "SENT!";
+        }
+      }
+    } catch (error) {
+      console.error("Contact form submission failed", error);
+      setStatus("Network error. Please try again later.", true);
+    } finally {
+      updateSubmitState();
+      if (submitBtn && submitBtn.textContent !== "SENT!") {
+        submitBtn.textContent = "SEND";
+      }
+    }
+  });
+}
+
 function initHeroVideoBoomerang() {
   const video = document.getElementById("heroVideo");
   if (!video) return;
@@ -1470,6 +1560,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBackToTop();
   initHeroVideoBoomerang();
   initContactVideoBoomerang();
+  initContactForm();
   initPaperCardFlip();
   initResearchAbstractModal();
   initHeroSubtitleCarousel();

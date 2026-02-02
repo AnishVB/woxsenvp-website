@@ -21,12 +21,6 @@ if (!is_array($data)) {
     exit;
 }
 
-// Simple honeypot
-if (!empty($data['hp'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Rejected']);
-    exit;
-}
 
 $name = trim($data['name'] ?? '');
 $email = trim($data['email'] ?? '');
@@ -45,8 +39,28 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $recipient = getenv('CONTACT_TO');
-$fallbackRecipient = 'you@example.com'; // change or rely on CONTACT_TO
+$fallbackRecipient = 'vp.office@woxsen.edu.in';
 $to = $recipient ?: $fallbackRecipient;
+
+// Store submission (JSON Lines)
+$storageDir = __DIR__ . '/data';
+$storageFile = $storageDir . '/contact-submissions.jsonl';
+
+
+$record = [
+    'timestamp' => gmdate('c'),
+    'name' => $name,
+    'email' => $email,
+    'message' => $message,
+    'ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+    'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+];
+
+@file_put_contents(
+    $storageFile,
+    json_encode($record, JSON_UNESCAPED_UNICODE) . "\n",
+    FILE_APPEND | LOCK_EX
+);
 
 $subject = 'New website contact form submission';
 $body = "Name: {$name}\nEmail: {$email}\n\nMessage:\n{$message}\n";
