@@ -1,0 +1,220 @@
+<!-- Organization: Woxsen University | Category: Contact Page -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact</title>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
+        document.documentElement.style.background = "#02053f";
+        const hideStyle = document.createElement("style");
+        hideStyle.id = "blinds-hide-style";
+        hideStyle.textContent =
+          "body > *:not(.blinds-container):not(.blinds-signature){visibility:hidden !important;}";
+        document.head.appendChild(hideStyle);
+      }
+    </script>
+    <script defer src="main.js"></script>
+  </head>
+
+  <body>
+    <header class="nav-container">
+      <nav class="navbar">
+        <a class="nav-logo" href="index.html" aria-label="Home">
+          Raul V. Rodriguez
+        </a>
+
+        <button
+          class="hamburger"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="research.html">Research</a>
+          <a href="engagements.html">Engagements</a>
+          <a href="press.html">Press</a>
+          <a href="executiveedu.html">Executive Education</a>
+          <a href="newsletter.html">Newsletter</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="contact-page">
+      <video
+        autoplay
+        muted
+        playsinline
+        class="contact-bg-video"
+        id="contactVideo"
+      >
+        <source src="assets/videos/darkveil-bg.webm" type="video/webm" />
+      </video>
+      <section class="contact-row fade-section">
+        <div class="contact-info">
+          <h1>CONTACT US.</h1>
+
+          <p class="contact-label">vp.office@woxsen.edu.in</p>
+          <p class="contact-label">+91 7396677075</p>
+          <p class="contact-label">+91 8850462722</p>
+          <p class="contact-label">+91 9163747240</p>
+
+          <div class="contact-divider"></div>
+
+          <h3 class="contact-address-heading">Corporate Office:</h3>
+          <p class="contact-address">
+            Plot No. 1267, 4th Floor, Gateway Jubilee, Rd Number 36,<br />
+            Jubilee Hills, Hyderabad, Telangana 500033
+          </p>
+        </div>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-group two-col">
+            <div>
+              <label>First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                autocomplete="given-name"
+                required
+              />
+            </div>
+
+            <div>
+              <label>Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                autocomplete="family-name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" autocomplete="email" required />
+          </div>
+
+          <div class="form-group">
+            <label>Message</label>
+            <textarea rows="6" name="message" required></textarea>
+          </div>
+
+          <button type="submit" class="send-btn">SEND</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="contact-map fade-section">
+        <iframe
+          width="100%"
+          height="600"
+          frameborder="0"
+          style="border: 0; border-radius: 20px"
+          allowfullscreen
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d17465.598870036774!2d77.8010769!3d17.6484952!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc9533c6aaaaaab%3A0x4f10ac8424d0d1dc!2sWoxsen%20University!5e1!3m2!1sen!2sin!4v1764602359502!5m2!1sen!2sin"
+        >
+        </iframe>
+      </section>
+    </main>
+
+    <footer class="footer fade-section">
+      <div class="footer-container">
+        <div class="footer-col">
+          <h3>Woxsen University</h3>
+          <a
+            href="https://www.google.com/maps/place/Woxsen+University/@17.6496171,77.7971506,995m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bc9533c6aaaaaab:0x4f10ac8424d0d1dc!8m2!3d17.649612!4d77.7997255!16s%2Fm%2F01115txn?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D"
+            target="_blank"
+            class="footer-address"
+          >
+            Kamkole, Sadasivpet, Hyderabad, Telangana 502345
+          </a>
+
+          <a href="https://www.woxsen.edu.in" target="_blank"
+            >www.woxsen.edu.in</a
+          >
+          <a href="tel:+918850462722" class="footer-phone">+91 88504 62722</a>
+          <a href="tel:+917396777075" class="footer-phone">+91 73967 77075</a>
+          <a href="tel:+919163747240" class="footer-phone">+91 91637 47240</a>
+        </div>
+
+        <div class="footer-col footer-center">
+          <h3>Dr. Raul V. Rodriguez</h3>
+          <p>Cognitive Technologist | Behavioral Engineer</p>
+          <svg
+            class="footer-signature-svg"
+            viewBox="0 0 800 600"
+            aria-hidden="true"
+            focusable="false"
+            role="presentation"
+          >
+            <path
+              d="m236.59998,332.26586c1.79605,-4.95814 6.02359,-13.81201 14.36843,-26.44339c12.68995,-19.20844 25.76795,-39.40547 37.71713,-64.45578c13.27155,-27.82249 24.30241,-50.82365 32.32897,-67.76117c6.13387,-12.94364 7.87906,-21.34908 12.57238,-23.13797c1.65935,-0.63248 1.89389,0.14912 3.59211,8.26356c3.6581,17.47907 14.7127,39.59645 21.55264,69.41389c7.56587,32.98207 16.39809,67.20251 25.14475,97.51002c7.05179,24.4347 11.52027,40.63323 8.98027,42.97052c-1.26998,1.16862 -3.66797,-1.61312 -10.77632,-13.2217c-9.0775,-14.82438 -18.28853,-30.92672 -34.12502,-46.27594c-14.89089,-14.43273 -26.2339,-24.04533 -35.92107,-29.74882c-3.38289,-1.99175 -0.04067,1.81043 7.18421,3.30542c8.93499,1.84881 13.53311,1.13911 16.16448,-1.65271c3.7213,-3.94827 1.79605,-6.61085 1.79605,-8.26356c0,-1.65271 0.40001,-2.10889 7.18421,3.30542c3.83772,3.06277 7.73107,5.83528 14.36843,3.30542c4.69332,-1.78889 10.35236,-4.17783 14.36843,-11.56899c1.60646,-2.95645 1.79605,-3.30542 3.59211,-3.30542c1.79605,0 3.72881,2.67295 5.38816,3.30542c2.34663,0.89445 3.59211,1.65271 5.38816,1.65271c0,0 3.41759,-2.02325 7.18421,-3.30542c6.94535,-2.3642 14.36843,-3.30542 21.55264,-3.30542c1.79605,0 5.38816,0 7.18421,0c0,0 2.32213,-1.16865 3.59211,0c1.26998,1.16865 1.79605,1.65271 3.59211,0c7.18421,-6.61085 10.40624,-15.01891 14.36843,-23.13797c3.29043,-6.74251 7.18421,-9.91627 10.77632,-3.30542c3.59211,6.61085 11.29462,14.65672 14.36843,21.48526c2.17348,4.82851 3.59211,4.95814 3.59211,3.30542c0,-1.65271 0,-3.30542 0,-4.95814c0,0 3.59211,-3.30542 7.18421,-6.61085c0,0 -0.55222,-1.96012 1.79605,-4.95814c2.97033,-3.79221 6.63172,-7.28998 12.57238,-14.87441c2.34828,-2.99801 5.69697,-7.5374 7.18421,-6.61085c8.00912,4.98966 9.02719,21.46988 17.96054,44.62323c10.83327,28.07755 21.53324,60.63458 25.14475,92.55188c3.16206,27.94505 4.86071,56.97444 -5.38816,62.80306c-6.11129,3.47555 -19.17225,-8.44191 -30.53291,-31.40153c-12.47613,-25.2139 -15.26552,-51.17784 -16.16448,-69.41391c-0.6511,-13.20813 1.79605,-21.48526 1.79605,-24.79068l1.79605,0l1.79605,3.30542l0,1.65271"
+            />
+          </svg>
+        </div>
+
+        <div class="footer-col footer-right">
+          <h3>Connect</h3>
+          <a
+            href="mailto:raul.rodriguez@woxsen.edu.in"
+            class="footer-icon"
+            aria-label="Email"
+          >
+            <img
+              src="assets/images/email logo.png"
+              alt="Email"
+              style="width: 72px; height: 72px; vertical-align: middle"
+            />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
+            class="footer-icon"
+            aria-label="LinkedIn"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="assets/images/linkedin logo.png"
+              alt="LinkedIn"
+              style="width: 72px; height: 72px; vertical-align: middle"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="copyright">© Raul V. Rodriguez 2025</p>
+        <p class="built-by">
+          Built by:
+          <a href="https://github.com/anish" target="_blank" rel="noopener"
+            >Anish</a
+          >
+          and
+          <a href="https://github.com/rishab" target="_blank" rel="noopener"
+            >Rishab</a
+          >
+        </p>
+      </div>
+    </footer>
+    <script src="main.js"></script>
+  </body>
+</html>

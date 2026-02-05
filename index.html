@@ -1,0 +1,537 @@
+<!-- Organization: Woxsen University | Category: Home Page -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      // Only hide content if not a refresh
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
+      if (!isRefresh && sessionStorage.getItem("blindsOpenNext")) {
+        document.documentElement.style.background = "#02053f";
+        const hideStyle = document.createElement("style");
+        hideStyle.id = "blinds-hide-style";
+        hideStyle.textContent =
+          "body > *:not(.blinds-container):not(.blinds-signature){visibility:hidden !important;}";
+        document.head.appendChild(hideStyle);
+      }
+    </script>
+    <script defer src="main.js"></script>
+  </head>
+
+  <body>
+    <header class="nav-container">
+      <nav class="navbar">
+        <a class="nav-logo" href="index.html" aria-label="Home">
+          Raul V. Rodriguez
+        </a>
+
+        <button
+          class="hamburger"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="research.html">Research</a>
+          <a href="engagements.html">Engagements</a>
+          <a href="press.html">Press</a>
+          <a href="executiveedu.html">Executive Education</a>
+          <a href="newsletter.html">Newsletter</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <section
+      class="hero hero-home"
+      style="
+        background-image: url(&quot;assets/images/finraul.png&quot;);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      "
+    >
+      <div class="hero-content">
+        <h1
+          style="
+            color: black;
+            text-shadow:
+              1px 1px 0 #ccc,
+              2px 2px 0 #bbb,
+              3px 3px 0 #aaa,
+              4px 4px 0 #999,
+              5px 5px 10px rgba(0, 0, 0, 0.5);
+          "
+        >
+          Dr. Raul V. Rodriguez
+        </h1>
+
+        <div class="hero-carousel">
+          <div class="hero-carousel-inner" id="subtitle-carousel">
+            <div>Vice President, Woxsen University</div>
+            <div>Steven Pinker Professor of Cognitive Psychology</div>
+            <div>
+              Board Member | Cognitive Technologist | Computational Social
+              Scientist
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST FLOATING CARD - DISABLED
+    <div class="trust-floating-card reveal">
+      <div class="trust-logos">
+        <img src="assets/logos/blogo1.png" />
+        <img src="assets/logos/blogo2.png" />
+        <img src="assets/logos/blogo3.png" />
+        <img src="assets/logos/blogo4.png" />
+        <img src="assets/logos/blogo5.png" />
+        <img src="assets/logos/blogo6.png" />
+        <img src="assets/logos/blogo7.png" />
+      </div>
+    </div>
+    TRUST FLOATING CARD - DISABLED -->
+
+    <section class="recent-video reveal">
+      <h2>Recent Video</h2>
+      <div class="video-container">
+        <iframe
+          src="https://www.youtube.com/embed/WScWvw6MRl8"
+          title="Video player"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </section>
+
+    <section class="books reveal">
+      <h2>Books</h2>
+
+      <div class="books-carousel">
+        <div class="books-track">
+          <div class="book-card"><img src="assets/images/book1.png" /></div>
+          <div class="book-card"><img src="assets/images/book2.png" /></div>
+          <div class="book-card"><img src="assets/images/book3.png" /></div>
+          <div class="book-card"><img src="assets/images/book4.png" /></div>
+          <div class="book-card"><img src="assets/images/book5.png" /></div>
+          <div class="book-card"><img src="assets/images/book6.png" /></div>
+          <div class="book-card"><img src="assets/images/book7.png" /></div>
+          <div class="book-card"><img src="assets/images/book8.png" /></div>
+          <div class="book-card"><img src="assets/images/book9.png" /></div>
+          <div class="book-card"><img src="assets/images/book10.png" /></div>
+          <div class="book-card"><img src="assets/images/book11.png" /></div>
+          <div class="book-card"><img src="assets/images/book12.png" /></div>
+
+          <div class="book-card"><img src="assets/images/book1.png" /></div>
+          <div class="book-card"><img src="assets/images/book2.png" /></div>
+          <div class="book-card"><img src="assets/images/book3.png" /></div>
+          <div class="book-card"><img src="assets/images/book4.png" /></div>
+          <div class="book-card"><img src="assets/images/book5.png" /></div>
+          <div class="book-card"><img src="assets/images/book6.png" /></div>
+          <div class="book-card"><img src="assets/images/book7.png" /></div>
+          <div class="book-card"><img src="assets/images/book8.png" /></div>
+          <div class="book-card"><img src="assets/images/book9.png" /></div>
+          <div class="book-card"><img src="assets/images/book10.png" /></div>
+          <div class="book-card"><img src="assets/images/book11.png" /></div>
+          <div class="book-card"><img src="assets/images/book12.png" /></div>
+        </div>
+      </div>
+
+      <div class="book-button">
+        <a href="books.html" class="btn-primary">View All Books</a>
+      </div>
+    </section>
+
+    <!-- LATEST EVENTS SECTION -->
+    <section class="latest-events reveal">
+      <h2>Latest Events</h2>
+      <div class="events-container">
+        <div class="event-banner">
+          <img src="assets/images/le1.webp" alt="Event 1" />
+        </div>
+        <div class="event-banner">
+          <img src="assets/images/le2.webp" alt="Event 2" />
+        </div>
+        <div class="event-banner">
+          <img src="assets/images/le3.webp" alt="Event 3" />
+        </div>
+      </div>
+    </section>
+
+    <!-- UPCOMING EVENTS SECTION -->
+    <section class="upcoming-events-section reveal" style="display: none">
+      <h2 class="section-heading">Upcoming Events</h2>
+
+      <div class="events-container">
+        <!-- Calendar -->
+        <div class="calendar-wrapper">
+          <div class="calendar-header">
+            <button class="calendar-nav prev" id="prevMonth">&larr;</button>
+            <h3 id="currentMonth">January 2025</h3>
+            <button class="calendar-nav next" id="nextMonth">&rarr;</button>
+          </div>
+
+          <div class="calendar">
+            <div class="calendar-weekdays">
+              <div class="weekday">Sun</div>
+              <div class="weekday">Mon</div>
+              <div class="weekday">Tue</div>
+              <div class="weekday">Wed</div>
+              <div class="weekday">Thu</div>
+              <div class="weekday">Fri</div>
+              <div class="weekday">Sat</div>
+            </div>
+
+            <div class="calendar-days" id="calendarDays">
+              <!-- Days will be generated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Details Panel -->
+        <div class="event-details-panel">
+          <div class="event-details-content">
+            <h3>Select a date to view events</h3>
+            <div id="eventsList" class="events-list">
+              <!-- Event details will be displayed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer fade-section">
+      <div class="footer-container">
+        <div class="footer-col">
+          <h3>Woxsen University</h3>
+          <a
+            href="https://www.google.com/maps/place/Woxsen+University/@17.6496171,77.7971506,995m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bc9533c6aaaaaab:0x4f10ac8424d0d1dc!8m2!3d17.649612!4d77.7997255!16s%2Fm%2F01115txn?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D"
+            target="_blank"
+            class="footer-address"
+          >
+            Kamkole, Sadasivpet, Hyderabad, Telangana 502345
+          </a>
+          <a href="https://www.woxsen.edu.in" target="_blank"
+            >www.woxsen.edu.in</a
+          >
+          <a href="tel:+918850462722" class="footer-phone">+91 88504 62722</a>
+          <a href="tel:+917396777075" class="footer-phone">+91 73967 77075</a>
+          <a href="tel:+919163747240" class="footer-phone">+91 91637 47240</a>
+        </div>
+
+        <div class="footer-col footer-center">
+          <h3>Dr. Raul V. Rodriguez</h3>
+          <p>Cognitive Technologist | Behavioral Engineer</p>
+          <svg
+            class="footer-signature-svg"
+            viewBox="0 0 800 600"
+            aria-hidden="true"
+            focusable="false"
+            role="presentation"
+          >
+            <path
+              d="m236.59998,332.26586c1.79605,-4.95814 6.02359,-13.81201 14.36843,-26.44339c12.68995,-19.20844 25.76795,-39.40547 37.71713,-64.45578c13.27155,-27.82249 24.30241,-50.82365 32.32897,-67.76117c6.13387,-12.94364 7.87906,-21.34908 12.57238,-23.13797c1.65935,-0.63248 1.89389,0.14912 3.59211,8.26356c3.6581,17.47907 14.7127,39.59645 21.55264,69.41389c7.56587,32.98207 16.39809,67.20251 25.14475,97.51002c7.05179,24.4347 11.52027,40.63323 8.98027,42.97052c-1.26998,1.16862 -3.66797,-1.61312 -10.77632,-13.2217c-9.0775,-14.82438 -18.28853,-30.92672 -34.12502,-46.27594c-14.89089,-14.43273 -26.2339,-24.04533 -35.92107,-29.74882c-3.38289,-1.99175 -0.04067,1.81043 7.18421,3.30542c8.93499,1.84881 13.53311,1.13911 16.16448,-1.65271c3.7213,-3.94827 1.79605,-6.61085 1.79605,-8.26356c0,-1.65271 0.40001,-2.10889 7.18421,3.30542c3.83772,3.06277 7.73107,5.83528 14.36843,3.30542c4.69332,-1.78889 10.35236,-4.17783 14.36843,-11.56899c1.60646,-2.95645 1.79605,-3.30542 3.59211,-3.30542c1.79605,0 3.72881,2.67295 5.38816,3.30542c2.34663,0.89445 3.59211,1.65271 5.38816,1.65271c0,0 3.41759,-2.02325 7.18421,-3.30542c6.94535,-2.3642 14.36843,-3.30542 21.55264,-3.30542c1.79605,0 5.38816,0 7.18421,0c0,0 2.32213,-1.16865 3.59211,0c1.26998,1.16865 1.79605,1.65271 3.59211,0c7.18421,-6.61085 10.40624,-15.01891 14.36843,-23.13797c3.29043,-6.74251 7.18421,-9.91627 10.77632,-3.30542c3.59211,6.61085 11.29462,14.65672 14.36843,21.48526c2.17348,4.82851 3.59211,4.95814 3.59211,3.30542c0,-1.65271 0,-3.30542 0,-4.95814c0,0 3.59211,-3.30542 7.18421,-6.61085c0,0 -0.55222,-1.96012 1.79605,-4.95814c2.97033,-3.79221 6.63172,-7.28998 12.57238,-14.87441c2.34828,-2.99801 5.69697,-7.5374 7.18421,-6.61085c8.00912,4.98966 9.02719,21.46988 17.96054,44.62323c10.83327,28.07755 21.53324,60.63458 25.14475,92.55188c3.16206,27.94505 4.86071,56.97444 -5.38816,62.80306c-6.11129,3.47555 -19.17225,-8.44191 -30.53291,-31.40153c-12.47613,-25.2139 -15.26552,-51.17784 -16.16448,-69.41391c-0.6511,-13.20813 1.79605,-21.48526 1.79605,-24.79068l1.79605,0l1.79605,3.30542l0,1.65271"
+            />
+          </svg>
+        </div>
+
+        <div class="footer-col footer-right">
+          <h3>Connect</h3>
+          <a
+            href="mailto:raul.rodriguez@woxsen.edu.in"
+            class="footer-icon"
+            aria-label="Email"
+          >
+            <img
+              src="assets/images/email logo.png"
+              alt="Email"
+              style="width: 72px; height: 72px; vertical-align: middle"
+            />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/raulvillamarinrodriguez/"
+            class="footer-icon"
+            aria-label="LinkedIn"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="assets/images/linkedin logo.png"
+              alt="LinkedIn"
+              style="width: 72px; height: 72px; vertical-align: middle"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="copyright">© Raul V. Rodriguez 2025</p>
+        <p class="built-by">
+          Built by:
+          <a href="https://github.com/AnishVB" target="_blank" rel="noopener"
+            >Anish</a
+          >
+          <a
+            href="https://github.com/rishabbachani"
+            target="_blank"
+            rel="noopener"
+            >Rishab</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Calendar and Events Script
+      const eventsData = {
+        "2025-12-27": [
+          {
+            title: "Event Title Placeholder",
+            time: "2:00 PM",
+            location: "Location Placeholder",
+            description:
+              "Event description placeholder - replace with actual event details.",
+          },
+        ],
+        "2026-01-05": [
+          {
+            title: "Sample Event",
+            time: "10:00 AM",
+            location: "Location TBA",
+            description: "placeholder desc",
+          },
+        ],
+        "2026-01-21": [
+          {
+            title: "Sample Event",
+            time: "2:00 PM",
+            location: "Location TBA",
+            description: "placeholder desc",
+          },
+        ],
+      };
+
+      let currentDate = new Date();
+
+      function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        document.getElementById("currentMonth").textContent =
+          monthNames[month] + " " + year;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const calendarDays = document.getElementById("calendarDays");
+        calendarDays.innerHTML = "";
+
+        for (let i = 0; i < firstDay; i++) {
+          const emptyDay = document.createElement("div");
+          emptyDay.className = "calendar-day empty";
+          calendarDays.appendChild(emptyDay);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayElement = document.createElement("div");
+          const dateStr =
+            year +
+            "-" +
+            String(month + 1).padStart(2, "0") +
+            "-" +
+            String(day).padStart(2, "0");
+          const hasEvent = eventsData[dateStr];
+
+          dayElement.className =
+            "calendar-day" + (hasEvent ? " has-event" : "");
+          dayElement.textContent = day;
+          dayElement.onclick = () =>
+            showEventDetails(dateStr, day, month, year);
+
+          calendarDays.appendChild(dayElement);
+        }
+      }
+
+      function showEventDetails(dateStr, day, month, year) {
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const events = eventsData[dateStr] || [];
+
+        const eventsList = document.getElementById("eventsList");
+        const detailsContent = document.querySelector(".event-details-content");
+
+        if (events.length === 0) {
+          eventsList.innerHTML =
+            '<p class="no-events">No events scheduled for this date.</p>';
+          detailsContent.querySelector("h3").textContent =
+            monthNames[month] + " " + day + ", " + year;
+        } else {
+          detailsContent.querySelector("h3").textContent =
+            monthNames[month] + " " + day + ", " + year;
+          eventsList.innerHTML = events
+            .map(
+              (event) => `
+            <div class="event-card">
+              <h4>${event.title}</h4>
+              <p class="event-time">🕐 ${event.time}</p>
+              <p class="event-location">📍 ${event.location}</p>
+              <p class="event-description">${event.description}</p>
+            </div>
+          `,
+            )
+            .join("");
+        }
+      }
+
+      document.getElementById("prevMonth").addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+        document.getElementById("eventsList").innerHTML = "";
+        document.querySelector(".event-details-content h3").textContent =
+          "Select a date to view events";
+      });
+
+      document.getElementById("nextMonth").addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+        document.getElementById("eventsList").innerHTML = "";
+        document.querySelector(".event-details-content h3").textContent =
+          "Select a date to view events";
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderCalendar();
+      });
+
+      // Hero carousel script
+      const carousel = document.getElementById("subtitle-carousel");
+      const carouselContainer = document.querySelector(".hero-carousel");
+      const transitionMs = 600;
+      let index = 0;
+      let busy = false;
+      let total = 0;
+      let heights = [];
+      let positions = [];
+      let offset = 0;
+
+      const firstClone = carousel.children[0].cloneNode(true);
+      carousel.appendChild(firstClone);
+      total = carousel.children.length;
+
+      function computeHeights() {
+        const children = Array.from(carousel.children);
+        const baseTop = children[0] ? children[0].offsetTop : 0;
+        heights = children.map((el) => Math.ceil(el.offsetHeight));
+        positions = children.map((el) => Math.max(0, el.offsetTop - baseTop));
+
+        const currentHeight = heights[index] || heights[0] || 0;
+        const currentOffset = positions[index] || positions[0] || 0;
+        offset = currentOffset;
+        if (carouselContainer) {
+          carouselContainer.style.height = `${currentHeight}px`;
+        }
+        carousel.style.transform = `translateY(-${offset}px)`;
+      }
+
+      computeHeights();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          computeHeights();
+          carousel.style.transform = `translateY(-${offset}px)`;
+        });
+      }
+
+      function nextSlide() {
+        if (busy) return;
+        busy = true;
+
+        index += 1;
+
+        carousel.style.transition = `transform ${transitionMs}ms ease`;
+        const targetOffset = positions[index] || positions[0] || 0;
+        offset = targetOffset;
+        carousel.style.transform = `translateY(-${targetOffset}px)`;
+
+        const nextHeight = heights[index] || heights[0] || 0;
+        if (carouselContainer) {
+          carouselContainer.style.height = `${nextHeight}px`;
+        }
+
+        const atClone = index === total - 1;
+
+        setTimeout(() => {
+          if (atClone) {
+            carousel.style.transition = "none";
+            index = 0;
+            offset = positions[0] || 0;
+            carousel.style.transform = `translateY(-${offset}px)`;
+            void carousel.offsetHeight;
+            computeHeights();
+          }
+          busy = false;
+        }, transitionMs);
+      }
+
+      const intervalId = setInterval(nextSlide, 3000);
+
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          computeHeights();
+        }, 150);
+      });
+
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(() => {
+          computeHeights();
+        });
+        ro.observe(carousel);
+      }
+    </script>
+  </body>
+</html>
