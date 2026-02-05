@@ -2881,10 +2881,44 @@ html.no-scroll {
 .footer-bottom {
   text-align: center;
   margin-top: 15px;
-  padding-top: 0;
+  padding-top: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: #ccc;
   font-size: 0.9rem;
+}
+
+.footer-bottom p {
+  margin: 6px 0;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.copyright {
+  font-weight: 600;
+  color: #bbb;
+}
+
+.built-by {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.built-by a {
+  color: #1a1f2e;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.built-by a:hover {
+  color: #ffffff;
+}
+
+.built-by a:active {
+  transform: scale(0.98);
+  opacity: 0.85;
 }
 
 .footer-signature-svg {
@@ -2932,6 +2966,28 @@ html.no-scroll {
 
   .footer-col {
     width: 100%;
+  }
+
+  .footer-bottom {
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+
+  .footer-bottom p {
+    font-size: 0.75rem;
+    margin: 5px 0;
+  }
+
+  .copyright {
+    font-size: 0.8rem;
+  }
+
+  .built-by {
+    font-size: 0.75rem;
+  }
+
+  .built-by a {
+    font-size: 0.75rem;
   }
 }
 
