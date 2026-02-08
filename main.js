@@ -1333,6 +1333,8 @@ function initExperimentalScrollAnimations() {
   gsap.utils.toArray("h2, h3, p, li").forEach((text) => {
     // Skip about-hero-text to prevent movement
     if (text.closest(".about-hero-text")) return;
+    // Skip footer elements
+    if (text.closest(".footer-bottom")) return;
 
     // Only apply blur animation if element is below viewport on load
     const rect = text.getBoundingClientRect();
