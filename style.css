@@ -758,7 +758,7 @@ html.no-scroll {
   }
 
   .hero.hero-home h1 {
-    transform: translateX(-33px);
+    transform: translateX(0);
   }
 
   .hero-subtitle {
