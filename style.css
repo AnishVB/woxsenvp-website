@@ -593,11 +593,11 @@ html.no-scroll {
     padding: 0 16px;
     margin: 0;
     background: linear-gradient(
-        135deg,
-        rgba(5, 5, 5, 0.85),
-        rgba(18, 18, 18, 0.78) 45%,
-        rgba(28, 28, 28, 0.7)
-      ) !important;
+      135deg,
+      rgba(5, 5, 5, 0.85),
+      rgba(18, 18, 18, 0.78) 45%,
+      rgba(28, 28, 28, 0.7)
+    ) !important;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     overflow: hidden;
@@ -607,7 +607,6 @@ html.no-scroll {
       padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
       top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2000;
-    box-shadow: 
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
   }
 
@@ -2422,7 +2421,9 @@ html.no-scroll {
   color: #000000;
   font-size: 1.2rem;
   font-weight: 900;
-  text-shadow: 0 0 4px rgba(85, 85, 85, 0.9), 0 0 8px rgba(85, 85, 85, 0.7);
+  text-shadow:
+    0 0 4px rgba(85, 85, 85, 0.9),
+    0 0 8px rgba(85, 85, 85, 0.7);
 }
 
 .latest-engagements,
@@ -2515,7 +2516,7 @@ html.no-scroll {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 28px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .linkedin-info {
@@ -2530,13 +2531,21 @@ html.no-scroll {
   border-radius: 16px;
   padding: 14px;
   box-shadow: var(--shadow-soft);
-  overflow: hidden;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 700px;
 }
 
 .linkedin-card #linkedin-embed-container {
   box-shadow: none;
   border: none !important;
-  overflow: hidden;
+  overflow: visible;
+  flex: 1;
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
 
 #linkedin-embed-container {
@@ -2549,8 +2558,9 @@ html.no-scroll {
 }
 
 .linkedin-card iframe {
-  height: 100%;
-  min-height: 640px;
+  height: 100% !important;
+  width: 100% !important;
+  min-height: unset;
 }
 
 @media (max-width: 900px) {
