@@ -1003,106 +1003,6 @@ function initContactVideoBoomerang() {
   video.playbackRate = 1;
 }
 
-function initContactForm() {
-  const form = document.getElementById("contactForm");
-  if (!form) return;
-
-  const statusEl = form.querySelector(".form-status");
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const firstNameEl = form.querySelector('input[name="firstName"]');
-  const lastNameEl = form.querySelector('input[name="lastName"]');
-  const emailEl = form.querySelector('input[name="email"]');
-  const messageEl = form.querySelector('textarea[name="message"]');
-
-  const setStatus = (message, isError = false) => {
-    if (!statusEl) return;
-    statusEl.textContent = message;
-    statusEl.style.color = isError ? "#ff9aa2" : "#b7f7c1";
-  };
-
-  const isValid = () => {
-    const firstName = (firstNameEl?.value || "").trim();
-    const lastName = (lastNameEl?.value || "").trim();
-    const email = (emailEl?.value || "").trim();
-    const message = (messageEl?.value || "").trim();
-    return Boolean(firstName && lastName && email && message);
-  };
-
-  const updateSubmitState = () => {
-    if (!submitBtn) return;
-    submitBtn.disabled = false;
-  };
-
-  updateSubmitState();
-
-  [firstNameEl, lastNameEl, emailEl, messageEl].forEach((el) => {
-    if (!el) return;
-    el.addEventListener("input", updateSubmitState);
-    el.addEventListener("blur", updateSubmitState);
-    el.addEventListener("input", () => {
-      if (statusEl?.textContent === "Please fill in all fields to send") {
-        setStatus("");
-      }
-    });
-  });
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const firstName = (firstNameEl?.value || "").trim();
-    const lastName = (lastNameEl?.value || "").trim();
-    const email = (emailEl?.value || "").trim();
-    const message = (messageEl?.value || "").trim();
-
-    if (!firstName || !lastName || !email || !message) {
-      setStatus("Please fill in all fields to send", true);
-      updateSubmitState();
-      return;
-    }
-
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = "SENDING...";
-    }
-    setStatus("Sending your message...");
-
-    try {
-      const payload = {
-        name: `${firstName} ${lastName}`.trim(),
-        email,
-        message,
-      };
-
-      const response = await fetch("api/contact.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok || result?.error) {
-        const errorMessage = result?.error || "Unable to send your message.";
-        setStatus(errorMessage, true);
-      } else {
-        setStatus("Thank you! Your message has been sent.");
-        form.reset();
-        if (submitBtn) {
-          submitBtn.textContent = "SENT!";
-        }
-      }
-    } catch (error) {
-      console.error("Contact form submission failed", error);
-      setStatus("Network error. Please try again later.", true);
-    } finally {
-      updateSubmitState();
-      if (submitBtn && submitBtn.textContent !== "SENT!") {
-        submitBtn.textContent = "SEND";
-      }
-    }
-  });
-}
-
 function initHeroVideoBoomerang() {
   const video = document.getElementById("heroVideo");
   if (!video) return;
@@ -1562,7 +1462,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initBackToTop();
   initHeroVideoBoomerang();
   initContactVideoBoomerang();
-  initContactForm();
   initPaperCardFlip();
   initResearchAbstractModal();
   initHeroSubtitleCarousel();
