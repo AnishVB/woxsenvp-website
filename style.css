@@ -4339,6 +4339,37 @@ body.modal-open {
   opacity: 0.8;
 }
 
+.newsletter-linkedin-link {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+.newsletter-linkedin-link a {
+  color: #7eb8ff;
+  text-decoration: none;
+}
+
+.newsletter-linkedin-link a:hover {
+  text-decoration: underline;
+}
+
+.newsletter-feed-status {
+  color: #b0b8e0;
+  opacity: 0.85;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.newsletter-feed-error {
+  color: #b0b8e0;
+  padding: 1rem 0;
+  line-height: 1.5;
+}
+
+.newsletter-feed-error a {
+  color: #7eb8ff;
+}
+
 .read-more-btn {
   background: linear-gradient(135deg, #1f1f1f, #0f0f0f);
   color: var(--color-white);

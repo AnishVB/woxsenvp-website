@@ -777,28 +777,296 @@ async function injectFooterSignature() {
   });
 }
 
-function initNewsletterNavigation() {
-  const numberGridButtons = document.querySelectorAll(".newsletter-number-btn");
-  const viewOlderBtn = document.querySelector(".view-older-btn");
-  const readMoreButtons = document.querySelectorAll(
-    ".read-more-btn, .archive-read-more-btn",
+const newsletterModalContentCache = new WeakMap();
+
+const LINKEDIN_MINDS_EYE_URL =
+  "https://www.linkedin.com/newsletters/mind-s-eye-7031898962160726016/";
+// Note: do not add &count= without an rss2json API key — free tier returns error.
+const MINDS_EYE_RSS2JSON =
+  "https://api.rss2json.com/v1/api.json?rss_url=" +
+  encodeURIComponent("https://linkedinrss.cns.me/7031898962160726016");
+
+const NEWSLETTER_RECENT_LIMIT = 20;
+
+function escapeHtmlNewsletter(s) {
+  if (s == null) return "";
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function decodeHtmlEntitiesNewsletter(s) {
+  if (!s) return "";
+  const ta = document.createElement("textarea");
+  ta.innerHTML = s;
+  return ta.value;
+}
+
+function normalizeNewsletterTitle(t) {
+  return String(t)
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[^a-z0-9 ]/g, "")
+    .trim();
+}
+
+function formatRssPubDateDisplay(pubDate) {
+  const d = new Date(String(pubDate).replace(" ", "T"));
+  if (Number.isNaN(d.getTime())) return pubDate;
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function mapRssItemToNewsletter(item) {
+  const rawHtml = (item.content || item.description || "").trim();
+  const t = new Date(String(item.pubDate).replace(" ", "T")).getTime();
+  return {
+    title: item.title || "",
+    dateDisplay: formatRssPubDateDisplay(item.pubDate),
+    dateMs: Number.isNaN(t) ? 0 : t,
+    link: (item.link || "").trim(),
+    html: rawHtml,
+    source: "rss",
+  };
+}
+
+async function fetchNewsletterMergedList() {
+  let legacyItems = [];
+  try {
+    const res = await fetch("data/minds-eye-legacy.json", {
+      credentials: "same-origin",
+    });
+    if (res.ok) {
+      const data = await res.json();
+      legacyItems = data.items || [];
+    }
+  } catch (_) {
+    /* legacy optional */
+  }
+
+  let rssMapped = [];
+  try {
+    const res = await fetch(MINDS_EYE_RSS2JSON, { mode: "cors" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.status === "ok" && Array.isArray(data.items)) {
+        rssMapped = data.items.map(mapRssItemToNewsletter);
+      } else if (data.status !== "ok") {
+        console.warn(
+          "Mind's Eye RSS (rss2json):",
+          data.message || data.status || "unknown error",
+        );
+      }
+    }
+  } catch (_) {
+    /* RSS optional */
+  }
+
+  const rssTitleNorm = new Set(
+    rssMapped.map((x) => normalizeNewsletterTitle(x.title)),
   );
+
+  const merged = [...rssMapped];
+  for (const it of legacyItems) {
+    const l = {
+      title: decodeHtmlEntitiesNewsletter(it.title || ""),
+      dateDisplay: decodeHtmlEntitiesNewsletter(it.date || ""),
+      dateMs: Date.parse(it.date) || 0,
+      link: (it.link || "").trim(),
+      html: (it.html || "").trim(),
+      source: "legacy",
+    };
+    if (l.link && rssMapped.some((r) => r.link === l.link)) continue;
+    if (rssTitleNorm.has(normalizeNewsletterTitle(l.title))) continue;
+    merged.push(l);
+  }
+  merged.sort((a, b) => b.dateMs - a.dateMs);
+  return merged;
+}
+
+function createNewsletterListItemElement(item, index) {
+  const div = document.createElement("div");
+  div.className = "newsletter-item reveal";
+  div.dataset.newsletter = String(index + 1);
+
+  const content = document.createElement("div");
+  content.className = "newsletter-content";
+  if (item.link && item.link.startsWith("https://www.linkedin.com")) {
+    content.dataset.articleLink = item.link;
+  }
+  newsletterModalContentCache.set(content, item.html || "");
+
+  const linkBlock =
+    item.link && item.link.startsWith("https://www.linkedin.com")
+      ? `<p class="newsletter-linkedin-link"><a href="${escapeHtmlNewsletter(item.link)}" target="_blank" rel="noopener noreferrer">Open on LinkedIn →</a></p>`
+      : "";
+
+  content.innerHTML = `
+    <div class="newsletter-header">
+      <h3>${escapeHtmlNewsletter(item.title)}</h3>
+      <span class="newsletter-date">${escapeHtmlNewsletter(item.dateDisplay)}</span>
+    </div>
+    ${linkBlock}
+    <button type="button" class="read-more-btn">Read More</button>
+  `;
+
+  div.appendChild(content);
+  return div;
+}
+
+function createArchiveNewsletterItemElement(item) {
+  const div = document.createElement("div");
+  div.className = "archive-newsletter-item reveal";
+
+  const content = document.createElement("div");
+  content.className = "archive-newsletter-content";
+  if (item.link && item.link.startsWith("https://www.linkedin.com")) {
+    content.dataset.articleLink = item.link;
+  }
+  newsletterModalContentCache.set(content, item.html || "");
+
+  const linkBlock =
+    item.link && item.link.startsWith("https://www.linkedin.com")
+      ? `<p class="newsletter-linkedin-link"><a href="${escapeHtmlNewsletter(item.link)}" target="_blank" rel="noopener noreferrer">Open on LinkedIn →</a></p>`
+      : "";
+
+  content.innerHTML = `
+    <h3>${escapeHtmlNewsletter(item.title)}</h3>
+    <span class="archive-newsletter-date">${escapeHtmlNewsletter(item.dateDisplay)}</span>
+    ${linkBlock}
+    <button type="button" class="archive-read-more-btn">Read More</button>
+  `;
+
+  div.appendChild(content);
+  return div;
+}
+
+function animateNewsletterRevealNodes(nodes) {
+  const list = Array.from(nodes);
+  if (list.length === 0) return;
+  if (window.gsap) {
+    list.forEach((el, i) => {
+      window.gsap.fromTo(
+        el,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          delay: i * 0.04,
+          ease: "power2.out",
+        },
+      );
+    });
+  } else {
+    list.forEach((el) => el.classList.add("visible"));
+  }
+}
+
+async function initLinkedInNewsletterFromFeed() {
+  const mode = document.documentElement.getAttribute("data-newsletter-feed");
+  if (!mode) return;
+
+  const listEl =
+    mode === "recent"
+      ? document.getElementById("recentNewsletters")
+      : document.getElementById("archiveNewsletters");
+  if (!listEl) return;
+
+  try {
+    const merged = await fetchNewsletterMergedList();
+    const recent = merged.slice(0, NEWSLETTER_RECENT_LIMIT);
+    const archived = merged.slice(NEWSLETTER_RECENT_LIMIT);
+
+    document
+      .querySelectorAll(".newsletter-feed-status")
+      .forEach((el) => el.remove());
+
+    if (mode === "recent") {
+      listEl.innerHTML = "";
+      recent.forEach((item, i) => {
+        listEl.appendChild(createNewsletterListItemElement(item, i));
+      });
+      const grid = document.querySelector(".newsletter-number-grid");
+      if (grid) {
+        grid.innerHTML = "";
+        recent.forEach((_, i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "newsletter-number-btn";
+          b.dataset.newsletter = String(i + 1);
+          b.textContent = String(i + 1);
+          grid.appendChild(b);
+        });
+      }
+    } else {
+      listEl.innerHTML = "";
+      if (archived.length === 0) {
+        listEl.innerHTML = `<p class="newsletter-feed-error">All editions are listed on the <a href="newsletter.html">recent newsletters</a> page.</p>`;
+      } else {
+        archived.forEach((item) => {
+          listEl.appendChild(createArchiveNewsletterItemElement(item));
+        });
+      }
+    }
+
+    requestAnimationFrame(() => {
+      animateNewsletterRevealNodes(listEl.querySelectorAll(".reveal"));
+    });
+  } catch (err) {
+    console.warn("Newsletter feed failed", err);
+    document
+      .querySelectorAll(".newsletter-feed-status")
+      .forEach((el) => el.remove());
+    listEl.innerHTML = `<p class="newsletter-feed-error">Could not load editions. <a href="${escapeHtmlNewsletter(LINKEDIN_MINDS_EYE_URL)}" target="_blank" rel="noopener noreferrer">Read Mind's Eye on LinkedIn →</a></p>`;
+  }
+}
+
+function closeNewsletterModal(modal) {
+  if (!modal) return;
+  modal.classList.add("closing");
+  modal.classList.remove("active");
+  setTimeout(() => {
+    modal.style.display = "none";
+    modal.classList.remove("closing");
+    document.body.style.overflow = "";
+  }, 300);
+}
+
+function initNewsletterNavigation() {
   const modal = document.getElementById("newsletterModal");
   const modalClose = document.querySelector(".modal-close");
   const modalBody = document.getElementById("modalBody");
 
-  if (numberGridButtons.length > 0) {
-    numberGridButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const newsletterNum = button.getAttribute("data-newsletter");
+  if (!window.__newsletterNavDelegationBound) {
+    window.__newsletterNavDelegationBound = true;
+    document.body.addEventListener("click", (e) => {
+      const viewOlder = e.target.closest(".view-older-btn");
+      if (viewOlder) {
+        e.preventDefault();
+        window.location.href = "newsletter-archives.html";
+        return;
+      }
+
+      const numBtn = e.target.closest(".newsletter-number-btn");
+      if (numBtn) {
+        const grid = numBtn.closest(".newsletter-number-grid");
+        if (!grid) return;
+        e.preventDefault();
+        const newsletterNum = numBtn.getAttribute("data-newsletter");
         const newsletterItem = document.querySelector(
           `.newsletter-item[data-newsletter="${newsletterNum}"]`,
         );
-
         if (newsletterItem) {
-          numberGridButtons.forEach((btn) => btn.classList.remove("active"));
-          button.classList.add("active");
-
+          grid.querySelectorAll(".newsletter-number-btn").forEach((btn) => {
+            btn.classList.remove("active");
+          });
+          numBtn.classList.add("active");
           setTimeout(() => {
             newsletterItem.scrollIntoView({
               behavior: "smooth",
@@ -806,71 +1074,72 @@ function initNewsletterNavigation() {
             });
           }, 50);
         }
-      });
-    });
-  }
+        return;
+      }
 
-  if (viewOlderBtn) {
-    viewOlderBtn.addEventListener("click", () => {
-      window.location.href = "newsletter-archives.html";
-    });
-  }
+      const readBtn = e.target.closest(
+        ".read-more-btn, .archive-read-more-btn",
+      );
+      if (!readBtn) return;
 
-  if (readMoreButtons.length > 0 && modal && modalBody) {
-    readMoreButtons.forEach((button) => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        const newsletterItem = button.closest(
-          ".newsletter-item, .archive-newsletter-item",
-        );
-        if (newsletterItem) {
-          const title = newsletterItem.querySelector("h3").textContent;
-          const date = newsletterItem.querySelector(
-            ".newsletter-date, .archive-newsletter-date",
-          ).textContent;
-          let content = "<p>newsletter content coming soon.</p>";
-          // Use full text if present (for first newsletter)
-          const contentDiv = newsletterItem.querySelector(
-            ".newsletter-content",
-          );
-          if (contentDiv && contentDiv.dataset.fulltext) {
-            content = contentDiv.dataset.fulltext;
-          }
-          modalBody.innerHTML = `
-            <h3 class="modal-title">${title}</h3>
-            <p class="newsletter-date modal-date">${date}</p>
+      e.preventDefault();
+      const newsletterItem = readBtn.closest(
+        ".newsletter-item, .archive-newsletter-item",
+      );
+      const modalEl = document.getElementById("newsletterModal");
+      const bodyEl = document.getElementById("modalBody");
+      if (!newsletterItem || !modalEl || !bodyEl) return;
+
+      const title =
+        newsletterItem.querySelector("h3")?.textContent?.trim() || "";
+      const dateEl = newsletterItem.querySelector(
+        ".newsletter-date, .archive-newsletter-date",
+      );
+      const date = dateEl ? dateEl.textContent.trim() : "";
+
+      const contentDiv = newsletterItem.querySelector(
+        ".newsletter-content, .archive-newsletter-content",
+      );
+
+      let content = "<p>newsletter content coming soon.</p>";
+      if (contentDiv?.dataset?.fulltext) {
+        content = contentDiv.dataset.fulltext;
+      } else if (contentDiv) {
+        const cached = newsletterModalContentCache.get(contentDiv);
+        if (cached) {
+          content = cached;
+        } else if (
+          contentDiv.dataset?.articleLink &&
+          contentDiv.dataset.articleLink.startsWith("https://www.linkedin.com")
+        ) {
+          const u = contentDiv.dataset.articleLink;
+          content = `<p><a href="${escapeHtmlNewsletter(u)}" target="_blank" rel="noopener noreferrer">Read this edition on LinkedIn</a></p>`;
+        }
+      }
+
+      bodyEl.innerHTML = `
+            <h3 class="modal-title">${escapeHtmlNewsletter(title)}</h3>
+            <p class="newsletter-date modal-date">${escapeHtmlNewsletter(date)}</p>
             ${content}
           `;
-          modal.classList.add("active");
-          modal.style.display = "flex";
-          document.body.style.overflow = "hidden";
-        }
-      });
+      modalEl.classList.add("active");
+      modalEl.style.display = "flex";
+      document.body.style.overflow = "hidden";
     });
   }
 
-  if (modalClose && modal) {
+  if (modalClose && modal && !modal.dataset.newsletterCloseBound) {
+    modal.dataset.newsletterCloseBound = "1";
     modalClose.addEventListener("click", () => {
-      modal.classList.add("closing");
-      modal.classList.remove("active");
-      setTimeout(() => {
-        modal.style.display = "none";
-        modal.classList.remove("closing");
-        document.body.style.overflow = "";
-      }, 300);
+      closeNewsletterModal(modal);
     });
   }
 
-  if (modal) {
+  if (modal && !modal.dataset.newsletterBackdropBound) {
+    modal.dataset.newsletterBackdropBound = "1";
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
-        modal.classList.add("closing");
-        modal.classList.remove("active");
-        setTimeout(() => {
-          modal.style.display = "none";
-          modal.classList.remove("closing");
-          document.body.style.overflow = "";
-        }, 300);
+        closeNewsletterModal(modal);
       }
     });
   }
@@ -1459,6 +1728,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPatentStack();
   initUpcomingPatentsCarousel();
   initNewsletterNavigation();
+  void initLinkedInNewsletterFromFeed();
   initBackToTop();
   initHeroVideoBoomerang();
   initContactVideoBoomerang();
