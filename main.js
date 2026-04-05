@@ -787,6 +787,23 @@ const MINDS_EYE_RSS2JSON =
   encodeURIComponent("https://linkedinrss.cns.me/7031898962160726016");
 
 const NEWSLETTER_RECENT_LIMIT = 20;
+const NEWSLETTER_FETCH_TIMEOUT_MS = 15000;
+
+function resolveNewsletterAssetUrl(relativePath) {
+  try {
+    return new URL(relativePath, window.location.href).href;
+  } catch {
+    return relativePath;
+  }
+}
+
+function fetchWithTimeout(resource, options = {}, timeoutMs = NEWSLETTER_FETCH_TIMEOUT_MS) {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), timeoutMs);
+  return fetch(resource, { ...options, signal: ctrl.signal }).finally(() =>
+    clearTimeout(id),
+  );
+}
 
 function escapeHtmlNewsletter(s) {
   if (s == null) return "";
@@ -836,36 +853,64 @@ function mapRssItemToNewsletter(item) {
 }
 
 async function fetchNewsletterMergedList() {
-  let legacyItems = [];
-  try {
-    const res = await fetch("data/minds-eye-legacy.json", {
-      credentials: "same-origin",
-    });
-    if (res.ok) {
-      const data = await res.json();
-      legacyItems = data.items || [];
-    }
-  } catch (_) {
-    /* legacy optional */
-  }
+  const legacyUrl = resolveNewsletterAssetUrl("data/minds-eye-legacy.json");
 
-  let rssMapped = [];
-  try {
-    const res = await fetch(MINDS_EYE_RSS2JSON, { mode: "cors" });
-    if (res.ok) {
+  const legacyPromise = (async () => {
+    try {
+      const res = await fetchWithTimeout(legacyUrl, {
+        credentials: "same-origin",
+      });
+      if (!res.ok) {
+        console.warn(
+          "Mind's Eye legacy JSON:",
+          res.status,
+          res.statusText,
+          legacyUrl,
+        );
+        return [];
+      }
+      const data = await res.json();
+      return data.items || [];
+    } catch (e) {
+      if (e?.name === "AbortError") {
+        console.warn("Mind's Eye legacy JSON: timed out", legacyUrl);
+      } else {
+        console.warn("Mind's Eye legacy JSON failed:", e?.message || e);
+      }
+      return [];
+    }
+  })();
+
+  const rssPromise = (async () => {
+    try {
+      const res = await fetchWithTimeout(MINDS_EYE_RSS2JSON, { mode: "cors" });
+      if (!res.ok) {
+        console.warn("Mind's Eye RSS request:", res.status, MINDS_EYE_RSS2JSON);
+        return [];
+      }
       const data = await res.json();
       if (data.status === "ok" && Array.isArray(data.items)) {
-        rssMapped = data.items.map(mapRssItemToNewsletter);
-      } else if (data.status !== "ok") {
-        console.warn(
-          "Mind's Eye RSS (rss2json):",
-          data.message || data.status || "unknown error",
-        );
+        return data.items.map(mapRssItemToNewsletter);
       }
+      console.warn(
+        "Mind's Eye RSS (rss2json):",
+        data.message || data.status || "unknown error",
+      );
+      return [];
+    } catch (e) {
+      if (e?.name === "AbortError") {
+        console.warn("Mind's Eye RSS: timed out (showing legacy only)");
+      } else {
+        console.warn("Mind's Eye RSS failed:", e?.message || e);
+      }
+      return [];
     }
-  } catch (_) {
-    /* RSS optional */
-  }
+  })();
+
+  const [legacyItems, rssMapped] = await Promise.all([
+    legacyPromise,
+    rssPromise,
+  ]);
 
   const rssTitleNorm = new Set(
     rssMapped.map((x) => normalizeNewsletterTitle(x.title)),
@@ -976,18 +1021,22 @@ async function initLinkedInNewsletterFromFeed() {
     mode === "recent"
       ? document.getElementById("recentNewsletters")
       : document.getElementById("archiveNewsletters");
-  if (!listEl) return;
+  if (!listEl) {
+    document
+      .querySelectorAll(".newsletter-feed-status")
+      .forEach((el) => el.remove());
+    return;
+  }
 
+  let rendered = false;
   try {
     const merged = await fetchNewsletterMergedList();
     const recent = merged.slice(0, NEWSLETTER_RECENT_LIMIT);
     const archived = merged.slice(NEWSLETTER_RECENT_LIMIT);
 
-    document
-      .querySelectorAll(".newsletter-feed-status")
-      .forEach((el) => el.remove());
-
-    if (mode === "recent") {
+    if (merged.length === 0) {
+      listEl.innerHTML = `<p class="newsletter-feed-error">No editions loaded. Confirm <strong>data/minds-eye-legacy.json</strong> is in your deploy, then open DevTools (F12) → Network and check that file and the rss2json request.</p>`;
+    } else if (mode === "recent") {
       listEl.innerHTML = "";
       recent.forEach((item, i) => {
         listEl.appendChild(createNewsletterListItemElement(item, i));
@@ -1004,6 +1053,9 @@ async function initLinkedInNewsletterFromFeed() {
           grid.appendChild(b);
         });
       }
+      requestAnimationFrame(() => {
+        animateNewsletterRevealNodes(listEl.querySelectorAll(".reveal"));
+      });
     } else {
       listEl.innerHTML = "";
       if (archived.length === 0) {
@@ -1013,17 +1065,28 @@ async function initLinkedInNewsletterFromFeed() {
           listEl.appendChild(createArchiveNewsletterItemElement(item));
         });
       }
+      requestAnimationFrame(() => {
+        animateNewsletterRevealNodes(listEl.querySelectorAll(".reveal"));
+      });
     }
 
-    requestAnimationFrame(() => {
-      animateNewsletterRevealNodes(listEl.querySelectorAll(".reveal"));
-    });
+    rendered = true;
   } catch (err) {
     console.warn("Newsletter feed failed", err);
+    listEl.innerHTML = `<p class="newsletter-feed-error">Could not load editions. <a href="${escapeHtmlNewsletter(LINKEDIN_MINDS_EYE_URL)}" target="_blank" rel="noopener noreferrer">Read Mind's Eye on LinkedIn →</a></p>`;
+    rendered = true;
+  } finally {
     document
       .querySelectorAll(".newsletter-feed-status")
       .forEach((el) => el.remove());
-    listEl.innerHTML = `<p class="newsletter-feed-error">Could not load editions. <a href="${escapeHtmlNewsletter(LINKEDIN_MINDS_EYE_URL)}" target="_blank" rel="noopener noreferrer">Read Mind's Eye on LinkedIn →</a></p>`;
+    if (
+      !rendered &&
+      listEl &&
+      listEl.children.length === 0 &&
+      !listEl.textContent.trim()
+    ) {
+      listEl.innerHTML = `<p class="newsletter-feed-error">Could not load editions. <a href="${escapeHtmlNewsletter(LINKEDIN_MINDS_EYE_URL)}" target="_blank" rel="noopener noreferrer">Read Mind's Eye on LinkedIn →</a></p>`;
+    }
   }
 }
 
@@ -1728,7 +1791,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initPatentStack();
   initUpcomingPatentsCarousel();
   initNewsletterNavigation();
-  void initLinkedInNewsletterFromFeed();
+  void initLinkedInNewsletterFromFeed().catch((err) => {
+    console.warn("Mind's Eye newsletter feed:", err);
+    document
+      .querySelectorAll(".newsletter-feed-status")
+      .forEach((el) => el.remove());
+  });
   initBackToTop();
   initHeroVideoBoomerang();
   initContactVideoBoomerang();
