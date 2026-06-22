@@ -1536,14 +1536,12 @@ function initResearchAbstractModal() {
 }
 
 function initExperimentalScrollAnimations() {
-  console.log("🎬 Experimental Scroll Animations STARTED");
 
   if (!window.gsap || !window.ScrollTrigger) {
-    console.log("❌ GSAP or ScrollTrigger not loaded");
     return;
   }
 
-  console.log("✅ GSAP and ScrollTrigger found, initializing animations...");
+
   gsap.registerPlugin(ScrollTrigger);
 
   // ==================== SMOOTH PARALLAX - IMAGES MOVE GRACEFULLY ====================
@@ -1730,27 +1728,7 @@ function initExperimentalScrollAnimations() {
   //   );
   // });
 
-  // ==================== GENTLE PARALLAX MOVEMENT ON SCROLL VELOCITY ====================
-  ScrollTrigger.create({
-    onUpdate: (self) => {
-      const velocity = self.getVelocity();
 
-      // Apply subtle opacity shift based on scroll speed
-      if (Math.abs(velocity) > 100) {
-        gsap.to("body", {
-          opacity: 0.98,
-          duration: 0.3,
-          overwrite: "auto",
-        });
-      } else {
-        gsap.to("body", {
-          opacity: 1,
-          duration: 0.5,
-          overwrite: "auto",
-        });
-      }
-    },
-  });
 
   // ==================== NAV SUBTLE SCALE & ROUNDED ON SCROLL ====================
   gsap.to(".nav-container", {
@@ -1781,7 +1759,6 @@ function initExperimentalScrollAnimations() {
   });
 
   ScrollTrigger.refresh();
-  console.log("✅ All smooth animations initialized");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -6,12 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Executive Education</title>
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="stylesheet" href="style.css" />
     <script>
       const isRefresh =
@@ -87,6 +82,7 @@
             width="100%"
             height="100%"
             src="https://www.youtube.com/embed/63RdNkABr2I"
+            srcdoc="&lt;style&gt;* { padding: 0; margin: 0; overflow: hidden; box-sizing: border-box; } html, body { height: 100%; width: 100%; background: #000; display: flex; align-items: center; justify-content: center; } a { display: block; width: 100%; height: 100%; position: relative; } img { position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; transition: opacity 0.3s; } .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68px; height: 48px; background-color: rgba(33, 33, 33, 0.8); border-radius: 12% / 18%; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, transform 0.2s; } .play-btn::after { content: ''; display: block; border-style: solid; border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #fff; margin-left: 3px; } a:hover .play-btn { background-color: #f00; transform: translate(-50%, -50%) scale(1.1); }&lt;/style&gt;&lt;a href='https://www.youtube.com/embed/63RdNkABr2I?autoplay=1'&gt;&lt;img src='https://img.youtube.com/vi/63RdNkABr2I/hqdefault.jpg' alt='Executive Education in the Age of AI'&gt;&lt;div class='play-btn'&gt;&lt;/div&gt;&lt;/a&gt;"
             title="Executive Education in the Age of AI"
             frameborder="0"
             allow="
@@ -98,6 +94,7 @@
               picture-in-picture;
             "
             allowfullscreen
+            loading="lazy"
             style="border-radius: 18px; min-height: 400px"
           ></iframe>
         </div>
@@ -222,7 +219,10 @@
             <img
               src="assets/images/email logo.png"
               alt="Email"
-              style="width: 72px; height: 72px; vertical-align: middle"
+              width="72"
+              height="72"
+              loading="lazy"
+              style="vertical-align: middle"
             />
           </a>
           <a
@@ -235,14 +235,17 @@
             <img
               src="assets/images/linkedin logo.png"
               alt="LinkedIn"
-              style="width: 72px; height: 72px; vertical-align: middle"
+              width="72"
+              height="72"
+              loading="lazy"
+              style="vertical-align: middle"
             />
           </a>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p class="copyright">© Raul V. Rodriguez 2025</p>
+        <p class="copyright">© Raul V. Rodriguez 2025 | <a href="privacy.html" class="privacy-link">Privacy Policy</a></p>
         <p class="built-by">
           Built by:
           <a href="https://github.com/anish" target="_blank" rel="noopener"

@@ -492,16 +492,7 @@ video {
 
 /* =========================================================
     HAMBURGER MENU
-
-.no-scroll,
-html.no-scroll {
-  overflow: hidden !important;
-  position: fixed !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  touch-action: none !important;
-}
-  ========================================================= */
+   ========================================================= */
 
 .hamburger {
   display: none;
@@ -5821,5 +5812,125 @@ body.modal-open {
 
   .section-heading {
     margin-bottom: 30px;
+  }
+}
+
+/* =========================================================
+    PRIVACY POLICY PAGE
+   ========================================================= */
+.privacy-page {
+  padding-top: 80px; /* offset navbar */
+  min-height: 100vh;
+  background: #02053f; /* Deep blue theme */
+  color: #fff;
+}
+
+.privacy-hero-section {
+  padding: 80px 20px 40px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(2, 5, 63, 1) 0%, rgba(9, 13, 90, 1) 100%);
+}
+
+.privacy-hero-text h1 {
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.privacy-hero-text .last-updated {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.privacy-content-section {
+  padding: 40px 20px 100px;
+}
+
+.privacy-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.privacy-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.privacy-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.privacy-card h2 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+.privacy-card p, .privacy-card ul {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.privacy-card ul {
+  margin-top: 10px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.privacy-card a {
+  color: #a5b4fc;
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.privacy-card a:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(165, 180, 252, 0.6);
+}
+
+.privacy-email-box {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* Footer Link Style */
+.privacy-link {
+  color: #bbb;
+  text-decoration: none;
+  margin-left: 8px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.privacy-link:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .privacy-hero-text h1 {
+    font-size: 2.2rem;
+  }
+  .privacy-card {
+    padding: 20px;
   }
 }
