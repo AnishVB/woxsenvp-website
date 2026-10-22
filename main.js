@@ -416,18 +416,26 @@ function setupLoaderTransitions() {
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
       const targetUrl = link.getAttribute("href");
+      if (!targetUrl || targetUrl.startsWith("#")) return;
+      if (link.getAttribute("target") || link.hasAttribute("download")) return;
+      // Let ctrl/cmd/shift/middle clicks open new tabs as usual
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+        return;
 
+      // Only animate same-site page links (skip mailto:, tel:, external)
+      const url = new URL(link.href, window.location.href);
       if (
-        targetUrl &&
-        !targetUrl.startsWith("#") &&
-        !targetUrl.startsWith("http") &&
-        !link.getAttribute("target")
-      ) {
-        e.preventDefault();
+        !/^https?:$/.test(url.protocol) ||
+        url.origin !== window.location.origin
+      )
+        return;
 
-        // Play blinds animation and navigate when timeline triggers it
-        playBlindsAnimation(targetUrl);
-      }
+      e.preventDefault();
+
+      // Play blinds animation and navigate when timeline triggers it
+      playBlindsAnimation(targetUrl).catch(() => {
+        window.location.href = targetUrl;
+      });
     });
   });
 }
@@ -1786,5 +1794,20 @@ document.addEventListener("DOMContentLoaded", () => {
       initExperimentalScrollAnimations();
       playBlindsOpenIfNeeded();
     })
-    .catch((error) => console.warn("GSAP failed to initialize", error));
+    .catch((error) => {
+      console.warn("GSAP failed to initialize", error);
+      // Don't leave the page hidden if the animation library can't load
+      sessionStorage.removeItem("blindsOpenNext");
+      document.getElementById("blinds-hide-style")?.remove();
+    });
+});
+
+// Back/forward cache restores the page as it was left: blinds closed
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  sessionStorage.removeItem("blindsOpenNext");
+  document.getElementById("blinds-hide-style")?.remove();
+  document
+    .querySelectorAll(".blinds-container, .blinds-signature")
+    .forEach((el) => (el.style.display = "none"));
 });
