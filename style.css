@@ -90,7 +90,7 @@ html {
 }
 
 @font-face {
-  font-family: "Suisse,Arial,sans-serif";
+  font-family: "Yrsa";
   src: url("./assets/fonts/Yrsa-Italic-VariableFont_wght.ttf")
     format("truetype");
   font-weight: 100 900;
@@ -112,6 +112,9 @@ html {
   --font-heading:
     "Zalando Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-text:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   --font-body:
     "Zalando Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Helvetica Neue", Arial, sans-serif;
@@ -205,7 +208,7 @@ p {
   font-size: var(--body-size);
   margin-bottom: 14px;
   color: var(--color-text);
-  font-family: "Suisse,Arial,sans-serif", var(--font-body);
+  font-family: var(--font-text);
   font-style: italic;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -213,7 +216,7 @@ p {
 
 main ul,
 main ol {
-  font-family: "Suisse,Arial,sans-serif", var(--font-body);
+  font-family: var(--font-text);
   font-style: italic;
   font-size: var(--body-size);
   color: var(--color-text);
@@ -1551,7 +1554,7 @@ video {
 
 .about-hero-text p {
   color: var(--color-light);
-  text-align: justify;
+  text-align: left;
   line-height: 1.7;
 }
 
@@ -1598,7 +1601,7 @@ video {
 .about-text-narrow ul li {
   color: var(--color-light);
   line-height: 1.7;
-  text-align: justify;
+  text-align: left;
 }
 
 .about-text-narrow ul {
@@ -4827,7 +4830,7 @@ body.modal-open {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: "Zalando Sans", "Suisse,Arial,sans-serif", sans-serif;
+  font-family: var(--font-heading);
 }
 
 .newsletter-number-grid button:hover {
@@ -4851,7 +4854,7 @@ body.modal-open {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: "Zalando Sans", "Suisse,Arial,sans-serif", sans-serif;
+  font-family: var(--font-heading);
   box-shadow: 0 10px 30px rgba(76, 135, 255, 0.3);
 }
 
@@ -5057,7 +5060,7 @@ body.modal-open {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: "Zalando Sans", "Suisse,Arial,sans-serif", sans-serif;
+  font-family: var(--font-heading);
   margin-top: auto;
 }
 
@@ -5937,5 +5940,434 @@ body.modal-open {
   }
   .privacy-card {
     padding: 20px;
+  }
+}
+
+/* =========================================================
+    SHARED DESIGN LAYER
+    One set of type, colour, banner, heading and card styles
+    for every page. Keep this block last so it wins.
+  ========================================================= */
+
+:root {
+  --ds-surface: rgba(255, 255, 255, 0.035);
+  --ds-surface-hover: rgba(255, 255, 255, 0.06);
+  --ds-border: rgba(255, 255, 255, 0.09);
+  --ds-border-strong: rgba(255, 255, 255, 0.2);
+  --ds-text: #eceef3;
+  --ds-text-muted: #b4b9c6;
+  --ds-accent: #9db1ff;
+  --ds-radius: 14px;
+  --ds-container: 1200px;
+  --ds-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Body text: upright, left-aligned, readable ---------- */
+
+p,
+main ul,
+main ol,
+main li {
+  font-family: var(--font-text);
+  font-style: normal;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+main p,
+main li {
+  color: var(--ds-text-muted);
+}
+
+/* ---------- Headings ---------- */
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  text-decoration: none;
+}
+
+/* ---------- Page banners (Research, Engagements, Press,
+   Executive Education, Newsletter) ---------- */
+
+.research-hero,
+.engagements-hero,
+.hero.hero-press,
+.hero.hero-executive,
+.newsletter-hero {
+  min-height: 72vh !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 140px 24px 72px !important;
+  text-align: left !important;
+  box-shadow: inset 0 -320px 220px -120px rgba(5, 6, 10, 0.9);
+}
+
+.research-hero-content,
+.engagements-hero-content,
+.hero.hero-press .hero-content,
+.hero.hero-executive .hero-content,
+.newsletter-hero-content {
+  width: 100%;
+  max-width: var(--ds-container) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  transform: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  text-align: left !important;
+  gap: 0;
+}
+
+.research-hero-title,
+.engagements-hero-content h1,
+.hero.hero-press .hero-title,
+.hero.hero-executive h1,
+.newsletter-title {
+  order: 2;
+  font-size: clamp(2.5rem, 5vw, 4rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+  margin: 0 !important;
+  max-width: 900px !important;
+  color: #fff !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45) !important;
+  filter: none !important;
+}
+
+/* Small label above the title */
+.engagements-hero-content .eyebrow {
+  order: 1;
+  display: block;
+  margin: 0 0 14px !important;
+  font-family: var(--font-text);
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase;
+  color: var(--ds-accent) !important;
+  text-shadow: none !important;
+}
+
+/* Line under the title */
+.research-hero-subtitle,
+.hero.hero-executive .hero-subtitle,
+.newsletter-subtitle {
+  order: 3;
+  margin: 16px 0 0 !important;
+  max-width: 640px;
+  font-family: var(--font-text) !important;
+  font-style: normal !important;
+  font-size: 1.125rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+}
+
+.newsletter-subtitle a {
+  color: var(--ds-accent) !important;
+}
+
+/* Home hero: plain title, no 3D shadow */
+.hero.hero-home h1 {
+  color: #0d1844 !important;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+/* ---------- Section headings ---------- */
+
+.section-title,
+.section-heading,
+.featured-video-title,
+.newsletter-section-heading,
+.latest-title,
+.recent-video > h2,
+.books > h2,
+.latest-events > h2,
+.featured-book > h2,
+.allbooks-page h2,
+.media-coverage-section h2,
+.podcast-section h2,
+.endorsements-section h2,
+.featured-articles > h2 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  text-align: center;
+  color: #fff !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-decoration: none !important;
+  margin: 0 auto 40px !important;
+}
+
+.section-title {
+  padding-top: 96px;
+}
+
+.latest-engagements .eyebrow {
+  font-family: var(--font-text);
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.16em !important;
+  color: var(--ds-text-muted) !important;
+}
+
+/* ---------- Cards ---------- */
+
+.paper-card,
+.stack-card,
+.media-card,
+.endorsement-card,
+.privacy-card,
+.featured-wrapper,
+.linkedin-card {
+  background: var(--ds-surface) !important;
+  border: 1px solid var(--ds-border) !important;
+  border-radius: var(--ds-radius) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.paper-card:hover,
+.stack-card:hover,
+.media-card:hover,
+.endorsement-card:hover,
+.linkedin-card:hover {
+  background: var(--ds-surface-hover) !important;
+  border-color: var(--ds-border-strong) !important;
+  box-shadow: none !important;
+}
+
+.paper-title,
+.stack-card h2,
+.media-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--ds-text) !important;
+}
+
+/* ---------- Content width ---------- */
+
+.papers-grid,
+.media-cards-grid,
+.books-container,
+.featured-wrapper,
+.articles-grid,
+.endorsement-grid {
+  max-width: var(--ds-container) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* ---------- Latest events: same-size posters ---------- */
+
+.latest-events .events-container {
+  max-width: var(--ds-container);
+  align-items: stretch;
+}
+
+.event-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  box-shadow: none;
+}
+
+.event-banner img {
+  width: 100%;
+  height: 360px;
+  object-fit: contain;
+}
+
+/* ---------- About: picture beside text, alternating sides ---------- */
+
+@media (min-width: 900px) {
+  .about-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    max-width: var(--ds-container);
+    margin: 0 auto;
+    padding: 72px 24px;
+  }
+
+  .about-section.awards-section {
+    display: block;
+  }
+
+  .about-section:nth-of-type(odd) .about-image-full {
+    order: 2;
+  }
+
+  .about-image-full {
+    margin: 0;
+    max-width: none;
+  }
+
+  .about-image-full img {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--ds-radius);
+  }
+
+  .about-text-narrow {
+    max-width: none;
+    margin: 0;
+  }
+}
+
+/* ---------- Footer ---------- */
+
+.copyright,
+.built-by,
+.built-by a {
+  color: var(--ds-text-muted) !important;
+  font-style: normal;
+}
+
+@media (max-width: 768px) {
+  p,
+  main li {
+    font-size: 1rem;
+  }
+
+  .research-hero,
+  .engagements-hero,
+  .hero.hero-press,
+  .hero.hero-executive,
+  .newsletter-hero {
+    min-height: 62vh !important;
+    padding: 120px 20px 48px !important;
+  }
+
+  .section-title {
+    padding-top: 64px;
+  }
+
+  .event-banner img {
+    height: 300px;
+  }
+}
+
+/* ---------- Page-specific touch-ups ---------- */
+
+/* Research: upcoming project cards match the papers grid */
+.scroll-stack-container {
+  max-width: var(--ds-container) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.stack-card p {
+  font-style: normal !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  color: var(--ds-text-muted) !important;
+}
+
+/* Executive Education: keep article titles readable over photos */
+.article-card h3 {
+  background: linear-gradient(
+    to top,
+    rgba(5, 6, 10, 0.92) 0%,
+    rgba(5, 6, 10, 0.75) 60%,
+    transparent 100%
+  );
+  padding-top: 48px !important;
+  font-weight: 500;
+}
+
+/* Books: room between sections, same-height covers */
+.book-showcase {
+  margin-top: 96px;
+}
+
+.book-item img {
+  height: 220px !important;
+  width: auto !important;
+  max-width: 100%;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* Newsletter: cards size to their content, same card style as elsewhere */
+.newsletter-item {
+  min-height: 0 !important;
+  background: var(--ds-surface) !important;
+  border: 1px solid var(--ds-border) !important;
+  border-radius: var(--ds-radius) !important;
+  backdrop-filter: none !important;
+}
+
+.newsletter-item:hover {
+  background: var(--ds-surface-hover) !important;
+  border-color: var(--ds-border-strong) !important;
+}
+
+@media (max-width: 768px) {
+  /* Home: the title sits over the photo on phones, so make it light */
+  .hero.hero-home {
+    box-shadow: inset 0 -260px 160px -60px rgba(5, 6, 10, 0.85);
+  }
+
+  .hero.hero-home h1 {
+    color: #fff !important;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (max-width: 600px) {
+  /* About: section links scroll sideways instead of filling the screen */
+  .about-subnav {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    gap: 20px !important;
+    padding: 12px 16px !important;
+    scrollbar-width: none;
+  }
+
+  .about-subnav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .about-subnav a {
+    flex: 0 0 auto;
+    padding: 4px 0 !important;
+    white-space: nowrap;
   }
 }
