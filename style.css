@@ -854,10 +854,6 @@ video {
   .books {
     padding: 50px 0;
   }
-
-  .book-card img {
-    width: 140px;
-  }
 }
 
 @keyframes slideDown {
@@ -1355,8 +1351,11 @@ video {
   will-change: transform;
 }
 
+/* Same height for every cover; width follows each cover's shape */
 .book-card img {
-  width: 160px;
+  display: block;
+  height: 228px;
+  width: auto;
   border-radius: 6px;
   transition:
     transform 0.08s ease-out,
@@ -1366,6 +1365,12 @@ video {
 
 .book-card img:hover {
   transform: scale(1.04) translateY(-4px);
+}
+
+@media (max-width: 768px) {
+  .book-card img {
+    height: 200px;
+  }
 }
 
 @keyframes scroll-left {
