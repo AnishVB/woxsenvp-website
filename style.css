@@ -6000,7 +6000,8 @@ h3 {
 .hero.hero-press,
 .hero.hero-executive,
 .newsletter-hero {
-  min-height: 72vh !important;
+  min-height: 100vh !important;
+  min-height: 100svh !important;
   height: auto !important;
   display: flex !important;
   align-items: flex-end !important;
@@ -6268,7 +6269,8 @@ h3 {
   .hero.hero-press,
   .hero.hero-executive,
   .newsletter-hero {
-    min-height: 62vh !important;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
     padding: 120px 20px 48px !important;
   }
 
