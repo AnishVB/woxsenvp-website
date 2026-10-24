@@ -43,20 +43,20 @@ async function loadSignatureMarkup() {
   }
 }
 
+// Share one promise per script so concurrent callers all wait for the load
+const _scriptLoads = {};
 const loadScriptOnce = (src) =>
-  new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
-      resolve();
-      return;
-    }
-
+  (_scriptLoads[src] ??= new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.src = src;
     script.async = true;
     script.onload = resolve;
-    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    script.onerror = () => {
+      delete _scriptLoads[src];
+      reject(new Error(`Failed to load ${src}`));
+    };
     document.head.appendChild(script);
-  });
+  }));
 
 async function ensureGsap() {
   if (window.gsap && window.ScrollTrigger) return;
@@ -1216,6 +1216,36 @@ function initNewsletterNavigation() {
   }
 }
 
+// No form backend: open the visitor's email app with the message filled in
+const CONTACT_EMAIL = "vp.office@woxsen.edu.in";
+
+function initContactForm() {
+  const form = document.getElementById("contactForm");
+  if (!form) return;
+  const status = form.querySelector(".form-status");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const data = new FormData(form);
+    const name = `${data.get("firstName")} ${data.get("lastName")}`.trim();
+    const subject = `Website enquiry from ${name}`;
+    const body = `${data.get("message")}\n\n${name}\n${data.get("email")}`;
+
+    window.location.href =
+      `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
+
+    if (status) {
+      status.textContent = `Your email app should open with this message. If it doesn't, write to ${CONTACT_EMAIL}.`;
+    }
+  });
+}
+
 function initBackToTop() {
   const backToTopBtn = document.querySelector(".back-to-top");
   if (!backToTopBtn) return;
@@ -1248,7 +1278,13 @@ async function playInitialPageLoadTransition() {
   // Hide page content initially
   document.body.style.opacity = "0";
 
-  await ensureGsap();
+  try {
+    await ensureGsap();
+  } catch (err) {
+    document.body.style.opacity = "1";
+    console.warn("Intro transition skipped", err);
+    return;
+  }
 
   return new Promise((resolve) => {
     createBlindsContainer();
@@ -1783,6 +1819,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((el) => el.remove());
   });
   initBackToTop();
+  initContactForm();
   initHeroVideoBoomerang();
   initContactVideoBoomerang();
   initPaperCardFlip();
