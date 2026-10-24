@@ -43,20 +43,20 @@ async function loadSignatureMarkup() {
   }
 }
 
+// Share one promise per script so concurrent callers all wait for the load
+const _scriptLoads = {};
 const loadScriptOnce = (src) =>
-  new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
-      resolve();
-      return;
-    }
-
+  (_scriptLoads[src] ??= new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.src = src;
     script.async = true;
     script.onload = resolve;
-    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    script.onerror = () => {
+      delete _scriptLoads[src];
+      reject(new Error(`Failed to load ${src}`));
+    };
     document.head.appendChild(script);
-  });
+  }));
 
 async function ensureGsap() {
   if (window.gsap && window.ScrollTrigger) return;
@@ -1248,7 +1248,13 @@ async function playInitialPageLoadTransition() {
   // Hide page content initially
   document.body.style.opacity = "0";
 
-  await ensureGsap();
+  try {
+    await ensureGsap();
+  } catch (err) {
+    document.body.style.opacity = "1";
+    console.warn("Intro transition skipped", err);
+    return;
+  }
 
   return new Promise((resolve) => {
     createBlindsContainer();
